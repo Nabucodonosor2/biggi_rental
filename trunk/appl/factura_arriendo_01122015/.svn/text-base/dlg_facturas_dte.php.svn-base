@@ -1,0 +1,33 @@
+<?php
+require_once(dirname(__FILE__)."/../../../../commonlib/trunk/php/auto_load.php");
+
+$temp = new Template_appl('dlg_facturas_dte.htm');	
+
+$sql = "SELECT  DISTINCT F.RUT
+		,F.DIG_VERIF
+		,F.NOM_EMPRESA
+		,(SELECT COUNT(COD_EMPRESA) 
+			FROM FACTURA
+			WHERE NRO_FACTURA IS NULL
+			AND COD_TIPO_FACTURA = 2
+			AND COD_EMPRESA = F.COD_EMPRESA ) CANT_FA
+		,'' SELECCIONAR
+		,E.COD_EMPRESA
+FROM	FACTURA F, ESTADO_DOC_SII EDS, USUARIO U,EMPRESA E
+WHERE	F.COD_EMPRESA = E.COD_EMPRESA
+		AND F.COD_ESTADO_DOC_SII = EDS.COD_ESTADO_DOC_SII 
+		AND F.COD_USUARIO_VENDEDOR1 = U.COD_USUARIO 
+		AND F.COD_TIPO_FACTURA = 2
+		AND F.FECHA_FACTURA IS NULL
+		AND F.NRO_FACTURA IS NULL
+ORDER BY F.RUT DESC";
+
+
+echo $sql;
+$dw = new datawindow($sql,'FACTURAS_DTE');
+$dw->add_control($control = new edit_check_box('SELECCIONAR','S','N'));
+$dw->add_control(new edit_text('COD_EMPRESA',10,10, 'hidden'));
+$dw->retrieve();
+$dw->habilitar($temp, true);
+print $temp->toString();
+?>

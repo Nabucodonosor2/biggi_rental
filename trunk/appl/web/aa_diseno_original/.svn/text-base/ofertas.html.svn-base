@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BIGGI | Ofertas</title>
+<link type="image/x-icon" href="images/favicon.ico" rel="shortcut icon" />
+<link rel="stylesheet" type="text/css" href="css/estilos.css">
+<link rel="stylesheet" type="text/css" href="css/ei2.css">
+<link rel="stylesheet" href="fontface/stylesheet.css" type="text/css" charset="utf-8" />
+
+</head>
+
+<body class="body2">
+<div class="container">
+	<div class="logotipo">
+    	<div class="telefono"></div>
+    </div>
+    <div class="menu">
+        <a href="empresa.html"><div class="bot">Empresa</div></a>
+        <a href="productos.html"><div class="bot">Productos</div></a>
+        <a href="econoline.html"><div class="bot">Econoline</div></a>
+        <a href="noticias.html"><div class="bot">Noticias</div></a>
+        <a href="soporte.html"><div class="bot">Soporte y Representantes</div></a>
+        <a href="ofertas.html"><div class="bot" style="background-position:0 -39px;">Ofertas</div></a>
+        <a href="cotizador.html"><div class="bot">Cotizaci&oacute;n</div></a>
+        <a href="contacto.html"><div class="bot">Contacto</div></a>
+    </div>
+    <div class="pnlInt">
+    	<img src="images/vin-ofertas.jpg" width="960" height="75" style="margin">
+        <div class="pnlOfrt">
+        	<div class="ribbon"></div>
+            <img src="images/productoOferta.jpg" width="219" height="146">
+            <div class="precio"><p>$350.000 + iva</p></div>
+            <div class="ofrtXpl">
+            Construcción acero inoxidable.
+            Sistema de refrigeración estatico.
+			Depósito frio con capacidad de hasta 3 depósitos gn 1/1-15r
+            </div>
+            </br>
+            <a href="#"><div class="vfp"></div></a>
+            <a href="#"><div class="cotiz"></div></a>
+        </div>
+        
+        <div class="pnlOfrt">
+        	<div class="ribbon"></div>
+            <img src="images/productoOferta.jpg" width="219" height="146">
+            <div class="precio"><p>$350.000 + iva</p></div>
+            <div class="ofrtXpl">
+            Construcción acero inoxidable.
+            Sistema de refrigeración estatico.
+			Depósito frio con capacidad de hasta 3 depósitos gn 1/1-15r
+            </div>
+            </br>
+            <a href="#"><div class="vfp"></div></a>
+            <a href="#"><div class="cotiz"></div></a>
+        </div>
+        <div class="pnlOfrt">
+        	<div class="ribbon"></div>
+            <img src="images/productoOferta.jpg" width="219" height="146">
+            <div class="precio"><p>$350.000 + iva</p></div>
+            <div class="ofrtXpl">
+            Construcción acero inoxidable.
+            Sistema de refrigeración estatico.
+			Depósito frio con capacidad de hasta 3 depósitos gn 1/1-15r
+            </div>
+            </br>
+            <a href="#"><div class="vfp"></div></a>
+            <a href="#"><div class="cotiz"></div></a>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="intFooter">
+        <div class="direcciones">
+            <img src="images/pnlTelef.png" width="185" height="44">
+            <p>Comercial BiGGI (Chile) S.A. </p>
+            <p>Portugal 1726, Santiago 
+            <br>Tels. (56 2) 412 6200 - 555 2849
+            <br>Fax (56 2) 412 62 01</p>
+            <p>Santiago - Chile</p>
+        </div>
+        <div class="creditos">
+            <p>© 2011 Comercial BIGGI (Chile) S.A. 
+            <br>Todos los derechos reservados.</p>
+            <p>Sitio web optimizado para una resolución mínima de 1024 x 768 pixeles</p>
+            <p>Desarrollado por Integrasystem Ltda.<br>
+            Diseño: Convecta | Soluciones Web</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

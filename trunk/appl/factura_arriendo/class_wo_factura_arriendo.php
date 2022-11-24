@@ -1,0 +1,820 @@
+<?php
+require_once(dirname(__FILE__)."/../../../../commonlib/trunk/php/auto_load.php");
+require_once(dirname(__FILE__)."/../common_appl/class_w_output_biggi.php");
+
+class wi_factura_arriendo_aux extends wi_factura_arriendo  {
+	var $cod_factura;
+	
+	function wi_factura_arriendo_aux() {
+		parent::wi_factura_arriendo('2035');
+	}
+	function get_key() {
+		return $this->cod_factura;
+	}
+	function _load_record() {
+		return;
+	}
+}
+
+class static_cod_doc extends static_text {
+    function static_gr($field) {
+        parent::static_text($field);
+    }
+    function draw_no_entrable($dato, $record) {
+        $a = explode("|", $dato);
+        if (count($a) > 1)
+            return 'varios';
+            else
+                return $a[0];
+    }
+    function draw_entrable($dato, $record) {
+        return $this->draw_no_entrable($dato, $record);
+    }
+}
+class wo_factura_arriendo extends w_output_biggi {
+	const K_ESTADO_SII_EMITIDA	= 1;
+	const K_ESTADO_CONFIRMADA	= 4;
+	const K_ESTADO_CERRADA = 2;
+	const K_PARAM_MAX_IT_FA = 29;
+	//const K_AUTORIZA_EXPORTAR = '992010';
+	const K_AUTORIZA_SOLO_BITACORA = '992025';
+	const K_TIPO_ARRIENDO = 2;
+	const K_AUTORIZA_SUMAR = '992060';
+	var $checkbox_sumar;
+	var $autoriza_print;
+	var $autoriza_xml;
+
+	function wo_factura_arriendo() {
+		$this->checkbox_sumar = false;
+		
+		$sql = "select F.COD_FACTURA
+						,convert(varchar(20), F.FECHA_FACTURA, 103) FECHA_FACTURA
+						,F.FECHA_FACTURA DATE_FACTURA
+						,F.NRO_FACTURA
+						,F.RUT
+						,F.DIG_VERIF
+						,F.NOM_EMPRESA
+						,F.COD_USUARIO_VENDEDOR1
+						,EDS.COD_ESTADO_DOC_SII
+						,EDS.NOM_ESTADO_DOC_SII
+						,F.TOTAL_CON_IVA
+						,U.INI_USUARIO
+						,dbo.f_fa_tipo_doc(F.COD_FACTURA) TIPO_FA
+						,dbo.f_origen_arriendo1(F.COD_FACTURA,'FACTURA')ORIGEN_ARRIENDO 
+                        ,dbo.f_origen_arriendo1(F.COD_FACTURA,'ARRIENDOS_X_FACTURA')COD_DOC 
+				 from	FACTURA F, ESTADO_DOC_SII EDS, USUARIO U
+				where	F.COD_ESTADO_DOC_SII = EDS.COD_ESTADO_DOC_SII AND
+						F.COD_USUARIO_VENDEDOR1 = U.COD_USUARIO AND
+						F.COD_TIPO_FACTURA = ".self::K_TIPO_ARRIENDO."
+				order by	isnull(NRO_FACTURA, 9999999999) desc, COD_FACTURA desc";
+				
+	     parent::w_output_biggi('factura_arriendo', $sql, $_REQUEST['cod_item_menu']);
+			
+		$this->dw->add_control(new edit_nro_doc('COD_FACTURA','FACTURA'));
+		$this->dw->add_control(new static_num('RUT'));
+		$this->dw->add_control(new edit_precio('TOTAL_CON_IVA'));
+		$this->dw->add_control(new static_cod_doc('COD_DOC'));
+
+		// headers
+		$this->add_header($control = new header_date('FECHA_FACTURA', 'FECHA_FACTURA', 'Fecha'));
+		$control->field_bd_order = 'DATE_FACTURA';
+		$this->add_header(new header_num('NRO_FACTURA', 'NRO_FACTURA', 'N° FA'));
+		$this->add_header(new header_rut('RUT', 'F', 'Rut'));
+		$this->add_header(new header_text('NOM_EMPRESA', 'NOM_EMPRESA', 'Razón Social'));
+		$sql_estado_doc_sii = "select COD_ESTADO_DOC_SII ,NOM_ESTADO_DOC_SII from ESTADO_DOC_SII order by	COD_ESTADO_DOC_SII";
+		$this->add_header(new header_drop_down('NOM_ESTADO_DOC_SII', 'EDS.COD_ESTADO_DOC_SII', 'Estado', $sql_estado_doc_sii));
+		$this->add_header(new header_num('TOTAL_CON_IVA', 'TOTAL_CON_IVA', 'Total c/IVA'));
+		
+		$sql = "select distinct U.COD_USUARIO, U.NOM_USUARIO from FACTURA F, USUARIO U where F.COD_USUARIO_VENDEDOR1 = U.COD_USUARIO order by NOM_USUARIO";
+		$this->add_header(new header_drop_down('INI_USUARIO', 'F.COD_USUARIO_VENDEDOR1', 'V1', $sql));
+		
+		$sql = "SELECT 'NORMAL' ES_TIPO, 'NORMAL' TIPO_FA UNION SELECT 'EXENTA' ES_TIPO , 'EXENTA' TIPO_FA";
+		$this->add_header($control = new header_drop_down_string('TIPO_FA', '(dbo.f_fa_tipo_doc(COD_FACTURA))', 'Tipo FA', $sql)); 
+  		$control->field_bd_order = 'TIPO_FA';
+  		
+  		$this->add_header(new header_text('COD_DOC', "dbo.f_origen_arriendo1(F.COD_FACTURA,'ARRIENDOS_X_FACTURA')", 'N° ARRIENDO'));
+  		
+  		// dw checkbox
+		$priv = $this->get_privilegio_opcion_usuario(self::K_AUTORIZA_SUMAR, $this->cod_usuario);
+		if ($priv=='E')
+			$DISPLAY_SUMAR = '';
+      	else
+			$DISPLAY_SUMAR = 'none';
+
+
+		$sql = "SELECT 'Biggi' COD, 
+				'Biggi' NOM
+				UNION
+				SELECT 'Catering' COD, 
+				'Catering' NOM";
+	    $this->add_header(new header_drop_down_string('ORIGEN_ARRIENDO',"(dbo.f_origen_arriendo1(COD_FACTURA,'FACTURA'))", 'Origen', $sql));
+
+
+			
+		$sql = "select '$DISPLAY_SUMAR' DISPLAY_SUMAR
+						,'N' CHECK_SUMAR
+					   ,'N' HIZO_CLICK";
+		$this->dw_check_box = new datawindow($sql);
+		$this->dw_check_box->add_control($control = new edit_check_box('CHECK_SUMAR','S','N'));
+		$control->set_onClick("sumar(); document.getElementById('loader').style.display='';");
+		$this->dw_check_box->add_control(new edit_text_hidden('HIZO_CLICK'));
+		$this->dw_check_box->retrieve();
+		
+		$priv = $this->get_privilegio_opcion_usuario('992075', $this->cod_usuario); //print
+		if($priv=='E')
+			$this->autoriza_print = true;
+      	else
+			$this->autoriza_print = false;
+			
+		$priv = $this->get_privilegio_opcion_usuario('992085', $this->cod_usuario); //xml
+		if($priv=='E')
+			$this->autoriza_xml = true;
+      	else
+			$this->autoriza_xml = false;
+	}
+	
+	function make_menu(&$temp) {
+	    $menu = session::get('menu_appl');
+	    $menu_original = $menu->ancho_completa_menu;
+	    $menu->ancho_completa_menu = 398;
+	    $menu->draw($temp);
+	    $menu->ancho_completa_menu = $menu_original;    // volver a setear el tamaño original
+	}
+	
+	function redraw_item(&$temp, $ind, $record){
+		$temp->gotoNext("wo_registro");
+		if ($ind % 2 == 0) {
+			$temp->setVar("wo_registro.WO_TR_CSS", $this->css_claro);
+			$temp->setVar("wo_registro.WO_DETALLE", '<input name="b_detalle_'.$ind.'" id="b_detalle_'.$ind.'" value="'.$ind.'" src="../../../../com	monlib/trunk/images/lupa1.jpg" type="image">');
+		}
+		else {
+			$temp->setVar("wo_registro.WO_TR_CSS", $this->css_oscuro);
+			$temp->setVar("wo_registro.WO_DETALLE", '<input name="b_detalle_'.$ind.'" id="b_detalle_'.$ind.'" value="'.$ind.'" src="../../../../commonlib/trunk/images/lupa2.jpg" type="image">');
+		}
+		
+		$COD_ESTADO_DOC_SII = $this->dw->get_item($record, 'COD_ESTADO_DOC_SII');
+		
+		if($COD_ESTADO_DOC_SII == 2 && $this->autoriza_print == true){
+			$control =  '<input name="b_printDTE_'.$ind.'" id="b_printDTE_'.$ind.'" type="button" title="Imprimir"'.
+			   			'style="cursor:pointer;height:26px;width:17px;border: 0;background-image:url(../../images_appl/b_dte_print.png);background-repeat:no-repeat;background-position:center;"'.
+			   			'onClick="return dlg_print_dte_wo(this);"/>';
+			
+			$temp->setVar("wo_registro.WO_PRINT_DTE", $control);
+		}else if($COD_ESTADO_DOC_SII == 3 && $this->autoriza_print == true){
+			$control =  '<input name="b_printDTE_'.$ind.'" id="b_printDTE_'.$ind.'" type="button" title="Imprimir"'.
+			   			'style="cursor:pointer;height:26px;width:17px;border: 0;background-image:url(../../images_appl/b_dte_print.png);background-repeat:no-repeat;background-position:center;"'.
+			   			'onClick="return dlg_print_dte_wo(this);"/>';
+			
+			$temp->setVar("wo_registro.WO_PRINT_DTE", $control);
+		}else
+			$temp->setVar("wo_registro.WO_PRINT_DTE", '<img src="../../images_appl/b_dte_print_d.png">');
+		
+		
+		if($COD_ESTADO_DOC_SII == 3 && $this->autoriza_xml == true)
+			$temp->setVar("wo_registro.WO_XML_DTE", '<input name="b_xmlDTE_'.$ind.'" id="b_xmlDTE_'.$ind.'" value="'.$ind.'" title="Descargar XML" src="../../images_appl/b_dte_xml.png" type="image">');
+		else
+			$temp->setVar("wo_registro.WO_XML_DTE", '<img src="../../images_appl/b_dte_xml_d.png">');
+		
+		
+		$this->dw->fill_record($temp, $record);
+		
+		//////////////////
+		// llama al js para grabar scrol
+		$temp->setVar("wo_registro.WO_DETALLE", '<input name="b_detalle_'.$ind.'" id="b_detalle_'.$ind.'" value="'.$ind.'" src="../../../../commonlib/trunk/images/lupa2.jpg" type="image" onClick="graba_scroll(\''.$this->nom_tabla.'\');">');
+		
+		if (session::is_set('W_OUTPUT_RECNO_'.$this->nom_tabla)) {	
+			$rec_no = session::get('W_OUTPUT_RECNO_'.$this->nom_tabla);	
+			if ($rec_no==$ind) {
+				session::un_set('W_OUTPUT_RECNO_'.$this->nom_tabla);	
+				$temp->setVar("wo_registro.WO_TR_CSS", 'linea_selected');
+			}
+		}
+		//////////////////
+	}
+	
+	function redraw(&$temp) {
+  		if ($this->b_add_visible)
+			$this->habilita_boton($temp, 'create', $this->get_privilegio_opcion_usuario($this->cod_item_menu, $this->cod_usuario)=='E');
+		
+		$this->habilita_boton($temp, 'enviar_dte', $this->get_privilegio_opcion_usuario($this->cod_item_menu, $this->cod_usuario)=='E');
+		$this->habilita_boton($temp, 'print_anexo_masivo', true);
+		$this->habilita_boton($temp, 'print_dte_masivo', $this->get_privilegio_opcion_usuario('997510', $this->cod_usuario)=='E');
+		$this->dw_check_box->habilitar($temp, true);
+	}	
+	function habilita_boton(&$temp, $boton, $habilita) {
+		if ($boton=='add') {
+			if ($habilita){
+				$ruta_over = "'../../../../commonlib/trunk/images/b_add_over.jpg'";
+				$ruta_out = "'../../../../commonlib/trunk/images/b_add.jpg'";
+				$ruta_click = "'../../../../commonlib/trunk/images/b_add_click.jpg'";
+				$temp->setVar("WO_ADD", '<input name="b_'.$boton.'" id="b_'.$boton.'" type="button" onmouseover="entrada(this, '.$ruta_over.')" onmouseout="salida(this, '.$ruta_out.')" onmousedown="down(this, '.$ruta_click.')"'.
+												 'style="cursor:pointer;height:68px;width:66px;border: 0;background-image:url(../../../../commonlib/trunk/images/b_add.jpg);background-repeat:no-repeat;background-position:center;border-radius: 15px;"'.
+												 'onClick="dlg_factura_contrato();" />');
+			}else
+				$temp->setVar("WO_".strtoupper($boton), '<img src="../../../../commonlib/trunk/images/b_add_d.jpg"/>');
+				
+		}else if ($boton=='create') {
+			if ($habilita){
+				$ruta_over = "'../../../../commonlib/trunk/images/b_create_over.jpg'";
+				$ruta_out = "'../../../../commonlib/trunk/images/b_create.jpg'";
+				$ruta_click = "'../../../../commonlib/trunk/images/b_create_click.jpg'";
+				$temp->setVar("WO_CREATE", '<input name="b_'.$boton.'" id="b_'.$boton.'" type="button" onmouseover="entrada(this, '.$ruta_over.')" onmouseout="salida(this, '.$ruta_out.')" onmousedown="down(this, '.$ruta_click.')"'.
+												 'style="cursor:pointer;height:68px;width:66px;border: 0;background-image:url('.$ruta_out.');background-repeat:no-repeat;background-position:center;border-radius: 15px;"'.
+												 'onClick="selecciona_contrato();" />');
+			}else
+				$temp->setVar("WO_".strtoupper($boton), '<img src="../../../../commonlib/trunk/images/b_create_d.jpg"/>');
+				
+		}else if ($boton=='enviar_dte') {
+			if ($habilita){
+				$ruta_over = "'../../images_appl/b_enviar_dte_over.jpg'";
+				$ruta_out = "'../../images_appl/b_enviar_dte.jpg'";
+				$ruta_click = "'../../images_appl/b_enviar_dte_click.jpg'";
+				$temp->setVar("WO_ENVIAR_DTE", '<input name="b_'.$boton.'" id="b_'.$boton.'" type="button" onmouseover="entrada(this, '.$ruta_over.')" onmouseout="salida(this, '.$ruta_out.')" onmousedown="down(this, '.$ruta_click.')"'.
+												 'style="cursor:pointer;height:68px;width:66px;border: 0;background-image:url('.$ruta_out.');background-repeat:no-repeat;background-position:center;border-radius: 15px;"'.
+												 'onClick="facturas_dte();" />');
+			}else
+				$temp->setVar("WO_".strtoupper($boton), '<img src="../../images_appl/b_enviar_dte_d.jpg"/>');
+				
+		}else if ($boton=='print_anexo_masivo') {
+			if($habilita){
+				$ruta_over = "'../../images_appl/b_print_anexo_over.jpg'";
+				$ruta_out = "'../../images_appl/b_print_anexo.jpg'";
+				$ruta_click = "'../../images_appl/b_print_anexo_click.jpg'";
+				$temp->setVar("WO_PRINT_ANEXO_MASIVO", '<input name="b_'.$boton.'" id="b_'.$boton.'" type="button" onmouseover="entrada(this, '.$ruta_over.')" onmouseout="salida(this, '.$ruta_out.')" onmousedown="down(this, '.$ruta_click.')"'.
+												 'style="cursor:pointer;height:68px;width:66px;border: 0;background-image:url('.$ruta_out.');background-repeat:no-repeat;background-position:center;border-radius: 15px;"'.
+												 'onClick="dlg_print_anexo_masivo();" />');
+				
+				
+			}else
+				$temp->setVar("WO_PRINT_ANEXO_MASIVO", '<img src="../../images_appl/b_print_anexo_d.jpg"/>');
+				
+		}else if ($boton=='print_dte_masivo'){
+			if($habilita){
+				$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+				$sql = $this->dw->get_sql();
+				$db->query($sql);
+		
+				$lista_cod_factura = "";
+				while($my_row = $db->get_row()){
+					if($my_row['NRO_FACTURA'] <> "")
+						$lista_cod_factura .= $my_row['COD_FACTURA'].",";
+				}
+				$lista_cod_factura = trim($lista_cod_factura, ',');
+				
+				$ruta_over = "'../../images_appl/b_print_dte_masivo_over.jpg'";
+				$ruta_out = "'../../images_appl/b_print_dte_masivo.jpg'";
+				$ruta_click = "'../../images_appl/b_print_dte_masivo_click.jpg'";
+				$temp->setVar("WO_PRINT_DTE_MASIVO", '<input name="b_'.$boton.'" id="b_'.$boton.'" type="button" onmouseover="entrada(this, '.$ruta_over.')" onmouseout="salida(this, '.$ruta_out.')" onmousedown="down(this, '.$ruta_click.')"'.
+												 'style="cursor:pointer;height:68px;width:66px;border: 0;background-image:url('.$ruta_out.');background-repeat:no-repeat;background-position:center;border-radius: 15px;"'.
+												 'onClick="dlg_print_dte_masivo(\''.$lista_cod_factura.'\');" />');
+				
+				
+			}else
+				$temp->setVar("WO_PRINT_DTE_MASIVO", '<img src="../../images_appl/b_print_dte_masivo_d.jpg"/>');
+				
+		}else
+			parent::habilita_boton($temp, $boton, $habilita);
+	}	
+  	function crear_fa_from_arriendo($lista_contratos) {
+		$a_lista_contratos = explode("|",$lista_contratos);
+		if($a_lista_contratos[0] == "1fac_1cont"){
+			if("$a_lista_contratos[1]"<> ''){
+				$fecha_stock = $this->str2date("$a_lista_contratos[1]");
+			}else{
+				$fecha_stock = "NULL";
+			}
+			
+			$a_lista_contratos = array_reverse($a_lista_contratos);
+			for($i = 0 ; $i < count($a_lista_contratos)-2 ; $i++){
+				$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+				$db->BEGIN_TRANSACTION();
+				$cod_usuario = $this->cod_usuario;	
+				$sp = 'sp_fa_arriendo';
+				$param = "'$a_lista_contratos[$i]'
+							,'S'
+							,$cod_usuario
+							,$fecha_stock";
+				if ($db->EXECUTE_SP($sp, $param)) { 
+					$db->COMMIT_TRANSACTION();
+				}
+				else{ 
+					$db->ROLLBACK_TRANSACTION();
+					
+					//////////// registro del error
+					$param2 = str_replace("'", "''", $param);	// reemplaza ' por ''
+					$db->query("EXECUTE spu_execute_sp 'INSERT', NULL, '$sp', '$param2', $cod_usuario");
+					////////////
+					
+					$this->_redraw();
+					$this->alert("No se pudo crear la factura. Error en 'sp_fa_arriendo', favor contacte a IntegraSystem.");
+				}
+			}
+			$this->retrieve();
+		}else{
+			if("$a_lista_contratos[0]" <> ''){
+				$fecha_stock = $this->str2date("$a_lista_contratos[0]");
+			}else{
+				$fecha_stock = "NULL";
+			}
+			
+			$a_lista_contratos = array_reverse($a_lista_contratos);
+			for($i = 0 ; $i < count($a_lista_contratos)-1 ; $i++){
+				$total_lista_contrato = $total_lista_contrato.'|'.$a_lista_contratos[$i];
+			}
+			
+			$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+			$db->BEGIN_TRANSACTION();
+			$cod_usuario = $this->cod_usuario;
+			$sp = 'sp_fa_arriendo';
+			$param = "'$total_lista_contrato'
+						,'S'
+						,$cod_usuario
+						,$fecha_stock";
+			
+			if ($db->EXECUTE_SP($sp, $param)) { 
+				$db->COMMIT_TRANSACTION();
+				$this->retrieve();
+			}
+			else { 
+				$db->ROLLBACK_TRANSACTION();
+					
+				//////////// registro del error
+				$param2 = str_replace("'", "''", $param);	// reemplaza ' por ''
+				$db->query("EXECUTE spu_execute_sp 'INSERT', NULL, '$sp', '$param2', $cod_usuario");
+				////////////
+					
+				$this->_redraw();
+				$this->alert("No se pudo crear la factura. Error en 'sp_fa_arriendo', favor contacte a IntegraSystem.");
+			}	
+		}	
+	}
+	function masivo_dte($lista_empresa) {
+		$lista_empresa = substr($lista_empresa, 0, strlen($lista_empresa) - 1);	// borra ultimo caracter
+		$lista_empresa = explode('|', $lista_empresa);
+		$w = new wi_factura_arriendo_aux();
+		$count_cant = 0;
+		$reg_exito = 0;
+		$reg_fallido = 0;
+		
+		for ($i=0; $i < count($lista_empresa); $i++){
+			$cod_empresa = $lista_empresa[$i];
+			
+			if($cod_empresa <> ''){
+				$sql = "select COD_FACTURA 
+							,(SELECT COUNT(COD_EMPRESA) 
+								FROM FACTURA
+								WHERE NRO_FACTURA is null
+								and COD_EMPRESA = $cod_empresa ) CANT_FA
+							,NRO_ORDEN_COMPRA
+							,FECHA_ORDEN_COMPRA_CLIENTE	
+						from FACTURA
+						where NRO_FACTURA is null
+						  AND COD_EMPRESA = $cod_empresa";	  
+				$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+				$result = $db->build_results($sql);
+
+				if($cod_empresa == 99){ //CASINO EXPRESS S.A.
+					if($result[0]['NRO_ORDEN_COMPRA'] == '' || $result[0]['FECHA_ORDEN_COMPRA_CLIENTE'] == ''){
+						$reg_fallido++;
+						continue;
+					}	
+				}
+				
+				$count_cant = $count_cant + $result[0]['CANT_FA'];
+				
+				for ($j=0; $j < count($result); $j++) {
+					$cod_factura = $result[$j]['COD_FACTURA'];
+					$w->cod_factura = $cod_factura;
+					session::set('FA_ARRIENDO', '');
+					session::set('ENVIAR_DTE_MASIVO', '1');
+					$w->enviar_dte();
+					$reg_exito++;
+				}
+			}else{
+				$count = 1;
+			}
+			
+			
+		}
+		
+		unset($w);
+		$this->retrieve();
+		if($reg_fallido == 0){
+			if($count <> 1)
+				$this->alert("Se han generado:".$count_cant. " facturas electronicas");
+		}else{
+			$this->alert('Existen facturas asociadas al RUT 78.793.360-2 que no registran "Numero OC Cliente" y/o "Fecha OC cliente".\nEstas facturas no fueron enviadas al SII. Favor reviselas y complete dichos campos.');
+		}
+		
+	}
+	
+	function add_factura_arr($cod_arriendo){
+		if($cod_arriendo > 100000000000){
+			$this->_redraw();
+			$this->alert('No se puede crear Factura por recuperación de arriendo, contacte a IntegraSystem');
+			return;	
+		}
+	
+		$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+		$sql = "SELECT COUNT(*) COUNT
+				FROM ARRIENDO
+				WHERE COD_ARRIENDO = $cod_arriendo";
+		
+		$result = $db->build_results($sql);
+		if($result[0]['COUNT'] == 0){
+			$this->_redraw();
+			$this->alert('El número de arriendo ingresado no existe');
+			return;								
+		}
+		
+		$sql = "SELECT COUNT(*) COUNT
+				FROM ARRIENDO
+				WHERE COD_ARRIENDO = dbo.f_arriendo_no_vigentes( $cod_arriendo)";
+		
+		$result = $db->build_results($sql);
+		if($result[0]['COUNT'] > 0){
+			$this->_redraw();
+			$this->alert('El número de arriendo ingresado no esta vigente');
+			return;								
+		}
+		$sql = "SELECT PORC_ADICIONAL_RECUPERACION
+				FROM ARRIENDO WHERE COD_ARRIENDO = $cod_arriendo";
+		$result = $db->build_results($sql);
+		if($result[0]['PORC_ADICIONAL_RECUPERACION'] <= 0){
+			$this->_redraw();
+			$this->alert('El número de arriendo ingresado necesita un porcentaje de recuperación mayor a cero');
+			return;								
+		}
+
+		$sql = "SELECT COD_FACTURA
+					  ,TOTAL_CON_IVA
+					  ,NRO_FACTURA
+				FROM FACTURA
+				WHERE COD_CONTRATO_ANTICIPO = $cod_arriendo";
+
+		$cod_factura = $result[0]['COD_FACTURA'];
+		$fa_tot_con_iva = $result[0]['TOTAL_CON_IVA'];
+		$nro_factura = $result[0]['NRO_FACTURA'];
+				
+		$result = $db->build_results($sql);
+		
+		if(count($result) > 0){
+		
+			$sql = "SELECT COUNT(*) COUNT
+						  ,TOTAL_CON_IVA
+					FROM NOTA_CREDITO
+					WHERE COD_DOC = $cod_factura
+					GROUP BY TOTAL_CON_IVA";
+			
+			$result = $db->build_results($sql);
+			$nc_tot_con_iva = $result[0]['TOTAL_CON_IVA'];
+			
+			if($result[0]['COUNT'] > 1){
+				$this->_redraw();
+				$this->alert('No se puede crear factura por recuperación de arriendo, contacte a IntegraSystem');
+				return;
+			}else if($result[0]['COUNT'] == 0){
+				$this->_redraw();
+				$this->alert('Ya existe una factura por recuperación de este arriendo. Factura N° '.$nro_factura);
+				return;
+			}else{
+				if($nc_tot_con_iva <> $fa_tot_con_iva){
+					$this->_redraw();
+					$this->alert('No se puede crear factura por recuperación de arriendo, contacte a IntegraSystem');
+					return;
+				}
+			}								
+		}		
+		
+		$sp = "sp_fa_arriendo_contrato";
+		
+		$param = "$cod_arriendo
+				,".$this->cod_usuario;
+				
+		if(!$db->EXECUTE_SP($sp, $param)){
+			$this->_redraw();
+			$this->alert('No se pudo crear la factura. Error en \'sp_fa_arriendo_contrato\', favor contacte a IntegraSystem.');
+		}else{
+			$this->retrieve();
+			$this->alert('Se ha creado la factura satisfactoriamente.');
+		}
+	}
+	
+	function print_anexo_masivo($str_fechas){
+		$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+		$str_cod_factura = "";
+		$arr_fechas = explode("|", $str_fechas);
+		$fecha_desde = $this->str2date($arr_fechas[0]);
+		$fecha_hasta = $this->str2date($arr_fechas[1], "23:59:59");
+		
+		$sql = "SELECT COD_FACTURA
+				FROM FACTURA
+				WHERE FECHA_FACTURA BETWEEN $fecha_desde AND $fecha_hasta
+				AND COD_ESTADO_DOC_SII = 3 -- ENVIADA A SII
+				AND TIPO_DOC = 'ARRIENDO'
+				ORDER BY FECHA_FACTURA ASC";
+
+		// reporte
+		$labels = array();
+		/*$labels['strNRO_FACTURA'] = $nro_factura;					
+		$labels['strNOM_EMPRESA'] = $nom_empresa;
+		$labels['strMES_FACTURA'] = $mes_factura;
+		$labels['strANO_FACTURA'] = $ano_factura;*/		
+		$xml = $this->find_file('factura_arriendo', 'factura_anexo_masivo.xml');					
+		$rpt = new reporte_prin_anexo_masivo($sql, $xml, $labels, "Factura Anexo Masivo.pdf", 1);
+		$this->retrieve();
+	}
+	
+	function procesa_event(){
+		if(isset($_POST['b_add_x']))
+			$this->add_factura_arr($_POST['wo_hidden']);
+		else if(isset($_POST['b_create_x']))
+			$this->crear_fa_from_arriendo($_POST['wo_hidden']);
+		else if(isset($_POST['b_print_dte_x']))
+			$this->masivo_dte($_POST['wo_hidden']);
+		else if(isset($_POST['b_print_anexo_x']))
+			$this->print_anexo_masivo($_POST['wo_hidden']);
+		else if(isset($_POST['b_print_dte_masivo_x']))
+			$this->print_dte_masivo($_POST['wo_hidden']);
+		else if($_POST['HIZO_CLICK_0'] == 'S'){
+			$this->checkbox_sumar = isset($_POST['CHECK_SUMAR_0']);
+			
+			// obtiene los datos del filtro aplicado
+			$valor_filtro = $this->headers['TOTAL_CON_IVA']->valor_filtro;
+			$valor_filtro2 = $this->headers['TOTAL_CON_IVA']->valor_filtro2;
+			
+			if($this->checkbox_sumar){
+				$this->dw_check_box->set_item(0, 'CHECK_SUMAR', 'S');
+				$this->add_header(new header_num('TOTAL_CON_IVA', 'TOTAL_CON_IVA', 'Total c/IVA', 0, true, 'SUM'));
+			}
+			else{
+				$this->dw_check_box->set_item(0, 'CHECK_SUMAR', 'N');
+				$this->add_header(new header_num('TOTAL_CON_IVA', 'TOTAL_CON_IVA', 'Total c/IVA'));  
+			}
+
+			// vuelve a setear el filtro aplicado
+			$this->headers['TOTAL_CON_IVA']->valor_filtro = $valor_filtro;
+			$this->headers['TOTAL_CON_IVA']->valor_filtro2 = $valor_filtro2;
+			
+			$this->save_SESSION();	
+			$this->make_filtros();
+			$this->retrieve();
+		}else if ($this->clicked_boton('b_printDTE', $value_boton))
+			$this->printdte($value_boton);
+		else if ($this->clicked_boton('b_xmlDTE', $value_boton))
+			$this->xmldte($value_boton);
+		else{
+			$this->checkbox_sumar = 0;
+			parent::procesa_event();
+		}	
+	}
+	
+	function printdte($rec_no){
+		$es_cedible = $_POST['wo_hidden2'];
+  		$wi = new wi_factura_arriendo('cod_item_menu');
+		$wi->current_record = $rec_no;
+		$wi->load_record();
+		$wi->imprimir_dte($es_cedible, true);
+		$this->goto_page($this->current_page);
+  	}
+  	
+	function xmldte($rec_no){
+  		$wi = new wi_factura_arriendo('cod_item_menu');
+		$wi->current_record = $rec_no;
+		$wi->load_record();
+		$wi->xml_dte();
+  	}
+	
+	function print_dte_masivo($ve_copias){
+		$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+		$sql = $this->dw->get_sql();
+		$db->query($sql);
+		
+		$lista_cod_factura = "";
+		while($my_row = $db->get_row()){
+			if($my_row['NRO_FACTURA'] <> "")
+				$lista_cod_factura .= $my_row['COD_FACTURA'].",";
+		}
+		$lista_cod_factura = trim($lista_cod_factura, ',');
+		
+		print " <script>window.open('print_dte_masivo.php?lista_cod_factura=$lista_cod_factura&cant_copias=$ve_copias')</script>";
+		$this->retrieve();
+	}
+}
+
+class reporte_prin_anexo_masivo extends reporte {
+	
+	function reporte_prin_anexo_masivo($sql, $xml, $labels=array(), $titulo, $con_logo, $vuelve_a_presentacion=false) {
+		parent::reporte($sql, $xml, $labels, $titulo, $con_logo, $vuelve_a_presentacion);
+	}
+	function modifica_pdf(&$pdf) {
+		$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+		$result_fac = $db->build_results($this->sql);
+		
+		for($l=0 ; $l < count($result_fac) ; $l++){
+			$sql = "SELECT F.COD_FACTURA
+						,F.NRO_FACTURA
+						,F.FECHA_FACTURA
+						,F.NOM_EMPRESA
+						,F.TOTAL_NETO
+						,F.MONTO_IVA
+						,F.TOTAL_CON_IVA
+						,F.PORC_IVA
+						,dbo.f_get_month_text(MONTH(FECHA_FACTURA)) MES_FACTURA
+						,YEAR(FECHA_FACTURA) ANO_FACTURA
+						,E.NOM_EMPRESA
+					FROM FACTURA F, EMPRESA E
+					WHERE F.COD_FACTURA = ".$result_fac[$l]['COD_FACTURA']."
+					AND F.COD_EMPRESA = E.COD_EMPRESA";
+			$result = $db->build_results($sql);
+
+			for($i=0 ; $i < count($result) ; $i++){
+				$this->header($pdf, $result);
+
+				$sql_arr = "SELECT DISTINCT A.COD_ARRIENDO
+							FROM ITEM_FACTURA I, ARRIENDO A
+							WHERE I.COD_FACTURA = ".$result[$i]['COD_FACTURA']."
+							AND A.COD_ARRIENDO = I.COD_ITEM_DOC";
+				$result_arr = $db->build_results($sql_arr);
+				
+				for($k=0 ; $k < count($result_arr) ; $k++){
+					$margen_y = $pdf->getY() + 30;
+					
+					$sql_item = "SELECT ROW_NUMBER() OVER(PARTITION BY A.COD_ARRIENDO ORDER BY I.ORDEN ASC) AS ITEM
+									 ,I.COD_PRODUCTO
+									 ,A.COD_ARRIENDO
+									 ,A.NOM_ARRIENDO
+									 ,I.NOM_PRODUCTO	
+									 ,I.CANTIDAD
+									 ,I.PRECIO
+									 ,dbo.number_format(I.PRECIO, 0, ',', '.') PRECIO
+									 ,ROUND(I.CANTIDAD * I.PRECIO, 0) TOTAL
+								 FROM ITEM_FACTURA I, ARRIENDO A
+								 WHERE I.COD_FACTURA = ".$result[$i]['COD_FACTURA']."
+								 AND A.COD_ARRIENDO = ".$result_arr[$k]['COD_ARRIENDO']."
+								 AND A.COD_ARRIENDO = I.COD_ITEM_DOC";
+					
+					$result_item = $db->build_results($sql_item);
+					
+					$pdf->SetTextColor(0, 0, 128);
+					$pdf->SetFont('Arial', 'B', 10);
+					
+					if($pdf->getY() > 690){
+						$pdf->AddPage();
+						$this->header($pdf, $result);
+						$margen_y = $pdf->getY() + 30;
+					}
+					
+					$pdf->SetXY(29 ,$margen_y);
+					$pdf->Cell(55, 12, "Contrato:    ".$result_item[0]['COD_ARRIENDO']." ".$result_item[0]['NOM_ARRIENDO']);
+					
+					$margen_y = $pdf->getY() + 18;
+					
+					if($pdf->getY() > 690){
+						$pdf->AddPage();
+						$this->header($pdf, $result);
+						$margen_y = $pdf->getY() + 30;
+					}
+					
+					$pdf->SetXY(29 ,$margen_y);
+					$pdf->SetTextColor(0, 0, 128);
+					$pdf->SetFont('Arial','',7);
+					$pdf->Cell(55, 12, "Item", 1, 0, 'C');
+					$pdf->SetXY(84 ,$margen_y);
+					$pdf->Cell(55, 12, "Modelo", 1, 0, 'C');
+					$pdf->SetXY(139 ,$margen_y);
+					$pdf->Cell(278, 12, "Descripción", 1, 0, 'C');
+					$pdf->SetXY(417 ,$margen_y);
+					$pdf->Cell(55, 12, "Cantidad", 1, 0, 'C');
+					$pdf->SetXY(472 ,$margen_y);
+					$pdf->Cell(56, 12, "Precio", 1, 0, 'C');
+					$pdf->SetXY(528 ,$margen_y);
+					$pdf->Cell(55, 12, "Total", 1, 0, 'C');
+					
+					$pdf->SetFont('Arial','',8);
+					$pdf->SetTextColor(0, 0, 0);
+					
+					$pos_y = 0;
+					$total_neto = 0;
+					
+					$margen_y = $pdf->getY() + 12;
+					
+					for($j=0 ; $j < count($result_item) ; $j++){
+						if(strlen($result_item[$j]['NOM_PRODUCTO']) >= 58)
+							$marg_nom_prod = 14;
+						else
+							$marg_nom_prod = 0;
+						
+						$pdf->SetXY(29 ,$pos_y+$margen_y);
+						$pdf->Cell(55, 14+$marg_nom_prod, $result_item[$j]['ITEM'], 1, 0, 'C');
+						$pdf->SetXY(84 ,$pos_y+$margen_y);
+						$pdf->Cell(55, 14+$marg_nom_prod, $result_item[$j]['COD_PRODUCTO'], 1);
+						$pdf->SetXY(139 ,$pos_y+$margen_y);
+						$pdf->MultiCell(278, 14, $result_item[$j]['NOM_PRODUCTO'], 1); //58 caract
+						$pdf->SetXY(417 ,$pos_y+$margen_y);
+						$pdf->Cell(55, 14+$marg_nom_prod, $result_item[$j]['CANTIDAD'], 1, 0, 'R');
+						$pdf->SetXY(472 ,$pos_y+$margen_y);
+						$pdf->Cell(56, 14+$marg_nom_prod, $result_item[$j]['PRECIO'], 1, 0, 'R');
+						$pdf->SetXY(528 ,$pos_y+$margen_y);
+						$pdf->Cell(55, 14+$marg_nom_prod, number_format($result_item[$j]['TOTAL'], 0, ',', '.'), 1, 0, 'R');
+						
+						$pos_y = $pos_y + 14 + $marg_nom_prod;
+						$total_neto = $total_neto + $result_item[$j]['TOTAL'];
+						
+						if($pdf->getY() > 690){
+							$pdf->AddPage();
+							$pos_y = 0;
+							$this->header($pdf, $result);
+							$margen_y = $pdf->getY() + 30;
+							
+							$pdf->SetFont('Arial','',8);
+							$pdf->SetTextColor(0, 0, 0);
+						}
+					}
+					
+					$pdf->SetFont('Arial','B',8);
+					$pdf->SetXY(472 ,$pos_y+$margen_y);
+					$pdf->Cell(56, 14, "Total Neto", 0, 0, 'R');
+					$pdf->SetXY(528 ,$pos_y+$margen_y);
+					$pdf->Cell(55, 14, number_format($total_neto, 0, ',', '.'), 1, 0, 'R');	
+				}
+			}
+			
+			$total_neto = number_format($result[0]['TOTAL_NETO'], 0, ',', '.');
+			$porc_iva = number_format($result[0]['PORC_IVA'], 1, ',', '.');
+			$monto_iva = number_format($result[0]['MONTO_IVA'], 0, ',', '.');
+			$total_con_iva = number_format($result[0]['TOTAL_CON_IVA'], 0, ',', '.');
+			
+			if ($pdf->GetY() < 690){
+			///TOTALES
+				$y_ini = $pdf->GetY() + 20;
+				
+				$pdf->SetXY(450 ,$y_ini + 20);
+				$pdf->SetTextColor(4, 22, 114);
+				$pdf->SetFont('Arial','',7);
+				$pdf->MultiCell(80,4, 'TOTAL NETO $ ',0, 'R');
+				$pdf->SetXY(490, $y_ini + 20);
+				$pdf->SetFont('Arial','B',8);
+				$pdf->MultiCell(93,4,$total_neto,0, 'R');
+				$pdf->SetXY(450, $y_ini + 35);
+				$pdf->SetFont('Arial','',7);
+				$pdf->MultiCell(80,4,$porc_iva.' % IVA  $ ',0, 'R');
+				$pdf->SetXY(490, $y_ini + 35);
+				$pdf->SetFont('Arial','B',8);
+				$pdf->MultiCell(93,4,$monto_iva,0, 'R');
+				$pdf->Rect(472, $y_ini + 50, 110, 2, 'f');
+				$pdf->SetXY(450, $y_ini + 65);
+				$pdf->SetFont('Arial','',7);
+				$pdf->MultiCell(80,4,'TOTAL CON IVA $ ',0, 'R');
+				$pdf->SetXY(490, $y_ini + 65);
+				$pdf->SetFont('Arial','B',8);
+				$pdf->MultiCell(93,4,$total_con_iva,0, 'R');	
+			}else{
+				$pdf->AddPage();	
+				$this->header($pdf, $result);
+				
+				$y_ini = $pdf->GetY() + 30;
+				
+				$pdf->SetXY(450 ,$y_ini + 20);
+				$pdf->SetTextColor(4, 22, 114);
+				$pdf->SetFont('Arial','',7);
+				$pdf->MultiCell(80,4, 'TOTAL NETO $ ',0, 'R');
+				$pdf->SetXY(490, $y_ini + 20);
+				$pdf->SetFont('Arial','B',8);
+				$pdf->MultiCell(93,4,$total_neto,0, 'R');
+				$pdf->SetXY(450, $y_ini + 35);
+				$pdf->SetFont('Arial','',7);
+				$pdf->MultiCell(80,4,$porc_iva.' % IVA  $ ',0, 'R');
+				$pdf->SetXY(490, $y_ini + 35);
+				$pdf->SetFont('Arial','B',8);
+				$pdf->MultiCell(93,4,$monto_iva,0, 'R');
+				$pdf->Rect(472, $y_ini + 50, 110, 2, 'f');
+				$pdf->SetXY(450, $y_ini + 65);
+				$pdf->SetFont('Arial','',7);
+				$pdf->MultiCell(80,4,'TOTAL CON IVA $ ',0, 'R');
+				$pdf->SetXY(490, $y_ini + 65);
+				$pdf->SetFont('Arial','B',8);
+				$pdf->MultiCell(93,4,$total_con_iva,0, 'R');	
+			}
+			
+			if(count($result_fac)-1 <> $l)
+				$pdf->AddPage();
+		}
+	}
+	
+	function header($pdf, $result){
+		$pdf->SetXY(192 ,107);
+		$pdf->SetTextColor(0, 0, 128);
+		$pdf->SetFont('Arial','B',17);
+		$pdf->Cell(45, 0, "ANEXO FACTURA N° ".$result[0]['NRO_FACTURA'], 0);
+		$pdf->SetXY(253 ,125);
+		$pdf->SetTextColor(0, 0, 128);
+		$pdf->SetFont('Arial','B', 8);
+		$pdf->Cell(45, 0, "Arriendo ".$result[0]['MES_FACTURA']." ".$result[0]['ANO_FACTURA'], 0);
+		$pdf->SetXY(177 ,139);
+		$pdf->SetTextColor(0, 0, 128);
+		$pdf->SetFont('Arial','B', 10);
+		$pdf->Cell(45, 0, "Cliente: ".$result[0]['NOM_EMPRESA'], 0);
+	}
+}
+?>

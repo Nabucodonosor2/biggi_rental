@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Documento sin t&iacute;tulo</title>
+<link href="{W_CSS}" rel="stylesheet" type="text/css">
+</head>
+
+<body class="content_wm">
+<div class="titulo_tabla_wm" style="width:300px; margin-bottom:-9px;">&nbsp;&nbsp;Productos que variaron su Precio </div>
+<table width="648" border="0" align="left" class="table_wm" height="20">
+  <tr align="left">
+    <th width="108" align="center">IT</th>
+    <th width="78">Modelo</th>
+	<th width="178">Descripción</th>
+	<th width="130" align="right">Precio Cot. Original</th>
+	<th width="130" align="right">Precio Actual </th>
+  </tr>
+</table>
+<div style="overflow-x:hidden; overflow-y:auto; margin-top:34px;">
+	<table width="648" border="0" class="table2_wm" align="left" >  
+		<!-- startBlock(PRODUCTO) -->
+	  <tr class="{DW_TR_CSS}" align="left"> 
+		<td width="108" align="center">{ITEM}</td>
+		<td width="78">{COD_PRODUCTO}</td> 
+		<td width="178">{NOM_PRODUCTO}</td> 
+		<td width="130" align="right">{PRECIO}</td> 
+		<td width="130" align="right">{PRECIO_VENTA_PUBLICO}</td> 
+	  </tr>
+		<!-- endBlock(PRODUCTO) -->		
+	</table>
+</div>
+<table width="133" border="0" align="center" style="margin-top:2px;" height="20">
+  	<tr align="left">
+	  <td width="73">{W_AUTORIZA}</td>
+		<td width="60"><input type="button" value="Precio Actual" onclick="returnValue=1; window.close();" class="button"></td>
+	</tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BIGGI | Soporte y Representantes</title>
+<link type="image/x-icon" href="images/favicon.ico" rel="shortcut icon" />
+<link rel="stylesheet" type="text/css" href="css/estilos.css">
+<link rel="stylesheet" type="text/css" href="css/ei2.css">
+<link rel="stylesheet" href="fontface/stylesheet.css" type="text/css" charset="utf-8" />
+<script type="text/javascript" src="js/jquery-1.6.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	for (var i = 1; i < 9; i++) {
+		$(".spBand0" + i).hide();	
+	}
+	$('#area1').mouseover(function (e) {  
+		e.preventDefault();
+		for (var j = 1; j < 9; j++) {
+			$(".spBand0" + j).hide();	
+		}
+		$(".spBand01").slideToggle(200);
+	}); 	
+	$('#area2').mouseover(function (e) {  
+		e.preventDefault();
+		for (var j = 1; j < 9; j++) {
+			$(".spBand0" + j).hide();	
+		}
+		$(".spBand02").slideToggle(200);
+	}); 
+	$('#area3').mouseover(function (e) {  
+		e.preventDefault();
+		for (var j = 1; j < 9; j++) {
+			$(".spBand0" + j).hide();	
+		}
+		$(".spBand03").slideToggle(200);
+	}); 
+	$('#area4').mouseover(function (e) {  
+		e.preventDefault();
+		for (var j = 1; j < 9; j++) {
+			$(".spBand0" + j).hide();	
+		}
+		$(".spBand04").slideToggle(200);
+	}); 
+	$('#area5').mouseover(function (e) {  
+		e.preventDefault();
+		for (var j = 1; j < 9; j++) {
+			$(".spBand0" + j).hide();	
+		}
+		$(".spBand05").slideToggle(200);
+	}); 
+	$('#area6').mouseover(function (e) {  
+		e.preventDefault();
+		for (var j = 1; j < 9; j++) {
+			$(".spBand0" + j).hide();	
+		}
+		$(".spBand06").slideToggle(200);
+	}); 
+});
+</script>
+</head>
+
+<body class="body2">
+<div class="container">
+	<div class="logotipo">
+    	<div class="telefono"></div>
+    </div>
+    <div class="menu">
+        <a href="empresa.html"><div class="bot">Empresa</div></a>
+        <a href="productos.html"><div class="bot">Productos</div></a>
+        <a href="econoline.html"><div class="bot">Econoline</div></a>
+        <a href="noticias.html"><div class="bot">Noticias</div></a>
+        <a href="soporte.html"><div class="bot" style="background-position:0 -39px;">Soporte y Representantes</div></a>
+        <a href="ofertas.html"><div class="bot">Ofertas</div></a>
+        <a href="cotizador.html"><div class="bot">Cotizaci&oacute;n</div></a>
+        <a href="contacto.html"><div class="bot">Contacto</div></a>
+    </div>
+    <div class="mainPanel-Int" style="margin-top: 10px;">
+    <img src="images/vin-syr.jpg" width="960" height="75">
+		<div class="xpMapa" id="mapaCompleto">
+       	  <img src="images/chile.jpg" width="960" height="170" border="0" usemap="#Map">
+          <map name="Map">
+            <area shape="poly" coords="656,151,681,155,784,162,858,147,913,107,957,27,932,22,928,43,859,47,857,95,823,103,822,116,800,118,763,105,727,96,671,90,668,101,660,98" href="#"  id="area1">
+            <area shape="poly" coords="527,139,520,125,506,123,517,102,513,90,528,88,534,98,587,104,612,100,629,109,658,98,656,123,654,149,608,142" href="#"  id="area2">
+            <area shape="poly" coords="506,116,516,101,513,91,480,94,463,79,451,78,435,76,421,71,409,81,418,90,414,111,442,116,475,130,495,140,525,140,517,126,501,127" href="#" id="area3">
+            <area shape="poly" coords="388,71,387,90,403,97,413,105,411,112,370,103,371,92,368,85,373,77" href="#" id="area5">
+            <area shape="poly" coords="203,40,239,36,297,72,319,69,342,79,371,79,363,88,369,95,368,104,323,108,312,100,289,105,280,101,248,93,216,87,214,53" href="#" id="area4">
+            <area shape="poly" coords="7,62,21,53,43,48,53,36,77,44,137,23,135,10,143,4,169,14,181,39,200,40,211,53,213,88,157,83,106,77,82,77,65,79,45,81,26,82,22,71,12,74" href="#" id="area6">
+          </map>
+		  <p class="spInfo">Coloque el mouse por sobre las ciudades para ver la información</p>
+   	  	  <div class="spBand01"><p class="bandTit">Regiones XI y XII</p>
+            	<p class="spInfo">Contacto Ventas:</br>
+                Angélica Montecinos</br>
+                Teléfono: 09 - 676 3600</br>
+                amontecinos@biggi.cl</p>
+          </div>
+            <div class="spBand02"><p class="bandTit">Regiones IX, XIV y X</p>
+            	<p class="spInfo">Contacto Ventas:</br>
+                Eduardo Olmedo</br>
+                Teléfono: 09 - 537 3543</br>
+                eolmedo@biggi.cl</p>
+            </div>
+            <div class="spBand03"><p class="bandTit">Regiones VI, VII y VIII</p>
+            	<p class="spInfo">Contacto Ventas:</br>
+                Norma Jofré</br>
+                Teléfono: 09 - 872 7994</br>
+                ikssa@biggi.cl</p>
+          </div>
+          <div class="spBand05">
+            <p class="bandTit">V Región</p>
+            	<p class="spInfo">Contacto Ventas:</br>
+                Gabriela Reyes</br>
+                Teléfono: 09 - 416 3034</br>
+                greyes@biggi.cl</p>
+          </div>
+           <div class="spBand04">
+<p class="bandTit">Regiones III y IV</p>
+            	<p class="spInfo">Contacto Ventas:</br>
+                Alejandro Rodriguez</br>
+                Teléfono: 08 - 849 0910</br>
+                alejandrorodriguez@biggi.cl</p>
+          </div>
+<div class="spBand06"><p class="bandTit">Regiones XIII, I y II</p>
+            	<p class="spInfo">Contacto Ventas:</br>
+               Zona Norte</br>
+                Teléfono: 02 - 412 6200</br>
+                info@biggi.cl</p>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="footer">
+    <div class="intFooter">
+        <div class="direcciones">
+            <img src="images/pnlTelef.png" width="185" height="44">
+            <p>Comercial BiGGI (Chile) S.A. </p>
+            <p>Portugal 1726, Santiago 
+            <br>Tels. (56 2) 412 6200 - 555 2849
+            <br>Fax (56 2) 412 62 01</p>
+            <p>Santiago - Chile</p>
+        </div>
+        <div class="creditos">
+            <p>© 2011 Comercial BIGGI (Chile) S.A. 
+            <br>Todos los derechos reservados.</p>
+            <p>Sitio web optimizado para una resolución mínima de 1024 x 768 pixeles</p>
+            <p>Desarrollado por Integrasystem Ltda.<br>
+            Diseño: Convecta | Soluciones Web</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

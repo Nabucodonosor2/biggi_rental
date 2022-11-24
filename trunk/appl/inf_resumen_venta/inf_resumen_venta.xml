@@ -1,0 +1,45 @@
+<Report>
+	<Font name="Arial" size="11" style="" id="ArialSmall"/>
+	<Font name="Arial" size="8" style="" id="ArialSmallBlue" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="17" style="B" id="ArialBoldBigB" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="10" style="BU" id="ArialBoldU"/>
+	<Font name="Arial" size="10" style="B" id="ArialBold"/>
+	<Font name="Arial" size="10" style="B" id="ArialBoldBlue" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="12" style="B" id="ArialBoldBlueBig" red="0" green="0" blue="128"/>	
+	<Font name="Arial" size="10" style="" id="Arial"/>
+	<Font name="Arial" size="9" style="" id="ArialBlue" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="7.5" style="" id="ArialItem"/>
+	<Font name="Arial" size="7" style="I" id="ArialItem_I"/>
+	<Font name="Arial" size="8" style="B" id="ArialBoldBlueItem" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="9" style="I" id="Arial"/>
+	<PageHeader>	
+		<Cell text="" height="55%" newline="1"/>		
+		<Cell text="PAG. {SectionPageNumber}/{snb}" align="R" font="ArialSmall" newline="1" />
+		<Cell text="Fecha: {str_fecha}" align="R" font="ArialSmall" newline="1"/>
+		<Cell text="RESUMEN VENTA" width="100%"  align="C" newline="1" font="ArialBoldBigB"/>
+		<Cell text="Desde  : {str_mes_desde}" align="L" font="ArialBoldBlue" newline="1"/>
+		<Cell text="Hasta   : {str_mes_hasta}" align="L" font="ArialBoldBlue" newline="1"/>
+		<Cell text="{str_filtro}" align="L" font="ArialBoldBlue"  newline="1"/>			
+		<Cell height="5" newline="1"/>
+		<Cell text="" height="4" newline="1"/>
+		<Cell text="Empresa" width="50%" border="LRTB" align="C" font="ArialBoldBlueItem"/>
+		<Cell text="Monto Año {str_ano_1}" width="20%" align="C" border="LRTB" font="ArialBoldBlueItem"/>
+		<Cell text="Monto Año {str_ano_2}" width="20%" align="C" border="LRTB" font="ArialBoldBlueItem"/>
+		<Cell height="13" newline="1"/>
+	</PageHeader>
+	<Content font="Arial">
+		<Cell text="{NOM_EMPRESA}" width="50%" border="LR" font="ArialItem"/>
+		<Cell text="{MONTO_ANO}" width="20%" border="L" align="R" format="N0,." font="ArialItem" />
+		<Cell text="{MONTO_ANO_II}" width="20%" border="LR" align="R" format="N0,." font="ArialItem"/>
+		<Cell height="13.1" newline="1"/>
+	</Content>
+	<Group>
+		<Variable name="sum_total_ano" function="SUM" value="TOTAL_ANO"/>
+		<Variable name="sum_total_ano_ii" function="SUM" value="TOTAL_ANO_II"/>
+		<GroupFooter>
+			<Cell text="TOTAL" border="T" align="R" width="50%" font="ArialBoldBlueTotal"/>
+			<Cell text="{sum_total_ano}" width="20%" border="LRTB" align="R" font="ArialBoldItem" format="N0,. "/>
+			<Cell text="{sum_total_ano_ii}" width="20%" border="LRTB" align="R" font="ArialBoldItem" format="N0,. "/>
+		</GroupFooter>
+	</Group>
+</Report>

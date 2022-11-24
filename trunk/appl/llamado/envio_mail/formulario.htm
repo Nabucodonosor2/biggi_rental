@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Registro de LLamadas</title>
+<link href="{W_CSS}" rel="stylesheet" type="text/css">
+<script charset="iso-8859-1" src="http://190.196.2.10/sysbiggi/comercial_biggi/biggi/trunk/appl/llamado/envio_mail/../../../../../commonlib/trunk/script_js/edit_filter.js" type="text/javascript"></script>
+<script charset="iso-8859-1" src="http://190.196.2.10/sysbiggi/comercial_biggi/biggi/trunk/appl/llamado/envio_mail/../../../../../commonlib/trunk/script_js/general.js" type="text/javascript"></script>
+<style type="text/css">
+<!--
+body {
+	background-color: #B1C2EB;
+
+}
+.encabezado_right{
+	background-color:#7896DC;
+	font-size: 11px;
+	font-weight:bold;	
+	color: #FFF;
+	text-align:right;
+	height:23px;
+}
+.encabezado_center{
+	background-color:#7896DC;
+	font-size: 11px;
+	font-weight:bold;	
+	color: #FFF;
+	text-align:center;
+	height:23px;
+}
+
+.encabezado_left{
+	background-color:#7896DC;
+	font-size: 11px;
+	font-weight:bold;	
+	color: #FFF;
+	text-align:left;
+	height:23px;
+}
+.titulo_tabla2{
+	background-color:#EAEAEA;
+	font-size: 20px;
+	font-weight:bold;	
+	color: #700112;
+	text-align:left;
+	padding-top:9px;
+}
+-->
+</style>
+<script type="text/javascript">
+function get_returnVal() {
+	var aTR = get_TR('DESTINATARIO');
+	var array = '';
+	for (var i=0; i<aTR.length; i++){
+		var seleccion = document.getElementById('ENVIAR_MAIL_'+i).checked;
+		if(seleccion == true){
+			var cod_destinatario = document.getElementById('COD_DESTINATARIO_'+i).value;
+			var array =array+cod_destinatario+'|';
+		}	
+	}
+    var vl_mensaje_length = document.formul.MENSAJE.value.length;
+	var vl_array_length = array.length;
+	
+	if (vl_array_length == 0){
+		alert('¡Debe seleccionar algún Destinatario!');
+		return false;
+	}else if (vl_mensaje_length == 0){
+		alert('¡Debe escribir la Respuesta!');
+		return false;
+	}else
+		document.getElementById('COD_DESTINATARIO_ENVIO_H').value = array;
+	
+	return true;
+}
+
+function ver_destinatarios_selecc(){
+	var b_selecc = document.getElementById('b_selecc');
+	b_selecc.style.display = 'none';
+	
+	var b_todos = document.getElementById('b_todos');
+	b_todos.style.display = '';
+		
+	var aTR = get_TR('DESTINATARIO');
+	for (var i=0; i<aTR.length; i++){
+		var seleccion = document.getElementById('ENVIAR_MAIL_'+i).checked;
+		if(seleccion == false){
+			var vl_destinatario = document.getElementById('DESTINATARIO_' + i);
+			vl_destinatario.style.display = 'none';
+		}
+	}
+}
+
+function ver_destinatarios_todos(){
+	var b_todos = document.getElementById('b_todos');
+	b_todos.style.display = 'none';
+	
+	var b_selecc = document.getElementById('b_selecc');
+	b_selecc.style.display = '';
+	
+	var aTR = get_TR('DESTINATARIO');
+	for (var i=0; i<aTR.length; i++){
+		var vl_destinatario = document.getElementById('DESTINATARIO_' + i);
+		vl_destinatario.style.display = '';
+	}
+}
+
+function numbersonly(myfield, e, dec)
+{
+var key;
+var keychar;
+
+if (window.event)
+   key = window.event.keyCode;
+else if (e)
+   key = e.which;
+else
+   return true;
+keychar = String.fromCharCode(key);
+
+// control keys
+if ((key==null) || (key==0) || (key==8) || 
+    (key==9) || (key==13) || (key==27) )
+   return true;
+
+// numbers
+else if ((("0123456789").indexOf(keychar) > -1))
+   return true;
+
+// decimal point jump
+else if (dec && (keychar == "."))
+   {
+   myfield.form.elements[dec].focus();
+   return false;
+   }
+else
+   return false;
+}
+
+
+</script>
+{WI_JAVA_SCRIPT}
+</head>
+<body {WI_ONLOAD}>
+<!-- DO NOT MOVE! The following AllWebMenus linking code section must always be placed right AFTER the BODY tag-->
+<!-- ******** BEGIN ALLWEBMENUS CODE FOR menu ******** -->
+<script type="text/javascript">var MenuLinkedBy="AllWebMenus [4]",awmMenuName="menu",awmBN="740";awmAltUrl="";</script>
+<script charset="UTF-8" src="{K_ROOT_URL}menu/menu.js" type="text/javascript"></script>
+<script type="text/javascript">{W_MENU}</script>
+<!-- ******** END ALLWEBMENUS CODE FOR menu ******** -->
+<form name="formul" action="envio_mail.php" method="post">
+<input name="wi_hidden" id="wi_hidden" type="hidden" value="">
+	<table width="1050" border="0" align="center">
+		<tr bgcolor="#FFFFFF">
+			<td>
+				<table width="1000" border="0" align="center">
+					<tr>
+						<td height="95">
+							<table width="1015" border="0" align="center">
+								<tr valign="top">
+									<td height="530">						
+										<div class="TabbedPanelsContentGroup">
+											<!--INI LLAMADO-->
+											<div class="TabbedPanelsContent">  								   																																		
+												<table width="100%" rules="none" border="1" align="center">
+													<tr class="titulo_tabla2">				
+														<td colspan="6">RESPONDER LLAMADO Nº {COD_LLAMADO}</td>
+													</tr>
+												</table>
+												<br>
+												<table width="100%" rules="none" border="1" align="center">
+													<tr valign="top">
+														<td width="40%">
+															<table width="100%" border="0" align="center" rules="none">
+																<tr class="encabezado_center">
+																	<td width="20%">Enviar</td>
+																	<td align="left" width="60%"><input id="b_selecc" type="button" value="ver selección" onClick="ver_destinatarios_selecc();" onmouseover="this.bgColor='#9db5c8';" title="Muestra los destinatarios seleccionados" onmouseout="this.bgColor='#c0d3e7';"><input id="b_todos" type="button" value="ver todos" onClick="ver_destinatarios_todos();" onmouseover="this.bgColor='#9db5c8';" style="display: none;" title="Muestra todos los destinatarios"> Destinatario</td>
+																</tr>
+															</table>	
+															<div style="overflow-x:hidden; overflow-y:auto; height:500;">
+																<table width="100%" border="0" align="center" id="DESTINATARIO">
+																	<!-- startBlock(DESTINATARIO) -->
+																	<tr class="{DW_TR_CSS}" id="{DW_TR_ID}">
+																		<td width="20%" align="center">{ENVIAR_MAIL}</td>
+																		<td width="60%" align="left">{COD_DESTINATARIO}{NOM_DESTINATARIO}</td>
+																	</tr>
+																	<!-- endBlock(DESTINATARIO) -->
+																</table>
+															</div>
+														</td>
+														<td width="60%">
+															<table width="100%" rules="none" border="1" align="center">                  			  					  		
+																<tr class="encabezado_right">
+																	<td width="23%">Respuesta:{COD_DESTINATARIO_ENVIO_H}{COD_DESTINATARIO_H}</td>
+																	<td colspan="6" class="claro_right" >{COD_LLAMADO_H}<TEXTAREA COLS=62 ROWS=5 name=MENSAJE></TEXTAREA></td>
+																</tr>
+																<tr>
+																	<td class="encabezado_right">Realizado: </td>
+																	<td width="7%" class="claro_center"><input type="checkbox" name="REALIZADO_RESP" value="S" /></td>
+																	<td width="15%" class="encabezado_right">Tipo Docto: </td>
+																	<td width="10%" class="claro_center">{TIPO_DOC_REALIZADO}</td>
+																	<td width="15%" class="encabezado_right">Nº Docto:</td>
+																	<td width="10%" class="claro_center">{COD_DOC_REALIZADO}</td>
+																	<td width="18%" class="claro_center"><input type=submit value="Enviar" onclick="if(!get_returnVal()){ return false; } else { return true;} window.close();" onmouseover="this.bgColor='#5db5c8';" style="background-color:#610B0B; color:#fff; font-size: 10pt;"></td>
+																</tr>
+																<tr>
+																	<table width="100%" rules="none" border="1" align="center">
+																		<tr class="titulo_tabla">				
+																			<td colspan="6">EMPRESA</td>
+																		</tr>
+																		<tr class="encabezado_right">
+																			<td width="25%">Raz&oacute;n Social:</td>
+																			<td width="25%" class="claro_left">{COD_CONTACTO}{NOM_CONTACTO}</td>
+																			<td width="25%">Rut:</td>
+																			<td width="25%" class="claro_left">{RUT}-{DIG_VERIF}</td>
+																		</tr>
+																	</table> 	
+																	<table width="100%" rules="none" border="1" align="center">                  			  					  		
+																		<tr class="titulo_tabla">				
+																			<td colspan="200">CONTACTO</td>
+																		</tr>
+																		<tr class="encabezado_right">
+																			<td width="25%">Nombre:</td>
+																			<td width="25%" class="claro_left" id="TXT_PERSONA" >{NOM_PERSONA}</td>
+																			<td width="25%">Cargo:</td>
+																			<td colspan="25" class="oscuro_left">{CARGO}</td>
+																		</tr>
+																	</table>
+																	<br>
+																	<table width="100%" rules="none" border="1" align="center">                  			  					  		
+																		<tr class="titulo_tabla">				
+																			<td colspan="6">MENSAJE</td>
+																		</tr>
+																		<tr height="50">
+																			<td height="80"  class="claro_left">{MENSAJE_ORIGINAL}</td>
+																		</tr>
+																	</table>
+																	<br>
+																	<table width="100%" border="1" rules="none" align="center" >
+																		<tr class="titulo_tabla">				
+																			<td colspan="4">CONVERSACI&Oacute;N </td>
+																		</tr>
+																		<tr class="encabezado_center">
+																			<th width="10%">Fecha</th>
+																			<th width="15%">Usuario</th>
+																			<th width="55%">Glosa</th>
+																			<th width="10%">Realizado</th>
+																		</tr>
+																	</table>
+																	<div style="overflow-x:hidden; overflow-y:auto; height:70;">
+																		<table width="100%" rules="none" border="1" align="center" class="claro" id="CONVERSACION">
+																			<!-- startBlock(CONVERSACION) -->
+																			<tr class="{DW_TR_CSS}" id="{DW_TR_ID}">
+																				<td width="10%" align="center">{FECHA_LLAMADO_CONVERSA}</td>
+																				<td width="15%">{NOM_DESTINATARIO}</td>
+																				<td width="55%">{GLOSA}</td>
+																				<td width="10%" align="center"><div style="padding-right:20px;">{REALIZADO}</div></td>
+																			</tr>
+																			<!-- endBlock(CONVERSACION) -->
+																		</table>
+																	</div>
+																</tr>
+															</table>
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</form>						
+</body>
+</html>

@@ -1,0 +1,26 @@
+<?php
+require_once(dirname(__FILE__)."/../../../../commonlib/trunk/php/auto_load.php");
+
+$cod_empresa = $_REQUEST['cod_empresa'];
+$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+
+$sql = "select 'N' SELECCCION
+		        ,A.COD_ARRIENDO
+		        ,A.NOM_ARRIENDO
+		        ,A.REFERENCIA
+		        ,dbo.f_arr_total_actual(a.COD_ARRIENDO) TOTAL
+		        ,A.EXIGE_CHEQUE
+		        ,CONVERT(VARCHAR, CH.FECHA_LIBERADO, 103) FECHA_LIBERADO
+		        ,ISNULL(dbo.f_ch_saldo_por_usar(CH.COD_CHEQUE), 0) MONTO_POR_USAR
+		FROM ARRIENDO A LEFT OUTER JOIN CHEQUE CH ON CH.COD_CHEQUE = ISNULL(dbo.f_arr_1er_cheque(A.COD_ARRIENDO), 0)
+		WHERE A.COD_EMPRESA = $cod_empresa
+		AND dbo.f_arr_total_actual(A.COD_ARRIENDO) > 0
+		AND dbo.f_arr_esta_facturado(A.COD_ARRIENDO, GETDATE()) = 0";
+		  
+$result = $db->build_results($sql);
+for($i=0; $i<count($result); $i++) {
+	$result[$i]['NOM_ARRIENDO'] = urlencode($result[$i]['NOM_ARRIENDO']); 
+	$result[$i]['REFERENCIA'] = urlencode($result[$i]['REFERENCIA']); 
+}
+print urlencode(json_encode($result));
+?>

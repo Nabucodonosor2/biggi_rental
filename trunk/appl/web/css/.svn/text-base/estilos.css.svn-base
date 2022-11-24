@@ -1,0 +1,359 @@
+@charset "utf-8";
+/* CSS Document */
+html{ height: 100%;}
+body {
+	background: url(../images/bckg01.png) #fff repeat-x;
+	margin: 0;
+	height: 100%;
+}
+.body2{
+	background: url(../images/bckg06.png) #fff repeat-x;
+	margin: 0;
+	height: 100%;
+}
+a {margin: 0; text-decoration: none;}
+.container {
+	width: 960px;
+	margin: 0 auto;
+	height: auto; 
+	min-height: 100%;
+}
+/*LOGOTIPO*/
+.logotipo{
+	height: 88px;
+	background: url(../images/logo.png) no-repeat;
+	background-position: 0 13px;
+}
+.telefono {
+	width: 185px;
+	height: 44px;
+	background:url(../images/pnlTelef.png);
+	float: right;
+	margin-top: 20px;
+}
+
+/*MENU*/
+.menu{
+	height: 39px;
+}
+.bot{
+	float: left;
+	background: url(../images/menuBg.png) no-repeat;
+	height: 15px;
+	
+	font-family: 'HelveticaNeueLTStd75Bold';
+	font-weight: bold;
+	font-size: 11px;
+	color: #fff;
+	padding: 12px 30px;
+}
+	.bot:hover{background-position:0 -39px;};
+
+/*ROTATIVO*/
+.rotativo { height: 300px;}
+.nivoSlider{
+	height: 293px;
+	margin-bottom: 26px;
+}
+
+.handler-izq{background:url(../images/jQuery/hndlr-izq.png); width: 26px; height: 275px; float: left;}
+.handler-der{background:url(../images/jQuery/hndlr-der.png); width: 25px; height: 275px; float: right;}
+
+/*SLOGAN*/
+.slogan{
+	height: 47px;
+}
+	.slogan p{
+		font-family: 'HelveticaNeueLTStd43LtExOb';
+		font-size: 20px;
+		color: white;
+		text-align: center;
+		margin-top: 36px;
+		text-shadow: 1px 1px 1px #350001;
+	}
+
+/*MAINPANEL*/
+.mainPanel{
+	height: 409px;
+	margin-top: 20px;
+}
+.panelNegro, .panelGris, .panelRojo{
+	float: left;
+	width: 310px;
+	height: 409px;
+	
+	border-radius: 6px;
+	-moz-border-radius: 6px 6px 6px 6px;
+	-khtml-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 6px 6px 6px 6px;
+}
+.panelNegro{
+	background:url(../images/bckg03-negro.png);
+	
+	border-left: 1px solid #999;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+.panelGris{
+	margin-left: 10px;
+	background:url(../images/bckg03-gris.png);
+	
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #666;
+	border-bottom: 1px solid #666;
+}
+.panelRojo{
+	margin-left: 10px;
+	background:url(../images/bckg03-rojo.png);
+	
+	border-left: 1px solid #FFBBBD;
+	border-right: 1px solid #840003;
+	border-bottom: 1px solid #840003;
+}
+
+.subpanel{
+	height: 257px;
+	margin: 35px 0 38px 0;
+}
+.label1, .label2, .label3{
+	position: absolute;
+	background:url(../images/rbn-rojo.png);
+	width: 66px;
+	height: 126px;
+	margin-left: 25px;
+	z-index: 10;
+}
+	.label2{background:url(../images/rbn-blanco.png); z-index:20;}
+	.label3{background:url(../images/rbn-negro.png); z-index:30;}
+	
+.ad1, .ad2, .ad3{
+	width: 311px;
+	height: 251px;
+	background:url(../images/ad-productos.png);
+}
+	.ad2{background:url(../images/ad-econoline.png);}
+	.ad3{background:url(../images/ad-cel.png);}
+
+.info {
+	width: 240px;
+	height: 92px;
+	margin-top: 23px;
+	margin-left: 35px;
+}
+	.info1{
+		font-family: 'HelveticaNeueLTStd53ExOb';
+		font-size: 12px;
+		color: #fff;
+	}
+	.info2{
+		font-family: 'HelveticaNeueLTStd53ExOb';
+		font-size: 12px;
+		color: #000;
+		text-shadow: 1px 1px 0 #ccc;
+	}
+	.info3{
+		font-family: 'HelveticaNeueLTStd53ExOb';
+		font-size: 12px;
+		color: #fff;
+		text-shadow: 1px 1px 0 #420002;
+	}
+.entrar{
+	width: 50px;
+	height: 17px;
+	margin-top: 10px;
+	margin-left: 35px;
+	background:url(../images/btn-entrar.png);
+}
+	.entrar:hover{
+		background-position: 0 -17px;
+	}
+
+/*SUBPANEL*/
+.ofertas{
+	float: left;
+	background: url(../images/bckg04.png);
+	width: 230px;
+	height: 265px;
+}
+.ofrtTop{
+	background: url(../images/ofrtTop.png) no-repeat;
+	width: 231px;
+	height: 46px;
+}
+.lblPrecio{
+	position: absolute;
+	background:url(../images/lblPrecio.png);
+	height: 26px;
+	width: 114px;
+	margin: 130px 0 0 100px;
+	padding: 8px 0 0 16px;
+	
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+	color: #fff;
+	text-shadow: 1px 1px 0 #590002;
+}
+.ofrtInfo{
+	height: 70px;
+	width: 187px;
+	background-position: center;
+	margin-left: 4px;
+	padding: 139px 14px 0 18px;
+	line-height: 12px;
+	overflow: hidden;
+}
+	.ofrtInfo p{
+		margin:0;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 11px;
+		margin-bottom: 5px;
+	}
+	.vermas{
+		font-family: Arial, Helvetica, sans-serif;
+		font-weight: bold;
+		color: red;
+		text-decoration: none;	
+	}
+		.vermas:hover{
+			text-decoration: underline;	
+		}
+.ofrtBttm{
+	background: url(../images/ofrtBttm.png);
+	width: 231px;
+	height: 10px;	
+}
+.noticias{
+	background: url(../images/bckg05.png);
+	width: 711px;
+	height: 265px;
+	margin-left: 245px;
+}
+.notTop{
+	background: url(../images/ntTop.png) no-repeat;
+	width: 711px;
+	height: 46px;
+}
+.notInfo{
+	width:700px;
+	height: 212px;
+	margin-left: 5px;
+}
+.notBttm{
+	background: url(../images/ntBttm.png);
+	width: 711px;
+	height: 7px;
+}
+.notDiv {
+	float: left;
+	width: 330px;
+	height: 194px;
+	margin: 10px 20px 0 0;
+	overflow: hidden;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.notDiv img{ margin-right: 10px;}
+.notFec{
+	margin: 0;
+	font-size: 10px;
+	font-weight: bold;
+	font-style: italic;
+	color: #000;
+}
+.notTit {
+	margin: 0;
+	font-size: 13px;
+	font-weight: bold;
+	color: #fff;
+	text-transform: uppercase;
+	line-height: 13px;
+}
+.notTxt {
+	color: #fff;
+	margin-top: 10px;
+	font-size: 11px;
+}
+.notAside {
+	float: left;
+	background: url(../images/bckg05.png) repeat-y;
+	background-position: -10px 0;
+	width: 240px;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+.notAside li {
+	border-bottom: 1px #ccc dotted;
+	margin-bottom: 8px;
+	list-style: none;
+	padding-bottom: 10px;
+}
+.notAside li:last-child {border: none;}
+.notVermas {color: #CCC; font-size: 11px;}
+.notVermas:hover {color: red;}
+
+.notContent {
+	float: left;
+	width: 600px;
+	margin-left: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-bottom: 50px;
+}
+.notContent img{margin: 20px 0;}
+ul { margin-left: 0;}
+
+.ncFec {
+	font-weight: bold;
+	font-size: 12px;
+	font-style: italic;
+	color: #666;
+}
+.ncTitulo {
+	font-weight: bold;
+	font-size: 20px;
+}
+.ncTxt {
+	font-size: 12px;
+	color: #555;
+}
+
+/*FOOTER*/
+.footer{
+	background: url(../images/bckg02.png) #282828 repeat-x;
+	clear: both;
+	height: 230px;
+	/* Como hacer que el footer se quede pegado abajo: 
+	http://www.lwis.net/journal/2008/02/08/pure-css-sticky-footer/ */
+	clear: both;
+	position: relative;
+	z-index: 10;
+	margin-top: -230px;
+}
+.intFooter{
+	width: 960px;
+	margin: 0 auto;
+	padding-top: 26px;
+}
+.mapa {
+	float: left;
+	width: 330px;
+}
+small {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: white;
+}
+.direcciones{
+	float: left;
+	width: 400px;
+	height: 200px;
+}
+.direcciones p, .creditos p{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #ccc;
+}
+.creditos {
+	float: left;
+	width: 220px;
+}

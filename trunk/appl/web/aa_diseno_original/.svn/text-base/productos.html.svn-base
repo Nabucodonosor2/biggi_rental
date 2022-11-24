@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BIGGI | Productos</title>
+<link type="image/x-icon" href="images/favicon.ico" rel="shortcut icon" />
+<link rel="stylesheet" type="text/css" href="css/estilos.css">
+<link rel="stylesheet" type="text/css" href="css/estilosInteriores.css">
+<link rel="stylesheet" href="fontface/stylesheet.css" type="text/css" charset="utf-8" />
+<style>
+li {
+	list-style: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #666;
+	border-bottom: 1px #999 dotted;
+	height: 18px;
+	margin-top: 3px;
+}
+	li:last-child { border: none;}
+	li a{ color:#666; text-decoration: none;}
+	li a:hover{ color: black;}
+ul {
+	width: 230px;
+}
+</style>
+<script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
+</head>
+
+<body class="body2">
+<div class="container">
+	<div class="logotipo">
+    	<div class="telefono"></div>
+    </div>
+    <div class="menu">
+        <a href="empresa.html"><div class="bot">Empresa</div></a>
+        <a href="productos.html"><div class="bot" style="background-position:0 -39px;">Productos</div></a>
+        <a href="econoline.html"><div class="bot">Econoline</div></a>
+        <a href="noticias.html"><div class="bot">Noticias</div></a>
+        <a href="soporte.html"><div class="bot">Soporte y Representantes</div></a>
+        <a href="ofertas.html"><div class="bot">Ofertas</div></a>
+        <a href="cotizador.html"><div class="bot">Cotizaci&oacute;n</div></a>
+        <a href="contacto.html"><div class="bot">Contacto</div></a>
+    </div>
+    <div class="mainPanel-Int">
+    	<img src="images/vin-productos.jpg" width="960" height="75">
+    	<div class="flash">
+    	  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="895" height="340" id="FlashID" title="Productos">
+    	    <param name="movie" value="inter5.swf">
+    	    <param name="quality" value="high">
+    	    <param name="wmode" value="opaque">
+    	    <param name="swfversion" value="6.0.65.0">
+    	    <!-- This param tag prompts users with Flash Player 6.0 r65 and higher to download the latest version of Flash Player. Delete it if you don’t want users to see the prompt. -->
+    	    <param name="expressinstall" value="Scripts/expressInstall.swf">
+    	    <!-- Next object tag is for non-IE browsers. So hide it from IE using IECC. -->
+    	    <!--[if !IE]>-->
+    	    <object type="application/x-shockwave-flash" data="inter5.swf" width="895" height="340">
+    	      <!--<![endif]-->
+    	      <param name="quality" value="high">
+    	      <param name="wmode" value="opaque">
+    	      <param name="swfversion" value="6.0.65.0">
+    	      <param name="expressinstall" value="Scripts/expressInstall.swf">
+    	      <!-- The browser displays the following alternative content for users with Flash Player 6.0 and older. -->
+    	      <div>
+    	        <h4>Content on this page requires a newer version of Adobe Flash Player.</h4>
+    	        <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" width="112" height="33" /></a></p>
+  	        </div>
+    	      <!--[if !IE]>-->
+  	      </object>
+    	    <!--<![endif]-->
+  	    </object>
+    	</div>
+        <div class="prodBox">
+        	<!-- Sección Autoservicio -->
+        	<img src="images/pp-01.png" width="308" height="40">
+          <ul>
+            	<li><a href="#">Bandejeros</a></li>
+                <li><a href="#">Carros</a></li>
+                <li><a href="#">Hervidores de Agua</a></li>
+                <li><a href="#">Línea Autoservicio</a></li>
+                <li><a href="#">Mantenedores para Alimentos</a></li>
+                <li><a href="#">Mantenedores para Líquidos</a></li>
+                <li><a href="#">Salad Bar Refrigerados</a></li>
+                <li><a href="#">Dispensadores de Salsa</a></li>
+            </ul>
+        </div>
+        <div class="prodBox2">
+        	<!--Zona de Lavado -->
+        	<img src="images/pp-02.png" width="308" height="40">
+            <ul>
+            	<li><a href="#">Lavavajillas</a></li>
+                <li><a href="#">Estantes</a></li>
+                <li><a href="#">Mesones</a></li>
+                <li><a href="#">Lavamanos</a></li>
+                <li><a href="#">Campanas</a></li>
+                <li><a href="#">Extractores</a></li>
+                <li><a href="#">Grifería</a></li>
+                <li><a href="#">Lavamanos</a></li>
+                <li><a href="#">Repisas</a></li>
+                <li><a href="#">Lavaplatos Industriales</a></li>
+            </ul>
+        </div>
+        <div class="prodBox2">
+        	<!-- Bodega -->
+        	<img src="images/pp-03.png" width="308" height="40">
+            <ul>
+            	<li><a href="#">Lavavajillas</a></li>
+                <li><a href="#">Estantes</a></li>
+                <li><a href="#">Mesones</a></li>
+            </ul>
+        </div>
+        <div class="prodBox" style="clear: both;">
+        	<!-- Cocina Fría -->
+        	<img src="images/pp-04.png" width="308" height="40">
+            <ul>
+            	<li><a href="#">Batidoras</a></li>
+                <li><a href="#">Licuadoras</a></li>
+                <li><a href="#">Refrigeradores</a></li>
+                <li><a href="#">Congeladores</a></li>
+                <li><a href="#">Mesones</a></li>
+                <li><a href="#">Mesones Refrigerados</a></li>
+                <li><a href="#">Slseras Refrigeradas</a></li>
+                <li><a href="#">Vitrinas Refrigeradas</a></li>
+                <li><a href="#">Lavamanos</a></li>
+                <li><a href="#">Grifería</a></li>
+                <li><a href="#">Repisas</a></li>
+            </ul>
+        </div>
+        <div class="prodBox2">
+        	<!-- Preelaboracion -->
+        	<img src="images/pp-05.png" width="308" height="40">
+            <ul>
+            	<li><a href="#">Estantes</a></li>
+                <li><a href="#">Lavaplatos Industriales</a></li>
+                <li><a href="#">Procesadores de Vegetales</a></li>
+                <li><a href="#">Trituradores y Bastidores</a></li>
+                <li><a href="#">Peladora de Papas</a></li>
+                <li><a href="#">Mesones</a></li>
+                <li><a href="#">Mesones Refrigerados</a></li>
+                <li><a href="#">Salseras Refrigeradas</a></li>
+                <li><a href="#">Lavamanos</a></li>
+                <li><a href="#">Grifería</a></li>
+                <li><a href="#">Repisas</a></li>
+            </ul>
+        </div>
+        <div class="prodBox2">
+        	<!-- Cocina Caliente -->
+        	<img src="images/pp-06.png" width="308" height="40">
+            <ul>
+            	<li><a href="#">Anafes y Cocinas Industriales</a></li>
+                <li><a href="#">Cocinas Semi Industriales</a></li>
+                <li><a href="#">Campanas</a></li>
+                <li><a href="#">Extractores</a></li>
+                <li><a href="#">Marmitas</a></li>
+                <li><a href="#">Parrillas Grill</a></li>
+                <li><a href="#">Planchas Churrasqueras</a></li>
+                <li><a href="#">Planchas Churrasqueras de Sobreponer</a></li>
+                <li><a href="#">Hornos Tradicionales</a></li>
+                <li><a href="#">Hornos Combinados</a></li>
+                <li><a href="#">Sartenes Basculantes</a></li>
+                <li><a href="#">Freidoras</a></li>
+            </ul>
+        </div>
+        <div class="prodBox" style="margin-bottom: 12px;">
+        	<!-- Zona Recepción -->
+        	<img src="images/pp-07.png" width="308" height="40">
+            <ul>
+            	<li><a href="#">Bandejeros</a></li>
+                <li><a href="#">Carros</a></li>
+                <li><a href="#">Estantes</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="intFooter">
+        <div class="direcciones">
+            <img src="images/pnlTelef.png" width="185" height="44">
+            <p>Comercial BiGGI (Chile) S.A. </p>
+            <p>Portugal 1726, Santiago 
+            <br>Tels. (56 2) 412 6200 - 555 2849
+            <br>Fax (56 2) 412 62 01</p>
+            <p>Santiago - Chile</p>
+        </div>
+        <div class="creditos">
+            <p>© 2011 Comercial BIGGI (Chile) S.A. 
+            <br>Todos los derechos reservados.</p>
+            <p>Sitio web optimizado para una resolución mínima de 1024 x 768 pixeles</p>
+            <p>Desarrollado por Integrasystem Ltda.<br>
+            Diseño: Convecta | Soluciones Web</p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+swfobject.registerObject("FlashID");
+</script>
+</body>
+</html>

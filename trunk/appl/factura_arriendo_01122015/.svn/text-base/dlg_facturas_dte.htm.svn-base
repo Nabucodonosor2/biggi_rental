@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Sistema Grupo de Empresas Biggi</title>
+<link href="{W_CSS}" rel="stylesheet" type="text/css">
+<script charset="iso-8859-1" src="../../../../commonlib/trunk/script_js/edit_filter.js" type="text/javascript"></script>
+<script charset="iso-8859-1" src="../../../../commonlib/trunk/script_js/general.js" type="text/javascript"></script>
+<script charset="iso-8859-1" src="dlg_facturas_dte.js" type="text/javascript"></script>
+<style>
+   .margenDerecho {
+       padding-right: 20px;
+   }
+</style>
+</head>
+<body onLoad="document.getElementById('RUT_0').focus();" >
+	<table width="1000" rules="none" border="1" align="center">
+		<tr class="claro">
+			<td colspan="6" align="left" class="titulo_tabla">SELECCIONE LA EMPRESA A FACTURAR ARRIENDOS</td>
+		</tr>			
+		<tr class="encabezado_left">
+			<td width="166">Selección</td>
+			<td width="166">Rut</td>
+			<td width="166">Razón Social</td>
+			<td width="166">Cant FA</td>							
+		</tr>
+		<tr>
+			<td colspan="5" >	
+				<div style="overflow-x:hidden; overflow-y:auto; height:180; ">
+					<table width="1000" rules="none" border="1" align="left" class="claro" id="FACTURAS_DTE" name="FACTURAS_DTE">							
+					<!-- startBlock(FACTURAS_DTE) -->
+						<tr class="{DW_TR_CSS}" id="{DW_TR_ID}">
+							<td width="167" align="left">{SELECCIONAR}{COD_EMPRESA}</td>
+							<td width="167" align="left">{RUT}-{DIG_VERIF}</td>
+							<td width="167" align="left">{NOM_EMPRESA}</td>
+							<td width="167" align="left">{CANT_FA}</td>
+						</tr>
+						<!-- endBlock(FACTURAS_DTE) -->
+					</table>
+				</div>
+			</td>
+		</tr>		
+	</table>
+	<div style="overflow-x:hidden; overflow-y:auto; height:400; margin-top:-0.1em;">
+		<table width="1000" rules="none" border="1" align="center" id="ARRIENDO">
+		</table>
+	</div>
+	<!-- 
+	<table width="1000" rules="none" border="1" align="center" class="claro">
+		<tr>
+			<td align="left">
+				<input type="button" value="Marcar Todo" class="Button" onClick="marcar_todo();"/>
+				<input type="button" value="Desmarcar Todo" class="Button" onClick="desmarcar_todo();"/>
+				<input type="button" value="Dejar selección" class="Button" onClick="dejar_seleccion();"/>
+			</td>
+		</tr>
+	</table> -->
+	<table width="1000" rules="none" border="1" align="center">
+		<tr class="claro">
+			<td align="right">
+				<input type="button" value="OK" class="Button" onclick="returnValue=get_return_value(); window.close();" />
+				<input type="button" value="Cancelar" class="Button" onclick="window.close(); returnValue=null;" />
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

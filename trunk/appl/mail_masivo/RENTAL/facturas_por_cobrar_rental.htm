@@ -1,0 +1,134 @@
+<html>
+<head>
+<title>Sistema Grupo de Empresas Biggi</title>
+<style type="text/css">
+<!--
+.verde{
+	background-color:#C1F2CD;
+	
+}
+-->
+</style>
+</head>
+<body bgcolor="FFFFFF" text="171717">
+Señores RENTAL.
+
+<p>Les informamos las facturas por cobrar, por concepto de arriendo y ventas de equipos, que al {FECHA_INFORME} suman un total de ${TOTAL_SALDO}.-</p>
+<p>Resumen de Facturas por cobrar, desde CONTRATOS DE ARRIENDO, con antigüedad inferior a cuatro meses, agrupadas por Cliente.</p>
+<p>Se detalla ademas el total acumulado de facturas con antigüedad superior a 4 meses en la primera columna.</p>
+<table width="75%" align="center" id="RESUMEN" border="1" bordercolor="171717">
+  <tbody>
+    <tr>
+      <td width="22%" class="verde"><div align="center"><strong>Empresa</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>Mas de 4 meses.</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>{H_MAS_90_TOTAL}</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>{H_MAS_60_TOTAL}</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>{H_MAS_30_TOTAL}</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>{H_MENOS_30_TOTAL}</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>Total</strong></div></td>
+    </tr>
+    <!-- startBlock(RESUMEN) -->
+    <tr id="{DW_TR_ID}">
+    	<td class="verde"><div align="left">{NOM_EMPRESA}</div></td>
+    	<td><div align="right">{MAS_ESPECIAL}</div></td>
+    	<td><div align="right">{MAS_90_TOTAL}</div></td>
+    	<td><div align="right">{MAS_60_TOTAL}</div></td>
+    	<td><div align="right">{MAS_30_TOTAL}</div></td>
+    	<td><div align="right">{MENOS_30_TOTAL}</div></td>
+    	<td><div align="right">{TOTAL}</div></td>
+    </tr>
+    <!-- endBlock(RESUMEN) -->
+    <tr>
+    	<td class="verde" colspan="6"><div align="right"><strong>Total:</strong></div></td>
+    	<td class="verde"><div align="right"><strong>{SUM_TOTAL_TABLE_UNO}</strong></div></td>
+    </tr>
+  </tbody>
+</table>
+<p>Detalle de todas las Facturas por cobrar, desde CONTRATOS DE ARRIENDO, ordenadas por fecha factura, desde la mas antigua, a la mas nueva:</p>
+<table width="75%" align="center" id="RESUMEN_ANTERIOR" border="1" bordercolor="171717">
+	<tbody>
+	    <tr>
+	    	<td width="13%" class="verde"><div align="center"><strong>N&ordm; Factura</strong></div></td>
+	    	<td width="13%" class="verde"><div align="center"><strong>Fecha</strong></div></td>
+	    	<td width="50%" class="verde"><div align="center"><strong>Cliente</strong></div></td>
+	    	<td width="15%" class="verde"><div align="center"><strong>Monto</strong></div></td>
+	    	<td width="8%" class="verde"><div align="center"><strong>%</strong></div></td>
+	    </tr>
+	    <!-- startBlock(RESUMEN_ANTERIOR) -->
+	    <tr id="{DW_TR_ID}">
+			<td><div align="center">{NRO_FACTURA}</div></td>
+			<td><div align="center">{FECHA_FACTURA}</div></td>
+			<td>{NOM_EMPRESA}</td>
+			<td><div align="right">{MONTO}</div></td>
+			<td><div align="right">{PORC}</div></td>
+	    </tr>
+	    <!-- endBlock(RESUMEN_ANTERIOR) -->
+	    <tr>
+	    	<td class="verde" colspan="3"><div align="right"><strong>Total:</strong></div></td>
+			<td class="verde"><div align="right"><strong>{SUM_MONTO_TABLE_UNO}</strong></div></td>
+			<td class="verde"><div align="right"><strong>{SUM_PORC_TABLE_UNO}</strong></div></td>
+	    </tr>
+	</tbody>
+</table>
+<p>Resumen de Facturas por cobrar, desde VENTAS DE EQUIPOS, con antigüedad inferior a cuatro meses, agrupadas por Cliente.</p>
+<p>Se detalla ademas el total acumulado de facturas con antigüedad superior a 4 meses en la primera columna.</p>
+<table width="75%" align="center" border="1" bordercolor="171717">
+  <tbody>
+    <tr>
+      <td width="22%" class="verde"><div align="center"><strong>Empresa</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>Mas de 4 meses.</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>{H_MAS_90_TOTAL}</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>{H_MAS_60_TOTAL}</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>{H_MAS_30_TOTAL}</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>{H_MENOS_30_TOTAL}</strong></div></td>
+      <td width="13%" class="verde"><div align="center"><strong>Total</strong></div></td>
+    </tr>
+    <!-- startBlock(RESUMEN_VENTA) -->
+    <tr id="{DW_TR_ID}">
+      <td class="verde"><div align="left">{NOM_EMPRESA}</div></td>
+      <td><div align="right">{MAS_ESPECIAL}</div></td>
+      <td><div align="right">{MAS_90_TOTAL}</div></td>
+      <td><div align="right">{MAS_60_TOTAL}</div></td>
+      <td><div align="right">{MAS_30_TOTAL}</div></td>
+      <td><div align="right">{MENOS_30_TOTAL}</div></td>
+      <td><div align="right">{TOTAL}</div></td>
+    </tr>
+    <!-- endBlock(RESUMEN_VENTA) -->
+    <tr>
+    	<td class="verde" colspan="6"><div align="right"><strong>Total:</strong></div></td>
+    	<td class="verde"><div align="right"><strong>{SUM_TOTAL_TABLE_DOS}</strong></div></td>
+    </tr>
+  </tbody>
+</table>
+<p>Detalle de todas las Facturas por cobrar, desde VENTAS DE EQUIPOS, ordenadas por fecha factura, desde la mas antigua, a la mas nueva:</p>
+<table width="75%" align="center" id="OTROS_DETALLE" border="1" bordercolor="171717">
+  <tbody>
+	    <tr>
+	    	<td width="13%" class="verde"><div align="center"><strong>N&ordm; Factura</strong></div></td>
+	    	<td width="13%" class="verde"><div align="center"><strong>Fecha</strong></div></td>
+	    	<td width="50%" class="verde"><div align="center"><strong>Cliente</strong></div></td>
+	    	<td width="15%" class="verde"><div align="center"><strong>Monto</strong></div></td>
+	    	<td width="8%" class="verde"><div align="center"><strong>%</strong></div></td>
+	    </tr>
+	    <!-- startBlock(RESUMEN_ANTERIOR_VENTA) -->
+	    <tr id="{DW_TR_ID}">
+			<td><div align="center">{NRO_FACTURA}</div></td>
+			<td><div align="center">{FECHA_FACTURA}</div></td>
+			<td>{NOM_EMPRESA}</td>
+			<td><div align="right">{MONTO}</div></td>
+			<td><div align="right">{PORC}</div></td>
+	    </tr>
+	    <!-- endBlock(RESUMEN_ANTERIOR_VENTA) -->
+	    <tr>
+	    	<td class="verde" colspan="3"><div align="right"><strong>Total:</strong></div></td>
+			<td class="verde"><div align="right"><strong>{SUM_MONTO_TABLE_DOS}</strong></div></td>
+			<td class="verde"><div align="right"><strong>{SUM_PORC_TABLE_DOS}</strong></div></td>
+	    </tr>
+	</tbody>
+</table>
+<br />
+<br>
+<br>
+<br>
+</body>
+</html>

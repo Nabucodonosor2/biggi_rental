@@ -1,0 +1,40 @@
+<Report>
+	<Font name="Arial" size="7" style="" id="ArialSmall"/>
+	<Font name="Arial" size="17" style="B" id="ArialBoldBigB" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="8" style="B" id="ArialBold"/>
+	<Font name="Arial" size="8" style="B" id="ArialBold_header"/>	
+	<Font name="Arial" size="10" style="" id="ArialSmallBlue" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="11" style="" id="Arial"/>
+	<PageHeader>	
+		<Cell text="" height="55%" newline="1"/>		
+		<Cell text="PAG. {SectionPageNumber}/{snb}" align="R" font="ArialSmall" newline="1" />
+		<Cell text="INVENTARIO VALORIZADO DETALLE" width="100%"  align="C" newline="1" font="ArialBoldBigB"/>
+		<Cell text="{str_filtro}" width="100%" align="C" newline="1" font="ArialSmallBlue"/>
+		<Cell text="" height="4" newline="1"/>
+		<Cell text="" height="4" newline="1"/>
+		<Cell text="" height="4" newline="1"/>	
+	</PageHeader>
+	<Content font="Arial">
+		<Cell text="{MODELO}" width="13%" align="L" border="LRTB" font="ArialSmall"/>	
+		<Cell text="{EQUIPO}" nowrap="yes" width="46%" align="L" border="LRTB" font="ArialSmall"/>	
+		<Cell text="{MARCA}" width="12%" align="L" border="LRTB" font="ArialSmall"/>
+		<Cell text="{STOCK}" width="8%" align="R" border="LRTB" format="N0,." font="ArialSmall"/>
+		<Cell text="{C_UNIT}" width="9%" align="R" border="LRTB" format="N0,." font="ArialSmall"/>	
+		<Cell text="{COSTO_TOTAL}" width="12%" align="R" border="LRTB" format="N0,." font="ArialSmall" newline="1"/>
+	</Content>
+	<Group>
+		<Variable name="sum_total" function="SUM" value="COSTO_TOTAL"/>
+		<GroupHeader>
+			<Cell text="MODELO" width="13%" align="C" border="LRTB" font="ArialSmallBlue"/>
+			<Cell text="EQUIPO" width="46%" align="C" border="LRTB" font="ArialSmallBlue"/>
+			<Cell text="MARCA" width="12%" align="C" border="LRTB" font="ArialSmallBlue"/>
+			<Cell text="STOCK" width="8%" align="C" border="LRTB" font="ArialSmallBlue"/>
+			<Cell text="C.UNIT.$" width="9%" align="C" border="LRTB" font="ArialSmallBlue"/>
+			<Cell text="COSTO TOTAL $" width="12%" align="C" border="LRTB" font="ArialSmallBlue" newline="1"/>
+		</GroupHeader>
+		<GroupFooter>
+			<Cell text="Total:" width="88%" align="R" font="ArialBold"/>	
+			<Cell text="{sum_total}" width="12%"  align="R" border="LRTB" format="N0,." font="ArialSmall" newline="1"/>
+		</GroupFooter> 
+	</Group>
+</Report>

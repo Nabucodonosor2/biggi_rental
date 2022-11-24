@@ -1,0 +1,33 @@
+<Report>	
+	<Font name="Arial" size="7" style="" id="ArialSmall"/>
+	<Font name="Arial" size="7" style="" id="ArialSmallBlue" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="17" style="B" id="ArialBoldBigB" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="10" style="B" id="ArialBold"/>
+	<Font name="Arial" size="8" style="" id="Arial"/>
+	<Font name="Arial" size="8" style="B" id="ArialBold_header"/>	
+	<Font name="Arial" size="10" style="B" id="ArialBoldBlue" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="8" style="B" id="ArialBoldBluef" red="0" green="0" blue="128"/>
+	<PageHeader>
+		<Cell text="" height="40%" newline="1"/>
+		<Cell text="INFORME POR RECIBIR DESDE ARRIENDO N°{strCOD_ARRIENDO}" width="100%" height="70%" align="C" font="ArialBoldBigB" newline="1"/>
+		<Cell text="FECHA: {strFECHA}" width="100%" height="10%" align="R" font="ArialBoldBluef" newline="1"/>
+		<Cell text="HORA: {strTIME}" width="100%" height="20%" align="R" font="ArialBoldBluef" newline="1"/>
+		<Cell text="Mod. Arriendo" width="10%" align="C" border="LRTB" font="ArialBoldBlue"/>		
+		<Cell text="Item" width="10%" align="C" border="LRTB" font="ArialBoldBlue"/>
+		<Cell text="Modelo" width="10%" align="C" border="LRTB" font="ArialBoldBlue"/>
+		<Cell text="Producto" width="34%" align="C" border="LRTB" font="ArialBoldBlue"/>
+		<Cell text="Cantidad" width="12%" align="C" border="LRTB" font="ArialBoldBlue"/>		
+		<Cell text="Cant. Recibida" width="12%" align="C" border="LRTB" font="ArialBoldBlue"/>
+		<Cell text="Cant. por Recibir" width="12%" align="C" border="LRTB" font="ArialBoldBlue"/>
+		<Cell text="" height="16%" newline="1"/>		
+	</PageHeader>
+	<Content font="Arial">
+		<Cell text="{COD_MOD_ARRIENDO}" width="10%" align="L" border="LRTB" font="Arial"/>	
+		<Cell text="{ITEM}" width="10%" align="L" border="LRTB" font="Arial"/>	
+		<Cell text="{COD_PRODUCTO}" width="10%" align="L" border="LRTB" font="Arial"/>	
+		<Cell text="{NOM_PRODUCTO}" width="34%" align="L" border="LRTB" font="Arial"/>
+		<Cell text="{CANTIDAD}" width="12%" align="R" border="LRTB" font="Arial"/>
+		<Cell text="{CANTIDAD_DESPACHADA}" width="12%" align="R" border="LRTB" font="Arial"/>
+		<Cell text="{CANTIDAD_POR_DESPACHAR}" width="12%" align="R" border="LRTB" font="Arial" newline="1"/>	
+	</Content>
+</Report>

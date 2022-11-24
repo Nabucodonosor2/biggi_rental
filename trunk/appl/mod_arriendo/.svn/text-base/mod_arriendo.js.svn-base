@@ -1,0 +1,82 @@
+function validate() {
+	cod_estado_mod_arriendo = document.getElementById('COD_ESTADO_MOD_ARRIENDO_0').value;
+	if(cod_estado_mod_arriendo == 2){
+		cod_arriendo =document.getElementById('COD_ARRIENDO_0').innerHTML;
+		document.getElementById('REFERENCIA_0').value = 'Ref: Inventario inicial Arriendo Nº '+cod_arriendo;
+	}
+	
+	var vl_tabla = document.getElementById('ITEM_MOD_ARRIENDO');
+	var aTR = vl_tabla.getElementsByTagName("tr");
+	if (aTR.length==0) {
+		alert('Debe ingresar al menos 1 item antes de grabar.');
+		return false;
+	}
+	var res = document.getElementById('CANTIDAD_0').value;
+	if (res == 0){
+		alert('Debe ingresar "Cantidad" antes de grabar');
+		document.getElementById('CANTIDAD_0').focus();
+		return false;
+	}
+	
+	var tipo_mod_arriendo = document.getElementById('TIPO_MOD_ARRIENDO_H_0').value;	
+	
+	if (tipo_mod_arriendo == 'ELIMINAR'){
+		for (i=0; i<aTR.length; i++){
+			var rec_tr =get_num_rec_field(aTR[i].id);
+			var cantidad_h = document.getElementById('CANTIDAD_H_' + rec_tr).value;
+			var cantidad = document.getElementById('CANTIDAD_' + rec_tr).value;
+			if(cantidad_h < cantidad){
+				alert('La cantidad debe ser menor o igual a '+cantidad_h);
+			return false;
+			}
+		}
+		
+	}
+	return true;
+}
+
+function request_mod_arriendo(){
+	var args = "location:no;dialogLeft:400px;dialogTop:250px;dialogWidth:400px;dialogHeight:150px;dialogLocation:0;Toolbar:no;";
+	var returnVal = null;
+	returnVal = window.showModalDialog("dlg_input_contrato.php","_blank", args);
+	
+	if(returnVal != null){
+		document.getElementById('wo_hidden').value = returnVal;
+		//document.input.submit();
+			vl_split = returnVal.split('|');
+			vl_codigo = vl_split[0];
+			var ajax = nuevoAjax();
+            ajax.open("GET", "ajax_valida_mod_arriendo.php?cod_arriendo="+vl_codigo, false);
+            ajax.send(null);
+            var resp = URLDecode(ajax.responseText);
+           if(resp != ''){
+                  alert('El Contrato de Arriendo Nº'+vl_codigo+' tiene una Modificación de Arriendo Nº '+resp +' en estado emitido. Debe aprobar o anular esta Modificación de Arriendo antes de crear una nueva Modificación de Arriendo');
+                  return false;
+            }
+		
+   		return true;
+   	}else{
+		return false;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+function get_return_value() {
+	var vl_res = '';
+	var vl_tabla = document.getElementById('FACTURAS_DTE');
+	var aTR = vl_tabla.getElementsByTagName("tr");
+	for (var i=0; i<aTR.length; i++) {
+		var vl_record = get_num_rec_field(aTR[i].id);
+		var vl_seleccion = document.getElementById('SELECCIONAR_' + vl_record);
+		var vl_cod_empresa = document.getElementById('COD_EMPRESA_' + vl_record);
+		if (vl_seleccion.checked)
+			vl_res = vl_res + vl_cod_empresa.value + '|'; 
+	}
+	return vl_res;
+}

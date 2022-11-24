@@ -1,0 +1,28 @@
+alter PROCEDURE spx_lista_blanca
+AS
+BEGIN  
+	declare c_dom cursor for 
+	select   NOM_DOMINIO
+	from DOMINIO
+	where BLANCO_NEGRO = 'B'
+	order by NOM_DOMINIO
+
+	declare
+		@vc_nom_dominio		varchar(100)
+		,@vl_result			varchar(8000)
+
+	set @vl_result  = ''
+	open c_dom
+	fetch c_dom into @vc_nom_dominio
+	while @@fetch_status = 0 begin
+		set @vl_result = @vl_result + @vc_nom_dominio + '|' 
+		fetch c_dom into @vc_nom_dominio
+	end
+	close c_dom
+	deallocate c_dom
+
+	if (@vl_result <> '')
+		set @vl_result  = substring(@vl_result, 1, len(@vl_result)-1)
+
+	select @vl_result WHITE_LIST
+END

@@ -1,0 +1,26 @@
+ALTER  PROCEDURE [dbo].[spi_tdnx_inventario](@ve_cod_bodega				NUMERIC
+													,@ve_fecha					DATETIME
+													,@ve_cod_clasif_inventario	NUMERIC)
+AS
+BEGIN
+	DECLARE @TEMP_VALOR_DETALLE TABLE
+				(MODELO			VARCHAR(100)
+				,EQUIPO			VARCHAR(100)
+				,MARCA			VARCHAR(100)
+				,STOCK			NUMERIC)
+		INSERT INTO @TEMP_VALOR_DETALLE
+						(MODELO
+						,EQUIPO
+						,MARCA
+						,STOCK)
+				SELECT	P.COD_PRODUCTO
+						,P.NOM_PRODUCTO
+						,M.NOM_MARCA
+						,DBO.F_BODEGA_STOCK(P.COD_PRODUCTO,@ve_cod_bodega,@ve_fecha) STOCK
+				FROM	PRODUCTO P LEFT OUTER JOIN MARCA M ON M.COD_MARCA = P.COD_MARCA
+				WHERE	SUBSTRING(SISTEMA_VALIDO, 4, 1) = 'S'
+				AND		P.MANEJA_INVENTARIO = 'S'
+				AND		(P.COD_CLASIF_INVENTARIO = 0 OR P.COD_CLASIF_INVENTARIO = @ve_cod_clasif_inventario)
+		
+	SELECT * FROM @TEMP_VALOR_DETALLE order by MARCA, EQUIPO
+END

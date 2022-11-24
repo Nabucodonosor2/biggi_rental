@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Imprimir Contrato Arriendo</title>
+<script charset="iso-8859-1" src="../../../../commonlib/trunk/script_js/general.js" type="text/javascript"></script>
+<script charset="iso-8859-1" src="../../../../commonlib/trunk/script_js/edit_filter.js" type="text/javascript"></script>
+<link href="{W_CSS}" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+body {
+	background-color: #E5E5E5;
+	text-align:center;
+	font-size:14px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+.msg {
+	color:#000;
+	text-align:center;
+	font-size:11px;
+	font-weight:bolder;
+}
+.table{
+	font-size: 11px;
+	font-weight: bold; 
+	color: #FFF;
+	margin-top:1em;
+	border:#000033 1px solid;
+	margin-left:2px;
+	background: #919191;
+}
+.table2{
+	font-size: 10px;
+	font-weight: bold; 
+	color: #666666;	
+	border-left: #000066  1px solid;
+	border-bottom:#000066  1px solid;
+	border-right: #000066  1px solid;
+	margin-left:2px;
+	background-color:#CCCCCC;	
+}
+.titulo_tabla{
+	background-color: #E5E5E5;
+	font-size: 12px;
+	font-weight:bold;	
+	color: #000066;
+	text-align:left;
+	padding-top:9px;
+	margin-left:-5px;
+	width:200px;	
+}
+.table_wm_2 {
+    background: none repeat scroll 0 0 #919191;
+    border: 1px solid #000033;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 2px;
+    margin-top: 0;
+}
+.titulo_tabla_2{
+	background-color: #CCCCCC;
+	font-size: 12px;
+	font-weight:bold;	
+	color: #000066;
+	text-align:left;
+	padding-top:9px;
+	margin-left:-5px;
+	width:200px;	
+}
+-->
+</style>
+<script type="text/javascript">
+function get_returnVal() {
+	var res = 	'';
+	if (document.getElementById('resumen').checked)
+		res = "normal";
+	else if (document.getElementById('marca').checked){
+		var aTR = get_TR('MOD_ARRIENDO');
+		for(i = 0 ; i < aTR.length ; i++){
+			if(document.getElementById('R_MOD_ARRIENDO_'+ i).checked)
+				var vl_cod_mod_arriendo = document.getElementById('ID_MOD_ARRIENDO_'+ i).innerHTML;
+		}
+		res = vl_cod_mod_arriendo+"|marca";
+	}else if (document.getElementById('anexo').checked)
+		res = "anexo";
+	else if (document.getElementById('anexo_d').checked)
+		res = "anexo_d";	
+	 else if (document.getElementById('despachar').checked)
+	 	res = "despachar";
+	 else
+	 	res = "recibir";		
+	return res;
+}
+function display_table(){
+	if (document.getElementById('resumen').checked)
+		document.getElementById('hidden_table').style.display='none';
+	else if (document.getElementById('anexo').checked)	
+		document.getElementById('hidden_table').style.display='none';
+	else if (document.getElementById('anexo_d').checked)	
+		document.getElementById('hidden_table').style.display='none';
+	else if (document.getElementById('despachar').checked)
+		document.getElementById('hidden_table').style.display='none';
+	else if (document.getElementById('recibir').checked)
+		document.getElementById('hidden_table').style.display='none';	
+	else
+		document.getElementById('hidden_table').style.display=''
+}
+</script>
+</head>
+<body>
+<div class="titulo_tabla_wm">&nbsp;&nbsp;Imprimir Contrato Arriendo N° {COD_ARRIENDO} </div>
+<form id="form1" name="form1" method="post" action="">
+	<table width="435" border="0" class="table2" align="left">  
+  		<tr align="left" class="table">
+    		<th width="130" align="left" colspan="2">Tipo Impresion</th>		
+  		</tr>
+  		<tr align="left"> 
+    	 	<td width="150" align="left" colspan="2">
+				<label><input name="tipo_impresion" type="radio"  id="resumen" value="1" onclick="display_table();" checked="checked">Impresión Normal</label>
+			</td>
+  		</tr>
+  		<tr align="left"> 
+    		<td width="150" align="left" colspan="2">
+				<label style="display:{DISPLAY_LABEL}"><input name="tipo_impresion" type="radio" id="marca" value="1" onclick="display_table();"/>Marcas para Despacho</label>
+			</td>
+  		</tr>
+  		<tr align="left" style="display:{DISPLAY_ANEXO}"> 
+    	 	<td width="150" align="left" colspan="2">
+				<label><input name="tipo_impresion" type="radio"  id="anexo" value="1" onclick="display_table();">Anexo Arriendo</label>
+			</td>
+  		</tr>
+  		<tr align="left" style="display:{DISPLAY_ANEXO_DOS}"> 
+    	 	<td width="150" align="left" colspan="2">
+				<label><input name="tipo_impresion" type="radio"  id="anexo_d" value="1" onclick="display_table();">Anexo Arriendo_2</label>
+			</td>
+  		</tr>
+  		<tr align="left"> 
+    	 	<td width="150" align="left" colspan="2">
+				<label style="display:"><input name="tipo_impresion" type="radio"  id="despachar" value="1" onclick="display_table();">Por Despachar</label>
+			</td>
+  		</tr>
+  		<tr align="left"> 
+    	 	<td width="150" align="left" colspan="2">
+				<label style="display:"><input name="tipo_impresion" type="radio"  id="recibir" value="1" onclick="display_table();">Por Recibir</label>
+			</td>
+  		</tr>
+  		<tr id="hidden_table" style="display:none">	
+  			<td>
+  				<table>
+  					<tr class="titulo_tabla_2">
+  						<td>Selecione el Mod Arriendo para imprimir marcas despacho </td>
+  					</tr>
+  				</table>
+  				<table width="580" border="0" align="center" class="table_wm_2" id="tabla_item_nv">  					
+					<tr align="center">
+						<th width="10%">Sel</th>
+    					<th width="15%">Cod. Mod Arriendo</th>
+    					<th width="25%">Fecha</th>    					
+    					<th width="50%">Referencia</th>
+  					</tr>
+				</table>
+				<div style="overflow-x:hidden; overflow-y:auto; height:240;">
+				<table rules="none" border="1" align="center" id="MOD_ARRIENDO" width="100%">
+				<!-- startBlock(MOD_ARRIENDO) -->
+					<tr class="{DW_TR_CSS}" id="{DW_TR_ID}" align="center">
+						<input type="hidden" id="{MOD_ARRIENDO}" name="{MOD_ARRIENDO}" value="{COD_MOD_ARRIENDO}"></input>
+						<td width="10%"><input id="{R_MOD_ARRIENDO}" type="radio" name="mod_arriendo" value="{R_MOD_ARRIENDO}"></td>						
+						<td id="{ID_MOD_ARRIENDO}" width="15%">{COD_MOD_ARRIENDO}</td>
+						<td width="25%">{FECHA_MOD_ARRIENDO}</td>
+						<td width="50%" align="left">{REFERENCIA}</td>													
+					</tr>
+				<!-- endBlock(MOD_ARRIENDO) -->
+				</table>
+  			</td>
+  		</tr>
+		<tr align="left"> 
+			<td align="right">
+				<input name="OK" type="button" value="OK"  onclick="returnValue=get_returnVal(); window.close();"/>
+				<input name="Cancelar" type="button" value="Cancelar" onclick="window.close(); returnValue=null;"/>
+			</td>
+  		</tr>
+	</table>
+</form>
+</body>
+</html>

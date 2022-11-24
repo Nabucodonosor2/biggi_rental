@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BIGGI | Equipos para grandes cocinas | Empresa</title>
+<link type="image/x-icon" href="images/favicon.ico" rel="shortcut icon" />
+<link rel="stylesheet" type="text/css" href="css/estilos.css">
+<link rel="stylesheet" type="text/css" href="css/estilosInteriores.css">
+<link rel="stylesheet" href="fontface/stylesheet.css" type="text/css" charset="utf-8" />
+
+</head>
+
+<body class="body2">
+<div class="container">
+	<div class="logotipo">
+    	<div class="telefono"></div>
+    </div>
+    <div class="menu">
+        <a href="empresa.html"><div class="bot" style="background-position:0 -39px;">Empresa</div></a>
+        <a href="productos.html"><div class="bot">Productos</div></a>
+        <a href="econoline.html"><div class="bot">Econoline</div></a>
+        <a href="noticias.html"><div class="bot">Noticias</div></a>
+        <a href="soporte.html"><div class="bot">Soporte y Representantes</div></a>
+        <a href="ofertas.html"><div class="bot">Ofertas</div></a>
+        <a href="cotizador.html"><div class="bot">Cotizaci&oacute;n</div></a>
+        <a href="contacto.html"><div class="bot">Contacto</div></a>
+    </div>
+    <div class="mainPanel-Int">
+        <img src="images/vin-empresa.jpg" width="960" height="75">
+        <div class="emp">
+            <img src="images/emp00.jpg" />
+            <div class="empTit">Quienes Somos</div>
+            <p>
+            Somos una empresa chilena dedicada desde hace más de cincuenta años a la fabricación, instalación y asesoría en el diseño de equipos para cocinas industriales y que está enfocada, principalmente, a firmas concesionarias de catering.</p><p>
+    
+    Nuestros productos, entre los cuales se encuentran marmitas, freidoras, líneas autoservicio, salad bar, baño maría, estantes, mesones, entre otros, están elaborados con materiales de primera calidad, principalmente en acero inoxidable y cuentan con tecnología de punta.</p><p>
+    
+    Nuestra vasta trayectoria en el mercado nacional, sumada a nuestra constante inquietud por idear productos que se ajusten a las necesidades más extremas de los clientes, nos han llevado a diseñar equipos que se distinguen por ser fáciles de operar –ideal para personal no especializado-, seguros y de alta calidad, certificada por CESMEC.</p><p>
+    
+    Para brindar una excelente atención, nuestros ejecutivos de venta han sido cuidadosamente capacitados para asesorar a los clientes en la elección e instalación de los productos así como para contestar a todas sus consultas.</p><p>
+    
+    Como ejemplo de esta vocación podemos destacar los cursos de capacitación (para el óptimo manejo de equipos) que desde hace un año hemos realizado a importantes instituciones del país como Ejército de Chile, Central de Restaurantes y Eurest Alfin. 
+            </p>
+        </div>
+        <div class="emp">
+            <img src="images/emp01.jpg" />
+            <div class="empTit">Nuestra Historia</div>
+            <p>
+            BIGGI fue fundada en 1948 por el inmigrante italiano Renato Biggi quien, impregnado de la última tecnología del Viejo Continente, se dedicó a la fabricación y comercialización de hornos industriales.</p><p>
+
+Dado el éxito de estos equipos y a su rápido crecimiento, BIGGI incorporó nuevas líneas de productos -elaborados tanto en Chile como importados desde Estados Unidos, Italia, España, Taiwán y Corea- convirtiéndose rápidamente en líder del mercado nacional en este rubro.</p><p>
+
+En 1996 y con el fin de brindar un servicio integral a sus clientes, nuestra empresa abrió su propio servicio técnico, Catering Service, que, con sede en Santiago y desde 2000 en Antofagasta, realiza instalaciones y mantenciones, asesorías antes de la venta y sobre redes de alimentación y descarga, recuperación de equipos antiguos de todas las marcas y venta de equipos reciclados.</p><p>
+
+En 1998 BIGGI se expandió al exterior. Así nació BIGGI International Corp que desde Miami tiene la misión ampliar el negocio a Centroamérica y El Caribe. Y no es todo. Porque en 2000 fue creada Comercial BIGGI Perú dedicada principalmente a atender, supervisar y satisfacer los requerimientos de equipos, instalaciones, mantenciones y asesorías que se generan en Perú, con énfasis en los proyectos mineros de ese país.</p><p>
+
+Actualmente BIGGI también exporta sus productos a Argentina, Bolivia, Perú, Paraguay, Ecuador, Venezuela, Puerto Rico, República Dominicana y Qatar. 
+            </p>
+        </div>
+		<div class="emp" style="margin-right: 0;">
+            <img src="images/emp02.jpg" />
+            <div class="empTit">Proyectos</div>
+            <p>
+            Si bien nuestros clientes objetivos han sido principalmente las empresas concesionarias de catering, con el paso de los años BIGGI ha incursionado con éxito en el equipamiento a supermercados y complejos mineros, que requieren de equipos de primera calidad para ser operados en las más duras condiciones y a lo largo del tiempo.</p><p>
+
+Fase IV Minera Escondida (marzo 2001): En esta cuarta fase de expansión de la mina, destinada a aumentar la producción de cobre en 4 millones de toneladas durante los primeros cinco años de operación, BIGGI equipó completamente los casinos Permanente y Laguna Seca y los comedores Mina y de Puerto Coloso, en Antofagasta Corner Lomitón Esso (2000): Apoyando la alianza estratégica de Esso y Lomitón, BIGGI equipó los locales Tiger Market que se iniciaron en la preparación y venta del característico sándwich Lomitón en sus bombas de bencina.</p><p>
+
+Puerto Huarmey, Perú (2000): En este lugar, ubicado a cuatro horas de Lima y desde donde se embarcan los minerales de la mina Antamina hacia el exterior, BIGGI equipó la cocina y los dos comedores de 900 y 1500 personas cada uno.</p><p>
+
+Antamina, Perú (1999): Enclavada en la sierra peruana y al noreste de Lima, BIGGI equipó todos los casinos de este gran complejo minero dedicado a la extracción de cobre y zinc.</p><p>
+
+Jamboree Scout Mundial (1999): Durante los 11 días que duró el Décimo Noveno Jamboree Scout Mundial, desarrollado en Picarquín y que congregó a la nada despreciable suma de 34 mil jóvenes, BIGGI instaló 32 módulos autoservicio, 8 hornos mantenedores, hornos y mesones.</p><p>
+
+Doña Inés de Collahuasi (1996): BIGGI equipó todos los casinos de esta mina ubicada a 320 kilómetros de Iquique.</p><p>
+
+También hemos participado en los centros mineros Chagres, Maricunga, Los Bronces, El Soldado, Las Tórtolas, Disputada de Las Condes y Minera El Tesoro, en nuestro país.</p><p>
+
+En Bhp Tintaya, Minera Barrick Gold Pierina e Hidroeléctrica Chimay, en Perú. Porko Intirraimi, Comsur y Vista Gold en Bolivia, Lumbrera y Cerro Vanguardia en Argentina y Las Cristinas en Venezuela</p><p>
+
+Y hemos realizado interesantes proyectos en: BancoEstado, Banco Bice, Cámara de Comercio de Santiago, Telefónica, General Motors, Universidad Católica del Norte (Antofagasta), Centro Tecnológico de la Construcción DuocUC, Escuela de Alta Montaña (Portillo) y Escuela de Caballería del Ejército (Quillota) y en los restaurantes Estudio Gigante, Boulevard, Ruby Tuesday y Kokorico en Viña del Mar y Pronto de Autopista del Sol.
+            </p>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="intFooter">
+        <div class="direcciones">
+            <img src="images/pnlTelef.png" width="185" height="44">
+            <p>Comercial BiGGI (Chile) S.A. </p>
+            <p>Portugal 1726, Santiago 
+            <br>Tels. (56 2) 412 6200 - 555 2849
+            <br>Fax (56 2) 412 62 01</p>
+            <p>Santiago - Chile</p>
+        </div>
+        <div class="creditos">
+            <p>© 2011 Comercial BIGGI (Chile) S.A. 
+            <br>Todos los derechos reservados.</p>
+            <p>Sitio web optimizado para una resolución mínima de 1024 x 768 pixeles</p>
+            <p>Desarrollado por Integrasystem Ltda.<br>
+            Diseño: Convecta | Soluciones Web</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

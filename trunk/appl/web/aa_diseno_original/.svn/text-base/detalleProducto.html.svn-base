@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BIGGI | Lavamanos Acero Inoxidable | Modelo LV</title>
+<link type="image/x-icon" href="images/favicon.ico" rel="shortcut icon" />
+<link rel="stylesheet" type="text/css" href="css/estilos.css">
+<link rel="stylesheet" type="text/css" href="css/estilosInteriores.css">
+<link rel="stylesheet" href="fontface/stylesheet.css" type="text/css" charset="utf-8" />
+<style>
+li {
+	list-style-image: url(images/ico-red.png);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #666;
+	border-bottom: 1px #999 dotted;
+	width: 390px;
+	margin-top: 3px;
+	padding-bottom: 4px;
+}
+	li:last-child { border: none;}
+table { 
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: black;
+}
+td {padding: 6px; border-bottom: 1px #999 solid; border-left: 1px #999 solid;}
+td:last-child {border-right: 1px #999 solid;}
+.tablaTitle{ background: #f00; color: #fff; font-weight: bold;}
+	.tablaTitle td{border: none; border-left: 1px #fff solid;}
+
+</style>
+</head>
+
+<body class="body2">
+<div class="container">
+	<div class="logotipo">
+    	<div class="telefono"></div>
+    </div>
+    <div class="menu">
+        <a href="empresa.html"><div class="bot">Empresa</div></a>
+        <a href="productos.html"><div class="bot" style="background-position:0 -39px;">Productos</div></a>
+        <a href="econoline.html"><div class="bot">Econoline</div></a>
+        <a href="noticias.html"><div class="bot">Noticias</div></a>
+        <a href="soporte.html"><div class="bot">Soporte y Representantes</div></a>
+        <a href="ofertas.html"><div class="bot">Ofertas</div></a>
+        <a href="cotizador.html"><div class="bot">Cotizaci&oacute;n</div></a>
+        <a href="contacto.html"><div class="bot">Contacto</div></a>
+    </div>
+    <div class="mainPanel-Int">
+    <img src="images/vin-productos.jpg" width="960" height="75">
+		<div class="ubicador">
+        	<div class="ubi-volver"><a href="#">&nbsp;&nbsp;<img src="images/ico-back.png" width="11" height="9">&nbsp;&nbsp;Volver a productos</a></div>
+            <div class="ubi-seccion"><a href="#">&nbsp;&nbsp;Sección Autoservicio</a></div>
+            <div class="ubi-producto"><a href="#">&nbsp;&nbsp;Bandejeros</a></div>
+            <div class="ubi-detalle"><a href="#">&nbsp;&nbsp;Lavamanos</a></div>
+        </div>
+        <div class="fotoProd" style="background: url(productos/lavamanos.jpg) no-repeat;"></div>
+        <div class="xpprec">
+        	<div class="red">
+                <p>Modelo BAR</br>
+                <span style="font-weight: bold; color: #fff">Precio: $190.000 + iva</span></p>
+            </div>
+            <img src="images/cesmec.png" width="76" height="50">
+          	<a href="#"><img src="images/descargarPDF.png" width="118" height="50" border="0"></a>
+            <a href="#"><div class="cotiz"></div></a>
+            <div class="agregado">Producto agregado al listado de cotización</div>
+        </div>
+        <div class="xpDetProd">
+        <div class="xpvers">MAS-60G</div>
+        <div class="xptit">Baño María Autoservicio 3 depósitos a gas.</div>
+        	<ul>
+            	<li>Construcción Íntegra en Acero Inoxidable AISI 304</li>
+                <li>Incluye 3 depósitos normalizados de 20 litros con tapa</li>
+                <li>Diseño funcional facilita su limpieza y mantención</li>
+                <li>Repisa de plateo doble modelo R-60 opcional</li>
+                <li>Metro lineal de pasabandeja opcional</li>
+                <li>Certificado de Tipo nº G-011-01-11007. Más información en www.cesmec.cl</li>
+            </ul>
+            <div class="xpTablas">
+            	<table cellspacing="0" cellpadding="0" width="624">
+                	<tr class="tablaTitle">
+                    	<td>Especificaciones Técnicas</td>
+                        <td colspan="4">Dimensiones (cms)</td>
+                        <td colspan="4">Equipo           embalado (cms)</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                    	<td>Modelo del Equipo</td>
+                        <td>Largo</td>
+                        <td>Ancho</td>
+                        <td>Alto</td>
+                        <td>Peso(Kgs)</td>
+                        <td>Largo</td>
+                        <td>Ancho</td>
+                        <td>Alto</td>
+                        <td>Peso(Kgs)</td>
+                        <td>Volumen Mts3</td>
+                    </tr>
+                    <tr>
+                    	<td>LVR</td>
+                        <td>44</td>
+                        <td>55</td>
+                        <td>66</td>
+                        <td>18</td>
+                        <td>81</td>
+                        <td>68</td>
+                        <td>66</td>
+                        <td>88</td>
+                        <td>0,456</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="10" class="tablaTitle">Accesorios</td>
+                    </tr>
+                </table>
+                </br>
+                <table cellspacing="0" cellpadding="0" width="340">
+                	<tr class="tablaTitle">
+                    	<td>Consumo</td>
+                        <td>Voltaje</td>
+                        <td>N° Fases</td>
+                        <td>Ciclos</td>
+                    </tr>
+                    <tr>
+                    	<td>(KW)</td>
+                        <td>(Volts)</td>
+                        <td></td>
+                        <td>(Hz)</td>
+                    </tr>
+                    <tr>
+                    	<td>0,3</td>
+                        <td>220</td>
+                        <td>1</td>
+                        <td>50</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4">NOTA: 1 Kw = 3412,19 BTU/Hora = 0,860 Mcal/Hora</td>
+                    </tr>
+                </table>
+                </br>
+                <table cellspacing="0" cellpadding="0" width="240">
+                	<tr class="tablaTitle">
+                    	<td align="center">Titulo</td>
+                    </tr>
+                    <tr>
+                    	<td align="center">50</td>
+                    </tr>
+                    <tr>
+                    	<td align="center">0,3</td>
+                    </tr>
+                    <tr>
+                    	<td align="center">456</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="footer">
+    <div class="intFooter">
+        <div class="direcciones">
+            <img src="images/pnlTelef.png" width="185" height="44">
+            <p>Comercial BiGGI (Chile) S.A. </p>
+            <p>Portugal 1726, Santiago 
+            <br>Tels. (56 2) 412 6200 - 555 2849
+            <br>Fax (56 2) 412 62 01</p>
+            <p>Santiago - Chile</p>
+        </div>
+        <div class="creditos">
+            <p>© 2011 Comercial BIGGI (Chile) S.A. 
+            <br>Todos los derechos reservados.</p>
+            <p>Sitio web optimizado para una resolución mínima de 1024 x 768 pixeles</p>
+            <p>Desarrollado por Integrasystem Ltda.<br>
+            Diseño: Convecta | Soluciones Web</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

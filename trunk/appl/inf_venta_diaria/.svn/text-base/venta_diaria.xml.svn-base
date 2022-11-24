@@ -1,0 +1,26 @@
+<Report>
+	<Font name="Arial" size="11" style="" id="ArialSmall"/>
+	<Font name="Arial" size="9" style="" id="Arial_correo"/>
+	<Font name="Arial" size="7.5" style="" id="ArialSmallBlue" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="17" style="B" id="ArialBoldBigB" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="10" style="BU" id="ArialBoldU"/>
+	<Font name="Arial" size="10" style="B" id="ArialBold"/>
+	<Font name="Arial" size="10" style="B" id="ArialBoldBlue" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="12" style="B" id="ArialBoldBlueBig" red="0" green="0" blue="128"/>	
+	<Font name="Arial" size="10" style="" id="Arial"/>
+	<Font name="Arial" size="9" style="B" id="ArialBoldBlueSmall" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="8.7" style="" id="ArialItem"/>
+	<Font name="Arial" size="9" style="B" id="ArialBoldBlueItem" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="9" style="BU" id="ArialBoldUItem"/>
+	<PageHeader>
+		<Cell text="" height="70" newline="1"/>		
+		<Cell text="VENTAS DIARIA" width="100%" align="C" height="40" font="ArialBoldBigB" newline="1"/>
+		<Cell text="Fecha : {str_Fecha}" width="40%" align="L" font="ArialBoldBlue"/>
+		<Cell text="" width="60%"  newline="1"/>
+		<Cell text="Incluye Relacionados:  {str_Filtro}" width="100%" align="L" font="ArialBoldBlue" newline="1"/>
+	</PageHeader>
+	
+	<Content font="Arial">
+		<Cell text=""/>		
+	</Content>	
+</Report>

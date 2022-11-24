@@ -1,0 +1,45 @@
+<Report>
+	<Font name="Arial" size="7" style="" id="ArialSmall"/>
+	<Font name="Arial" size="7" style="" id="ArialSmallBlue" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="17" style="B" id="ArialBoldBigB" red="0" green="0" blue="128"/>
+	<Font name="Arial" size="10" style="B" id="ArialBold"/>
+	<Font name="Arial" size="10" style="" id="Arial"/>
+	<Font name="Arial" size="8" style="B" id="ArialBold_header"/>	
+	<Font name="Arial" size="10" style="B" id="ArialBoldBlue" red="0" green="0" blue="128"/>
+	<PageHeader>	
+		<Cell text="" height="55%" newline="1"/>		
+		<Cell text="PAG. {SectionPageNumber}/{snb}" align="R" font="ArialSmall" newline="1" />
+		<Cell text="TRASPASO BODEGA Nº {strCOD_TRASPASO_BODEGA}" width="100%" align="C" newline="1" font="ArialBoldBigB"/>
+		<Cell text="" height="4" newline="1"/>	
+	</PageHeader>
+	<Content font="Arial">
+		<Cell text="{ITEM}" width="10%" align="C" border="LRTB" font="Arial"/>	
+		<Cell text="{COD_PRODUCTO}" width="15%" align="C" border="LRTB" font="Arial"/>	
+		<Cell text="{NOM_PRODUCTO}" width="60%" align="L" border="LRTB" font="Arial"/>	
+		<Cell text="{CANTIDAD}" width="15%" align="R" border="LRTB" font="Arial" newline="1"/>	
+	</Content>
+	<Group>
+		<GroupHeader>				
+			<Cell height="15" newline="1"/>
+			<Cell text="Fecha Traspaso:" width="15%" align="L"  font="ArialBoldBlue"/>
+			<Cell text="{FECHA_TRASPASO_BODEGA}" width="55%" align="L"  font="Arial"/>
+			<Cell text="Emisor:" height="12" width="10%" align="L"  font="ArialBoldBlue"/>
+			<Cell text="{NOM_USUARIO}" height="12" width="20%" align="L"  font="Arial" newline="1"/>
+			<Cell text="__________________________________________________________________________________________________" width="99%" align="L" font="Arial" newline="1"/>
+			<Cell text="Bodega Origen:" width="15%" align="L"  font="ArialBoldBlue"/>
+			<Cell text="{NOM_BODEGA_ORIGEN}" width="28%" align="L" font="Arial" />
+			<Cell text="Bodega Destino:" width="15%" align="L"  font="ArialBoldBlue"/>
+			<Cell text="{NOM_BODEGA_DESTINO}" width="27%" align="L" font="Arial" newline="1"/>
+			<Cell text="Referencia:" width="15%" align="L" font="ArialBoldBlue" />
+			<Cell text="{REFERENCIA}" width="85%" align="L" font="Arial" newline="1"/>
+			<Cell text="__________________________________________________________________________________________________" width="99%" align="L" font="Arial" newline="1"/>
+			<Cell text="" height="4" newline="1"/>
+			<Cell text="" height="4" newline="1"/>
+			<Cell text="" height="5" newline="1"/>		
+			<Cell text="Item" width="10%" align="C" border="LRTB" font="ArialBoldBlue"/>		
+			<Cell text="Modelo" width="15%" align="C" border="LRTB" font="ArialBoldBlue"/>
+			<Cell text="Equipo" width="60%" align="C" border="LRTB" font="ArialBoldBlue"/>		
+			<Cell text="Cantidad" width="15%" align="C" border="LRTB" font="ArialBoldBlue" newline="1"/>
+		</GroupHeader>
+	</Group>
+</Report>

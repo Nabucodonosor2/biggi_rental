@@ -1,0 +1,1 @@
+ALTER TABLE PRODUCTO    ADD PRECIO_ARRIENDO_PUBLICO  NUMERIC( 10 ) NULL ;   --se agrega campo en la bd de BIGGI

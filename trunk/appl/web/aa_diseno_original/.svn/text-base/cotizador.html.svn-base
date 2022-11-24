@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BIGGI | Cotizador</title>
+<link type="image/x-icon" href="images/favicon.ico" rel="shortcut icon" />
+<link rel="stylesheet" type="text/css" href="css/estilos.css">
+<link rel="stylesheet" type="text/css" href="css/ei2.css">
+<link rel="stylesheet" href="fontface/stylesheet.css" type="text/css" charset="utf-8" />
+<style>
+.list, .btl{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #fff;
+}
+.list{color: #555;}
+.list td{ border-bottom: 1px #999 dotted;}
+.btl{ background: red; font-weight: bold;}
+</style>
+</head>
+
+<body class="body2">
+<div class="container">
+	<div class="logotipo">
+    	<div class="telefono"></div>
+    </div>
+    <div class="menu">
+        <a href="Empresa.html"><div class="bot">Empresa</div></a>
+        <a href="Productos.html"><div class="bot">Productos</div></a>
+        <a href="Econoline.html"><div class="bot">Econoline</div></a>
+        <a href="Noticias.html"><div class="bot">Noticias</div></a>
+        <a href="Soporte.html"><div class="bot">Soporte y Representantes</div></a>
+        <a href="Ofertas.html"><div class="bot">Ofertas</div></a>
+        <a href="Cotizador.html"><div class="bot" style="background-position:0 -39px;">Cotizaci&oacute;n</div></a>
+        <a href="Contacto.html"><div class="bot">Contacto</div></a>
+    </div>
+<div class="pnlInt">
+	<img src="images/vin-cotizacion.jpg" width="959" height="72">
+	<div class="overcc"><img src="images/ct02.png" width="185" height="10"></div>
+    <div class="overcl"><img src="images/ct01.png" width="261" height="10"></div>
+    	<div class="cajCot">
+        	<form>
+        	<table cellspacing="10px">
+            	<tr>
+                	<td class="frmLbl" width="70px">Nombre</td>
+                    <td><input class="campoLbl" name="" type="text"></td>
+               	</tr>
+                <tr>
+                	<td class="frmLbl">e-mail</td>
+                    <td><input class="campoLbl" name="" type="text"></td>
+               	</tr>
+                <tr>
+                	<td class="frmLbl">Empresa</td>
+                    <td><input class="campoLbl" name="" type="text"></td>
+               	</tr>
+                <tr>
+                	<td class="frmLbl">Teléfono</td>
+                    <td><input class="campoLbl" name="" type="text"></td>
+               	</tr>
+                <tr>
+                	<td class="frmLbl">Comentarios <span style="font-size: 10px;  font-style: italic;">(opcional)</span></td>
+                    <td><textarea class="campoLbl" style="height: 120px;" name="" cols="" rows=""></textarea></td>
+               	</tr>
+            </table>
+        </form>
+        <div class="cotAdv">
+        	<p>Al cotizar en línea obtendrá un descuento en su presupuesto</p>
+        </div>
+        </div>
+        <div class="cajList">
+        	<table cellspacing="0" cellpadding="5">
+            	<tr class="btl">
+             		<td width="80px"></td>
+                	<td width="80px">Código</td>
+                    <td width="210px">Nombre</td>
+                    <td width="60px" align="center">Cantidad</td>
+                    <td width="110px">Precio</td>
+                    <td>Detalle</td>
+                    <td>Borrar</td>
+                </tr>
+                <tr class="list">
+                	<td width="80px"><img src="images/carroCompra/01.jpg" width="80" height="62"></td>
+                	<td>EM34</td>
+                    <td>Encimera Doble</td>
+                    <td align="center">1</td>
+                    <td>$120.000 + iva</td>
+                    <td align="center"><a href="#"><img src="images/search.gif" width="16" height="16" border="0"></a></td>
+                    <td align="center"><a href="#"><img src="images/action_delete.gif" width="16" height="16" border="0"></a></td>
+                </tr>
+                <tr class="list">
+                	<td width="80px"><img src="images/carroCompra/02.jpg" width="80" height="62"></td>
+                	<td>CMAD56</td>
+                    <td>Rayadora de Papas</td>
+                    <td align="center">1</td>
+                    <td>$120.000 + iva</td>
+                    <td align="center"><a href="#"><img src="images/search.gif" width="16" height="16" border="0"></a></td>
+                    <td align="center"><a href="#"><img src="images/action_delete.gif" width="16" height="16" border="0"></a></td>
+                </tr>
+                <tr class="list">
+                	<td width="80px"><img src="images/carroCompra/03.jpg" width="80" height="62"></td>
+                	<td>DTE50</td>
+                    <td>Refrigerador Doble</td>
+                    <td align="center">1</td>
+                    <td>$120.000 + iva</td>
+                    <td align="center"><a href="#"><img src="images/search.gif" width="16" height="16" border="0"></a></td>
+                    <td align="center"><a href="#"><img src="images/action_delete.gif" width="16" height="16" border="0"></a></td>
+                </tr>
+                <tr class="btl">
+                	<td colspan="4"></td>
+                    <td>$1.220.000 + iva</td>
+                    <td colspan="2"></td>
+                </tr>
+           </table>
+           <a href="#"><div class="solCot"></div></a>
+        </div>
+	</div>
+</div>
+<div class="footer">
+    <div class="intFooter">
+        <div class="direcciones">
+            <img src="images/pnlTelef.png" width="185" height="44">
+            <p>Comercial BiGGI (Chile) S.A. </p>
+            <p>Portugal 1726, Santiago 
+            <br>Tels. (56 2) 412 6200 - 555 2849
+            <br>Fax (56 2) 412 62 01</p>
+            <p>Santiago - Chile</p>
+        </div>
+        <div class="creditos">
+            <p>© 2011 Comercial BIGGI (Chile) S.A. 
+            <br>Todos los derechos reservados.</p>
+            <p>Sitio web optimizado para una resolución mínima de 1024 x 768 pixeles</p>
+            <p>Desarrollado por Integrasystem Ltda.<br>
+            Diseño: Convecta | Soluciones Web</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
