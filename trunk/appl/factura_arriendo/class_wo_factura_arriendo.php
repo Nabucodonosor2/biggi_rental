@@ -1,6 +1,8 @@
 <?php
 require_once(dirname(__FILE__)."/../../../../commonlib/trunk/php/auto_load.php");
 require_once(dirname(__FILE__)."/../common_appl/class_w_output_biggi.php");
+ini_set('memory_limit', '720M');
+ini_set('max_execution_time', 900); //900 seconds = 15 minutes
 
 class wi_factura_arriendo_aux extends wi_factura_arriendo  {
 	var $cod_factura;
