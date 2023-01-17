@@ -209,6 +209,8 @@ class dw_faprov extends dw_help_empresa {
 							when 3 then 'Total Líquido' 
 							else 'Total c/IVA'
 						end LABEL_TOTAL1
+						,ES_NORMALIZACION
+						,WS_ORIGEN
 				FROM	FAPROV F, EMPRESA E, TIPO_FAPROV TF,ESTADO_FAPROV EF, USUARIO U
 				WHERE	F.COD_FAPROV = {KEY1} and
 						F.COD_EMPRESA = E.COD_EMPRESA AND
@@ -258,6 +260,7 @@ class dw_faprov extends dw_help_empresa {
 		$this->add_control(new edit_text('RETENCION_BH_H',10,10,'hidden'));
 		
 		$this->add_control(new edit_text('ORIGEN_FAPROV_H',20,20,'hidden'));
+		$this->add_control(new edit_check_box('ES_NORMALIZACION', 'S', 'N'));
 		
 		// usuario anulación
 		$sql = "select 	COD_USUARIO
@@ -663,6 +666,9 @@ class wi_faprov extends w_input {
 		$FECHA_FAPROV		= $this->dws['dw_faprov']->get_item(0, 'FECHA_FAPROV');
 		$COD_CUENTA_COMPRA	= $this->dws['dw_faprov']->get_item(0, 'COD_CUENTA_COMPRA');		
 		$COD_CUENTA_COMPRA	= ($COD_CUENTA_COMPRA =='') ? "NULL" : $COD_CUENTA_COMPRA;
+		$WS_ORIGEN			= $this->dws['dw_faprov']->get_item(0, 'WS_ORIGEN');		
+		$WS_ORIGEN			= ($WS_ORIGEN =='') ? "NULL" : "'$WS_ORIGEN'";
+		$ES_NORMALIZACION	= $this->dws['dw_faprov']->get_item(0, 'ES_NORMALIZACION');	
 		
 		$TOTAL_NETO			= $this->dws['dw_faprov']->get_item(0, 'TOTAL_NETO_H');
 		$TOTAL_NETO			= ($TOTAL_NETO =='') ? 0 : "$TOTAL_NETO";
@@ -705,8 +711,9 @@ class wi_faprov extends w_input {
 					,$COD_USUARIO_ANULA
 					,'$MOTIVO_ANULA'
 					,'$ORIGEN_FAPROV'
-					,$COD_CUENTA_COMPRA";
-					
+					,$COD_CUENTA_COMPRA
+					,$WS_ORIGEN
+					,$ES_NORMALIZACION";
 					
 		if ($db->EXECUTE_SP($sp, $param)){
 			if ($this->is_new_record()) {
