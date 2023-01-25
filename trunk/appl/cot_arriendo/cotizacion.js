@@ -73,14 +73,36 @@ function select_1_producto(valores, record) {
 	 */
 	set_value('COD_PRODUCTO_' + record, valores[1], valores[1]);
 	set_value('NOM_PRODUCTO_' + record, valores[2], valores[2]);
-	set_value('PRECIO_' + record, valores[3], valores[3]);
-	set_value('PRECIO_H_' + record, to_num(valores[3]), to_num(valores[3]));
+	set_value('PRECIO_' + record, to_num(valores[3]), to_num(valores[3]));
 
-	var vl_porc_arr = document.getElementById('PORC_ARRIENDO_0').value;
-	var vl_precio = roundNumber(to_num(valores[3]) * to_num(vl_porc_arr) /100, 0);	 
+	const vl_porc_arr = get_value('PORC_ARRIENDO_0');
+	const vl_precio = roundNumber(to_num(valores[3]) * to_num(vl_porc_arr) /100, 0);	 
 	set_value('PRECIO_ARRIENDO_' + record, vl_precio, number_format(vl_precio, 0, ',', '.'));
 	set_value('PRECIO_ARRIENDO_H_' + record, vl_precio, vl_precio);
 }
+
+function modifica_precio_arriendo(record){
+	const precio = get_value('PRECIO_' + record);
+	const porcArr =  get_value('PORC_ARRIENDO_0');
+	const precioFinal = roundNumber(precio * to_num(porcArr) /100, 0);	
+
+	set_value('PRECIO_ARRIENDO_' + record, precioFinal, number_format(precioFinal, 0, ',', '.'));
+	set_value('PRECIO_ARRIENDO_H_' + record, precioFinal, precioFinal);
+
+	computed(get_num_rec_field('PRECIO_' + record), 'TOTAL');
+}
+
+function valida_codigo(veControl){
+	const vlCodProducto = get_value(veControl.id).toUpperCase();
+
+	if(vlCodProducto == 'TE' || vlCodProducto == 'F' || vlCodProducto == 'E' || vlCodProducto == 'I'){
+		alert('Código no autorizado');
+		set_value(veControl.id , '', '');
+		veControl.focus();
+	}else
+		help_producto(veControl, 0); 
+}
+
 function valida_porc_arriendo(ve_porc_arriendo) {
 	var vl_porc_min = document.getElementById('MIN_PORC_ARRIENDO_0').value;
 	var vl_porc_max = document.getElementById('MAX_PORC_ARRIENDO_0').value;
@@ -99,7 +121,8 @@ function valida_porc_arriendo(ve_porc_arriendo) {
 	var vl_suma = 0;
 	for (i=0; i < aTR.length; i++) {
 		var vl_rec = get_num_rec_field(aTR[i].id);
-		var vl_precio_venta = document.getElementById('PRECIO_' + vl_rec).innerHTML;
+		//var vl_precio_venta = document.getElementById('PRECIO_' + vl_rec).innerHTML;
+		var vl_precio_venta = get_value('PRECIO_' + vl_rec);
 		var vl_precio = roundNumber(to_num(vl_precio_venta) * to_num(ve_porc_arriendo.value) /100, 0);	 
 		set_value('PRECIO_ARRIENDO_' + vl_rec, vl_precio, number_format(vl_precio, 0, ',', '.'));
 		set_value('PRECIO_ARRIENDO_H_' + vl_rec, vl_precio, number_format(vl_precio, 0, ',', '.'));

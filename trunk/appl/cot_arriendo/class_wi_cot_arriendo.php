@@ -27,8 +27,10 @@ class dw_item_cot_arriendo extends dw_item{
 		$this->add_control(new edit_text('COD_ITEM_COT_ARRIENDO',10, 10, 'hidden'));
 		$this->add_control(new edit_num('ORDEN',4, 10));
 		$this->add_control(new edit_text('ITEM',4 , 5));
-		$this->add_control(new edit_cantidad('CANTIDAD',12,10));
-		$this->add_control(new computed('PRECIO', 0));
+		$this->add_control(new edit_cantidad('CANTIDAD',11,10));
+		$this->add_control($control = new edit_num('PRECIO', 10, 10));
+		$control->set_onChange('modifica_precio_arriendo(get_num_rec_field(this.id));');
+
 		$this->add_control(new computed('PRECIO_ARRIENDO'), 0);
 		$this->add_control(new edit_text('MOTIVO',10, 100, 'hidden'));
 		$this->add_control(new edit_text('COD_TIPO_TE',10, 100, 'hidden'));
@@ -39,6 +41,9 @@ class dw_item_cot_arriendo extends dw_item{
 		$this->set_first_focus('COD_PRODUCTO');
 		
 		$this->controls['COD_PRODUCTO']->size = 23;
+
+		$control = $this->controls['COD_PRODUCTO'];
+		$control->set_onChange('valida_codigo(this);');
 		
 		// asigna los mandatorys
 		$this->set_mandatory('ORDEN', 'Orden');
