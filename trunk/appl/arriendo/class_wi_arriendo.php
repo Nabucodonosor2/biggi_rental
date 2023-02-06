@@ -557,7 +557,7 @@ class dw_arriendo extends dw_help_empresa {
 						,B.NOM_BODEGA
 						,A.OBS
 						,dbo.f_arr_total_actual(A.COD_ARRIENDO,getdate()) TOTAL_ACTUAL
-						,dbo.f_arr_vigente(A.COD_ARRIENDO) ES_VIGENTE
+						,VIGENCIA_ARRIENDO
 						,'' APROBAR_SIN_CHEQUE_H
 						,EXIGE_CHEQUE
 				from 	ARRIENDO A left outer join BODEGA B ON B.COD_BODEGA = A.COD_BODEGA, USUARIO U, EMPRESA E
@@ -651,6 +651,7 @@ class dw_arriendo extends dw_help_empresa {
 		$this->set_item(0, 'COD_USUARIO', $this->cod_usuario);
 		$this->set_item(0, 'NOM_USUARIO', $this->nom_usuario);
 		$this->set_item(0, 'COD_USUARIO_VENDEDOR1',$this->cod_usuario);
+		$this->set_item(0, 'VIGENCIA_ARRIENDO', 'NO VIGENTE');
 		
 		$this->set_item(0, 'COD_ESTADO_ARRIENDO', self::K_EMITIDA);
 		$this->set_entrable('COD_ESTADO_ARRIENDO', false);
@@ -802,7 +803,7 @@ class wi_arriendo extends w_cot_nv {
 		if ($cod_estado_arriendo==self::K_ARRIENDO_APROBADO) {
 			$this->b_delete_visible = false;
 			
-			$ES_VIGENTE = $this->dws['dw_arriendo']->get_item(0, 'ES_VIGENTE');
+			$ES_VIGENTE = $this->dws['dw_arriendo']->get_item(0, 'VIGENCIA_ARRIENDO');
 			if($ES_VIGENTE == 'VIGENTE'){
 				$this->dws['dw_arriendo']->set_entrable_dw(false);		
 				$this->dws['dw_item_arriendo']->set_entrable_dw(false);
@@ -1088,7 +1089,7 @@ class wi_arriendo extends w_cot_nv {
 		$this->dws['dw_arriendo']->set_item(0, 'COD_PERSONA',					$result[0]['COD_PERSONA']);
 		$this->dws['dw_arriendo']->set_item(0, 'DIRECCION_SUCURSAL',			$result[0]['DIRECCION_SUCURSAL']);
 		$this->dws['dw_arriendo']->set_item(0, 'MAIL_CARGO_PERSONA',			$result[0]['MAIL_CARGO_PERSONA']);
-		$this->dws['dw_arriendo']->set_item(0, 'SUM_TOTAL',						$result[0]['SUBTOTAL']);			
+		$this->dws['dw_arriendo']->set_item(0, 'SUM_TOTAL',						$result[0]['SUBTOTAL']);		
 		
 		$sql_item="SELECT		COD_ITEM_COT_ARRIENDO,
 								COD_COT_ARRIENDO,
@@ -1115,7 +1116,7 @@ class wi_arriendo extends w_cot_nv {
 		$monto_adicional = 0;
 		
 		if($day_registro_cot > $validez_oferta_cot){
-			$this->alert("La Cotizaciï¿½n de arriendo Nï¿½ ".$cod_cot_arriendo.", se encuentra fuera del periodo de validez de oferta (".$validez_oferta_cot." dï¿½as.) Se usarï¿½n precios actualizados.");
+			$this->alert("La Cotización de arriendo N° ".$cod_cot_arriendo.", se encuentra fuera del periodo de validez de oferta (".$validez_oferta_cot." días.) Se usarán precios actualizados.");
 			$no_valido = true;
 			$porc_arr = $result[0]['PORC_ARRIENDO'];
 		}

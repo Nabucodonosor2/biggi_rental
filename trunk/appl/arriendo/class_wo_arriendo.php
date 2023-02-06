@@ -4,6 +4,9 @@ require_once(dirname(__FILE__)."/../common_appl/class_w_output_biggi.php");
 
 class wo_arriendo extends w_output_biggi {
    function wo_arriendo() {
+		$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+		$db->query("exec spx_arriendo_vigente");
+
    		$sql = "select	COD_ARRIENDO
 						,convert(varchar(20), FECHA_ARRIENDO, 103) FECHA_ARRIENDO
 						,FECHA_ARRIENDO DATE_ARRIENDO
@@ -14,7 +17,7 @@ class wo_arriendo extends w_output_biggi {
 						--,EA.COD_ESTADO_ARRIENDO
 						,NOM_ESTADO_ARRIENDO
 						,dbo.f_arr_total_actual(A.COD_ARRIENDO,getdate()) TOTAL_VIGENTE
-						,dbo.f_arr_vigente(A.COD_ARRIENDO) ES_VIGENTE
+						,VIGENCIA_ARRIENDO
 						,A.NRO_ORDEN_COMPRA
 						,A.CENTRO_COSTO_CLIENTE	
 						,dbo.f_origen_arriendo(COD_ARRIENDO)ORIGEN_ARRIENDO 
@@ -38,12 +41,12 @@ class wo_arriendo extends w_output_biggi {
       	$control->field_bd_order = 'DATE_ARRIENDO';
 	    $this->add_header(new header_num('COD_ARRIENDO', 'COD_ARRIENDO', 'Cod.'));
 	    $this->add_header(new header_rut('RUT', 'E', 'Rut'));
-	    $sql = "SELECT 'ES VIGENTE' VIGENTE, 
-				'ES VIGENTE' ES_VIGENTE
-				UNION
-				SELECT 'NO VIGENTE' ES_VIGENTE, 
-				'NO VIGENTE' ES_VIGENTE";
-	    $this->add_header(new header_drop_down_string('ES_VIGENTE', '(select dbo.f_arr_vigente(A.COD_ARRIENDO))', 'Estado Arriendo', $sql));
+	    $sql = "SELECT 'VIGENTE' COD, 
+					'VIGENTE' NOM
+					UNION
+				SELECT 'NO VIGENTE' COD, 
+				'NO VIGENTE' NOM";
+	    $this->add_header(new header_drop_down_string('VIGENCIA_ARRIENDO', 'VIGENCIA_ARRIENDO', 'Estado Arriendo', $sql));
 
 		$sql = "SELECT 'Biggi' COD, 
 				'Biggi' NOM
@@ -52,9 +55,6 @@ class wo_arriendo extends w_output_biggi {
 				'Catering' NOM";
 	    $this->add_header(new header_drop_down_string('ORIGEN_ARRIENDO', '(dbo.f_origen_arriendo(COD_ARRIENDO))', 'Origen', $sql));
 
-
-
-		
 	    $this->add_header(new header_text('REFERENCIA', 'REFERENCIA', 'Referencia'));
 	    $this->add_header(new header_text('NRO_ORDEN_COMPRA', 'A.NRO_ORDEN_COMPRA', 'N° OC'));
 	    $this->add_header(new header_text('CENTRO_COSTO_CLIENTE', 'A.CENTRO_COSTO_CLIENTE', 'Centro Costo'));

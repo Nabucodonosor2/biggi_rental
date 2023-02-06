@@ -1,0 +1,45 @@
+CREATE PROCEDURE spx_arriendo_vigente
+AS
+BEGIN
+	DECLARE
+		@vc_cod_arriendo	numeric,
+		@vl_stock			numeric,
+		@vl_result			varchar(15)
+
+	DECLARE C_CURSOR CURSOR FOR	
+	SELECT COD_ARRIENDO
+	FROM ARRIENDO
+	WHERE COD_ARRIENDO NOT IN (SELECT COD_ARRIENDO
+							   FROM ARRIENDO_NO_VIGENTE)
+	
+	OPEN C_CURSOR 
+	FETCH C_CURSOR INTO @vc_cod_arriendo
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+
+		SELECT @vl_stock = SUM(A.STOCK)
+		FROM
+		(SELECT DISTINCT I.COD_PRODUCTO
+						,dbo.f_bodega_stock(I.COD_PRODUCTO, A.COD_BODEGA, getdate()) STOCK 
+		 FROM ITEM_MOD_ARRIENDO I
+			 ,MOD_ARRIENDO M
+			 ,ARRIENDO A
+		WHERE M.COD_ARRIENDO = @vc_cod_arriendo
+			  AND A.COD_ARRIENDO = M.COD_ARRIENDO
+			  AND I.COD_MOD_ARRIENDO = M.COD_MOD_ARRIENDO
+			  AND DBO.F_BODEGA_STOCK(I.COD_PRODUCTO, A.COD_BODEGA, GETDATE()) > 0)	A
+
+		if (@vl_stock > 0)
+			set @vl_result	= 'VIGENTE'
+		else
+			set @vl_result = 'NO VIGENTE'
+
+		UPDATE ARRIENDO
+		SET VIGENCIA_ARRIENDO = @vl_result
+		WHERE COD_ARRIENDO = @vc_cod_arriendo
+	
+		FETCH C_CURSOR INTO @vc_cod_arriendo
+	END
+	CLOSE C_CURSOR
+	DEALLOCATE C_CURSOR
+END
