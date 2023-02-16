@@ -952,8 +952,8 @@ class wi_ingreso_pago_base extends w_input {
 		
 		$html = $temp->toString();
 		
-		$lista_mail_to		= "'lleiva@biggi.cl'";
-		$lista_mail_to_name	= "'LORETO LEIVA'";
+		$lista_mail_to		= "'caravena@biggi.cl'";
+		$lista_mail_to_name	= "'CRISTIAN ARAVENA'";
 		
 		//$lista_mail_cc		= "'ascianca@biggi.cl;sergio.pechoante@biggi.cl;rescudero@biggi.cl;jcatalan@biggi.cl;'";
 		//$lista_mail_cc_name	= "'ANGEL SCIANCA;SERGIO PECHOANTE;RAFAEL ESCUDERO;JOSE CATALAN;'";
