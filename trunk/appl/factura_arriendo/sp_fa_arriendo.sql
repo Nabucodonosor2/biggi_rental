@@ -35,6 +35,7 @@ BEGIN
 		,@vl_monto_iva				numeric
 		,@vl_con_fecha_stock		varchar(1)
 		,@vl_saldo_ch				numeric
+		,@vl_fecha_orden_compra		datetime
 		
 	if (@ve_fecha_stock is null)
 		set @vl_con_fecha_stock = 'N' 
@@ -65,12 +66,27 @@ BEGIN
 			set @K_FA_RENTAL = 2
 			set @K_PARAM_IVA = 1
 			set @vl_porc_iva = convert(decimal, dbo.f_get_parametro(@K_PARAM_IVA))
-			select @vl_cod_empresa = cod_empresa
-				,@vl_cod_persona = cod_persona
-				,@vl_cod_sucursal_factura = cod_sucursal
-			from arriendo
-			where cod_arriendo = @vc_cod_arriendo
-
+			
+			if(@vl_count_contrato = 1) begin
+				select @vl_cod_empresa = cod_empresa
+					,@vl_cod_persona = cod_persona
+					,@vl_cod_sucursal_factura = cod_sucursal
+				from arriendo
+				where cod_arriendo = @vc_cod_arriendo
+			end
+			else begin
+				--marcelo pidio este cambio para cuando la lista de contrato a facturar es mayor a uno 
+				--que obtenga la direccion de facturacion de la empresa no del contrato
+				--EV 14/11/2019
+				select @vl_cod_empresa = a.cod_empresa
+					,@vl_cod_persona = cod_persona
+					,@vl_cod_sucursal_factura = s.cod_sucursal
+				from arriendo a, EMPRESA e, SUCURSAL s
+				where cod_arriendo =@vc_cod_arriendo
+				and e.COD_EMPRESA = a.COD_EMPRESA
+				and s.COD_EMPRESA = e.COD_EMPRESA
+				and s.DIRECCION_FACTURA = 'S'
+			end
 
 			--10-12-2015 mail de RE asunto "FW: ERROR FACTURA AKY" del 10-12-2015
 			set @ve_fecha_stock = getdate()
@@ -120,6 +136,7 @@ BEGIN
 			if(@vl_cod_empresa = 99) --CASINO EXPRESS S.A.
 				set @vl_nro_orden_compra = null
 			
+			set @vl_fecha_orden_compra = GETDATE()
 			
 			execute spu_factura 
 			'INSERT' 					-- ve_operacion
@@ -134,7 +151,7 @@ BEGIN
 			,@vl_cod_persona
 			,@vl_referencia 
 			,@vl_nro_orden_compra		-- nro_orden_compra
-			,NULL						-- fecha_orden_compra_cliente
+			,@vl_fecha_orden_compra		-- fecha_orden_compra_cliente
 			,@vl_obs 					-- obs
 			,NULL 						-- retirado_por
 			,NULL 						-- rut_retirado_por
@@ -168,6 +185,14 @@ BEGIN
 			,'N'						-- genera_salida
 			,'ARRIENDO'	
 			,'N'						-- CANCELADA
+			,NULL						--@ve_cod_centro_costo
+	        ,NULL						--@ve_cod_vendedor_sofland
+	        ,NULL						--@ve_ws_origen
+	        ,NULL						--@ve_xml_dte
+	        ,NULL						--@ve_track_id_dte
+	        ,NULL						--@ve_resp_emitir_dte
+	        ,NULL						--@ve_no_tiene_oc
+	        ,'CREAR_DESDE'				--@ve_origen_factura
 
 			set @vl_cod_factura = @@identity
 			
@@ -183,13 +208,14 @@ BEGIN
 
 		declare C_ITEM CURSOR FOR  
 		select distinct i.cod_producto
-				,i.nom_producto
+				,p.nom_producto
 				,dbo.f_bodega_stock(i.cod_producto, a.cod_bodega, @ve_fecha_stock)
 				,i.precio
-		from item_mod_arriendo i, mod_arriendo m, arriendo a
+		from item_mod_arriendo i, mod_arriendo m, arriendo a, producto p
 		where m.cod_arriendo = @vc_cod_arriendo
 		  and i.cod_mod_arriendo = m.cod_mod_arriendo
 		  and a.cod_arriendo = m.cod_arriendo
+		  and p.cod_producto = i.cod_producto
 		  and dbo.f_bodega_stock(i.cod_producto, a.cod_bodega, @ve_fecha_stock) > 0
 
 		OPEN C_ITEM
@@ -257,6 +283,9 @@ BEGIN
 	OPEN C_CONTRATO
 	FETCH C_CONTRATO INTO @vc_cod_arriendo
 	WHILE @@FETCH_STATUS = 0 BEGIN
+
+		INSERT INTO FACTURA_CONTRATO (COD_FACTURA, COD_ARRIENDO) VALUES(@vl_cod_factura, @vc_cod_arriendo)
+
 		SELECT @vl_exige_cheque = EXIGE_CHEQUE
 		FROM ARRIENDO
 		WHERE COD_ARRIENDO = @vc_cod_arriendo

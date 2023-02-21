@@ -18,21 +18,6 @@ class wi_factura_arriendo_aux extends wi_factura_arriendo  {
 	}
 }
 
-class static_cod_doc extends static_text {
-    function static_gr($field) {
-        parent::static_text($field);
-    }
-    function draw_no_entrable($dato, $record) {
-        $a = explode("|", $dato);
-        if (count($a) > 1)
-            return 'varios';
-            else
-                return $a[0];
-    }
-    function draw_entrable($dato, $record) {
-        return $this->draw_no_entrable($dato, $record);
-    }
-}
 class wo_factura_arriendo extends w_output_biggi {
 	const K_ESTADO_SII_EMITIDA	= 1;
 	const K_ESTADO_CONFIRMADA	= 4;
@@ -63,7 +48,7 @@ class wo_factura_arriendo extends w_output_biggi {
 						,U.INI_USUARIO
 						,dbo.f_fa_tipo_doc(F.COD_FACTURA) TIPO_FA
 						,dbo.f_origen_arriendo1(F.COD_FACTURA,'FACTURA')ORIGEN_ARRIENDO 
-                        ,dbo.f_origen_arriendo1(F.COD_FACTURA,'ARRIENDOS_X_FACTURA')COD_DOC 
+                        ,dbo.f_origen_arriendo1(F.COD_FACTURA,'ARRIENDOS_X_FACTURA2')COD_DOC 
 				 from	FACTURA F, ESTADO_DOC_SII EDS, USUARIO U
 				where	F.COD_ESTADO_DOC_SII = EDS.COD_ESTADO_DOC_SII AND
 						F.COD_USUARIO_VENDEDOR1 = U.COD_USUARIO AND
@@ -75,7 +60,6 @@ class wo_factura_arriendo extends w_output_biggi {
 		$this->dw->add_control(new edit_nro_doc('COD_FACTURA','FACTURA'));
 		$this->dw->add_control(new static_num('RUT'));
 		$this->dw->add_control(new edit_precio('TOTAL_CON_IVA'));
-		$this->dw->add_control(new static_cod_doc('COD_DOC'));
 
 		// headers
 		$this->add_header($control = new header_date('FECHA_FACTURA', 'FECHA_FACTURA', 'Fecha'));
@@ -94,7 +78,7 @@ class wo_factura_arriendo extends w_output_biggi {
 		$this->add_header($control = new header_drop_down_string('TIPO_FA', '(dbo.f_fa_tipo_doc(COD_FACTURA))', 'Tipo FA', $sql)); 
   		$control->field_bd_order = 'TIPO_FA';
   		
-  		$this->add_header(new header_text('COD_DOC', "dbo.f_origen_arriendo1(F.COD_FACTURA,'ARRIENDOS_X_FACTURA')", 'N° ARRIENDO'));
+  		$this->add_header(new header_text('COD_DOC', "dbo.f_origen_arriendo1(F.COD_FACTURA,'ARRIENDOS_X_FACTURA2')", 'N° ARRIENDO'));
   		
   		// dw checkbox
 		$priv = $this->get_privilegio_opcion_usuario(self::K_AUTORIZA_SUMAR, $this->cod_usuario);
