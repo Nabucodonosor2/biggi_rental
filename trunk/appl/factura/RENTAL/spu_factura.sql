@@ -49,10 +49,11 @@ ALTER PROCEDURE [dbo].[spu_factura]
                                 ,@ve_cod_vendedor_sofland    numeric=NULL
                                 ,@ve_ws_origen				 varchar(100)=NULL
                                 ,@ve_xml_dte				text=NULL
-                                ,@ve_track_id_dte			varchar(100)=NULL
+                   				,@ve_track_id_dte			varchar(100)=NULL
                                 ,@ve_resp_emitir_dte		text=NULL
                                 ,@ve_no_tiene_oc			varchar(1)=NULL
                                 ,@ve_origen_factura			varchar(50)=NULL
+                                ,@ve_centro_costo_cliente varchar (20) = null
 )
 AS
 BEGIN  
@@ -140,6 +141,9 @@ BEGIN
     	if(@ve_no_tiene_oc is null)
         	set @ve_no_tiene_oc = 'N'
         
+        if(@ve_cod_empresa = 4 or @ve_cod_empresa = 28 or @ve_cod_empresa = 29 or @ve_cod_empresa = 32)
+        	set @ve_cod_forma_pago = 15	
+        	
         if (@ve_operacion='UPDATE')
             begin
                 select    @vl_cod_usuario_anula = f.cod_usuario_anula,
@@ -274,6 +278,7 @@ BEGIN
                         ,cod_vendedor_sofland    = @ve_cod_vendedor_sofland
                         ,nom_forma_pago          = @vl_nom_forma_pago
                         ,no_tiene_oc			 = @ve_no_tiene_oc
+                        ,CENTRO_COSTO_CLIENTE 	 = @ve_centro_costo_cliente
                 where cod_factura = @ve_cod_factura
             end
         else if (@ve_operacion='INSERT')
@@ -316,7 +321,8 @@ BEGIN
 				from FORMA_PAGO
 				where COD_FORMA_PAGO = @ve_cod_forma_pago
 				
-                
+                SELECT @ve_nro_orden_compra = dbo.f_limpia_string(@ve_nro_orden_compra)
+				
                 insert into factura
                         (fecha_registro            
                         ,cod_usuario                
@@ -382,7 +388,8 @@ BEGIN
                         ,nom_pais
                         ,nom_forma_pago
                         ,no_tiene_oc
-                        ,origen_factura)                    
+                        ,origen_factura
+                        ,CENTRO_COSTO_CLIENTE)                    
                     values
                         (getdate()
                         ,@ve_cod_usuario
@@ -438,7 +445,7 @@ BEGIN
                         ,@ve_porc_factura_parcial
                         ,@ve_nom_forma_pago_otro
                         ,@ve_genera_salida
-                        ,@ve_tipo_doc
+                 ,@ve_tipo_doc
                         ,@ve_cancelada
                         ,@ve_cod_centro_costo
                         ,@ve_cod_vendedor_sofland
@@ -448,13 +455,16 @@ BEGIN
                         ,@vl_nom_pais
                 		,@vl_nom_forma_pago
                 		,@ve_no_tiene_oc
-                		,@ve_origen_factura)
+                		,@ve_origen_factura
+                		,@ve_centro_costo_cliente)
                 end
             else if (@ve_operacion='DELETE')
                 begin
 					/*delete ENVIO_FACTURA
 					where cod_factura = @ve_cod_factura*/
-					
+					delete FACTURA_CONTRATO
+                    where cod_factura = @ve_cod_factura
+
 					delete cheque_factura
                     where cod_factura = @ve_cod_factura
 	                
@@ -797,7 +807,7 @@ BEGIN
                             -- actualiza monto_doc_asignado antiguo
                             update monto_doc_asignado
                             set monto_doc_asignado = monto_doc_asignado - @vl_por_asignar_fa
-                            where cod_monto_doc_asignado = @vl_cod_monto_doc_asignado
+         where cod_monto_doc_asignado = @vl_cod_monto_doc_asignado
                             -- rebaja el total por pagar
                             set @vl_total_fa = @vl_total_fa - @vl_por_asignar_fa
                             -- borra si monto = 0
@@ -865,7 +875,7 @@ BEGIN
 
                     update factura        
                     set    subtotal                    =    @vl_sub_total        
-                        ,porc_dscto1                =    @vl_porc_dscto1    
+ ,porc_dscto1                =    @vl_porc_dscto1    
                         ,monto_dscto1                =    @vl_monto_dscto1    
                         ,porc_dscto2                =    @vl_porc_dscto2    
                         ,monto_dscto2                =    @vl_monto_dscto2    
@@ -1008,4 +1018,10 @@ BEGIN
                     exec spu_factura 'CREA_INGRESA_PAGO', @ve_cod_factura
 				end
 			end   
+        else if (@ve_operacion='REENVIA_SAVE_DTE') begin
+				update FACTURA
+				set xml_dte			= @ve_xml_dte
+	    			,track_id_dte	= @ve_track_id_dte
+				where  cod_factura 	= @ve_cod_factura
+		end 
 END
