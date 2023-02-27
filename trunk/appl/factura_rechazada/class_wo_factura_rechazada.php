@@ -41,10 +41,7 @@ class wo_factura_rechazada extends w_output_biggi{
 					  ,dbo.f_origen_arriendo1(F.COD_FACTURA,'ARRIENDOS_X_FACTURA2') COD_ARRIENDO
 					  ,dbo.f_get_nc_from_fa(F.COD_FACTURA) NRO_NOTA_CREDITO
 					  ,COD_ESTADO_DOC_SII
-					  ,CASE
-							WHEN dbo.f_get_nc_from_fa(F.COD_FACTURA) IS NULL THEN NULL
-							ELSE dbo.f_get_reFA(F.COD_FACTURA, F.TOTAL_NETO, F.COD_EMPRESA, 'NRO')
-						END NRO_RE_FACTURA
+					  ,NRO_RE_FACTURA
 				FROM FACTURA_RECHAZADA FR LEFT OUTER JOIN USUARIO U ON U.COD_USUARIO = FR.COD_USUARIO_RESUELTA
 					,FACTURA F
 					,USUARIO UV1
@@ -68,11 +65,7 @@ class wo_factura_rechazada extends w_output_biggi{
 		$control->field_bd_order = 'COD_ARRIENDO';
 		$this->add_header($control = new header_num('NRO_NOTA_CREDITO', 'dbo.f_get_nc_from_fa(F.COD_FACTURA)', 'NC'));
 		$control->field_bd_order = 'NRO_NOTA_CREDITO';
-		$this->add_header($control = new header_num('NRO_RE_FACTURA',  "CASE
-																			WHEN dbo.f_get_nc_from_fa(F.COD_FACTURA) IS NULL THEN NULL
-																			ELSE dbo.f_get_reFA(F.COD_FACTURA, F.TOTAL_NETO, F.COD_EMPRESA, 'NRO')
-																		END", 'FA'));
-		$control->field_bd_order = 'NRO_RE_FACTURA';
+		$this->add_header(new header_num('NRO_RE_FACTURA', "NRO_RE_FACTURA", 'FA'));
 
 		$sql_s_n = "select 'S' RESUELTA,
 							'Si' NOM_RESUELTA
