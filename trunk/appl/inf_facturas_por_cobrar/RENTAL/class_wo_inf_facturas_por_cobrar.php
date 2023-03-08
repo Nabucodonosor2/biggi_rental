@@ -18,7 +18,7 @@ class static_cod_doc extends static_text {
 class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
 	var $checkbox_ventas;
 	var $checkbox_arriendo;
-	
+	var $checkbox_arriendo_genova;
 	var $checkbox_arriendo_biggi;
 	var $checkbox_arriendo_catering;
 	var $todos_seleccionados = true;
@@ -55,6 +55,9 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
 				where /*FILTROS*/
                 I.COD_USUARIO = $cod_usuario 
                 ";
+
+		if(!$this->checkbox_arriendo_genova)
+			$sql .= " and COD_EMPRESA <> 8";
 		
    		if($this->ninguno_seleccionado){
    		    $sql .= " and dbo.f_origen_arriendo1(I.COD_FACTURA,'FACTURA') = 'NO_MOSTRAR'";
@@ -180,7 +183,8 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
 					   'S' CHECK_ARRIENDO,
 					   'N' HIZO_CLICK,
                        'S' CHECK_ARRIENDO_BIGGI,
-					   'S' CHECK_ARRIENDO_CATERING";
+					   'S' CHECK_ARRIENDO_CATERING,
+					   'N' CHECK_ARRIENDO_GENOVA";
 		$this->dw_check_box = new datawindow($sql);
 		
 		$sql = "select 0 SUMAS_CANTIDADES_FA
@@ -206,6 +210,9 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
 		$this->dw_check_box->add_control($control = new edit_check_box('CHECK_ARRIENDO_CATERING','S','N'));
 		$control->set_onClick("agrega_factura(); document.getElementById('loader').style.display='';");
 		
+		$this->dw_check_box->add_control($control = new edit_check_box('CHECK_ARRIENDO_GENOVA','S','N'));
+		$control->set_onClick("agrega_factura(); document.getElementById('loader').style.display='';");
+
 		$this->dw_check_box->add_control(new edit_text_hidden('HIZO_CLICK'));
 		$this->calcular_totales();
 		$this->dw_check_box->retrieve();
@@ -245,7 +252,7 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
 	    $menu->ancho_completa_menu = $menu_original;    // volver a setear el tamaño original
 	}
 	function redraw(&$temp) {
-		parent::redraw(&$temp);
+		parent::redraw($temp);
 		$this->dw_check_box->habilitar($temp, true);
 		$this->dw_totales->habilitar($temp, true);
 	}	
@@ -301,13 +308,11 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
         
 	}
 	function procesa_event() {
-		if ($_POST['HIZO_CLICK_0'] == 'S') {
-			$this->checkbox_ventas = isset($_POST['CHECK_VENTAS_0']);
-			
-			
-			$this->checkbox_arriendo_biggi = isset($_POST['CHECK_ARRIENDO_BIGGI_0']);
-			$this->checkbox_arriendo_catering = isset($_POST['CHECK_ARRIENDO_CATERING_0']);
-			
+		if($_POST['HIZO_CLICK_0'] == 'S'){
+			$this->checkbox_ventas				= isset($_POST['CHECK_VENTAS_0']);
+			$this->checkbox_arriendo_biggi		= isset($_POST['CHECK_ARRIENDO_BIGGI_0']);
+			$this->checkbox_arriendo_catering	= isset($_POST['CHECK_ARRIENDO_CATERING_0']);
+			$this->checkbox_arriendo_genova		= isset($_POST['CHECK_ARRIENDO_GENOVA_0']);
 			
 			if($this->checkbox_ventas && $this->checkbox_arriendo_biggi && $this->checkbox_arriendo_catering)
 			    $this->todos_seleccionados = true;
@@ -333,15 +338,20 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
 				$this->dw_check_box->set_item(0, 'CHECK_VENTAS', 'N');
 			}
 			
-			if ($this->checkbox_arriendo_biggi)
+			if($this->checkbox_arriendo_biggi)
 			    $this->dw_check_box->set_item(0, 'CHECK_ARRIENDO_BIGGI', 'S');
 		    else
 		        $this->dw_check_box->set_item(0, 'CHECK_ARRIENDO_BIGGI', 'N');
 		    
-	        if ($this->checkbox_arriendo_catering)
+	        if($this->checkbox_arriendo_catering)
 	            $this->dw_check_box->set_item(0, 'CHECK_ARRIENDO_CATERING', 'S');
             else
                 $this->dw_check_box->set_item(0, 'CHECK_ARRIENDO_CATERING', 'N');
+
+			if($this->checkbox_arriendo_genova)
+	            $this->dw_check_box->set_item(0, 'CHECK_ARRIENDO_GENOVA', 'S');
+            else
+                $this->dw_check_box->set_item(0, 'CHECK_ARRIENDO_GENOVA', 'N');
 
 			$sql = $this->make_sql();
 			
