@@ -16,14 +16,14 @@ class static_cod_doc extends static_text {
 }
 
 class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
-	var $checkbox_ventas;
-	var $checkbox_arriendo;
-	var $checkbox_arriendo_genova;
-	var $checkbox_arriendo_biggi;
-	var $checkbox_arriendo_catering;
-	var $todos_seleccionados = true;
+	var $checkbox_ventas = true;
+	var $checkbox_arriendo = true;
+	var $checkbox_arriendo_genova = false;
+	var $checkbox_arriendo_biggi = true;
+	var $checkbox_arriendo_catering = true;
+	var $todos_seleccionados = false;
 	var $ninguno_seleccionado = false;
-	var $todos_arriendos_seleccionados = false;
+	//var $todos_arriendos_seleccionados = false;
 	var $sql_filtrado = '';
 	
 	function make_sql() {
@@ -55,29 +55,36 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
 				where /*FILTROS*/
                 I.COD_USUARIO = $cod_usuario 
                 ";
-
-		if(!$this->checkbox_arriendo_genova)
-			$sql .= " and COD_EMPRESA <> 8";
-		
+	
    		if($this->ninguno_seleccionado){
    		    $sql .= " and dbo.f_origen_arriendo1(I.COD_FACTURA,'FACTURA') = 'NO_MOSTRAR'";
-   		}else{
-   		    if($this->todos_seleccionados == false){
-   		        if ($this->checkbox_ventas == false){
-   		            $sql .= " and I.COD_TIPO_FACTURA <> 1";
-   		        }else if ($this->checkbox_ventas == true && $this->checkbox_arriendo_biggi == false && $this->checkbox_arriendo_catering == false){
-   		            $sql .= " and I.COD_TIPO_FACTURA = 1";
-   		        }
-   		        if($this->todos_arriendos_seleccionados == false){
-   		            if ($this->checkbox_arriendo_biggi == true){
-   		                $sql .= " and dbo.f_origen_arriendo1(I.COD_FACTURA,'FACTURA') = 'BIGGI'";
-   		            }
-   		            if ($this->checkbox_arriendo_catering == true){
-   		                $sql .= " and dbo.f_origen_arriendo1(I.COD_FACTURA,'FACTURA') = 'CATERING'";
-   		            }
-   		        }
-   		        if ($this->checkbox_ventas == true && $this->checkbox_arriendo_biggi == false && $this->checkbox_arriendo_catering == true){
-   		            $sql .= "UNION
+   		}else if($this->todos_seleccionados == false){
+			
+			$fill = '';
+			if($this->checkbox_ventas == true && $this->checkbox_arriendo_biggi == true){
+				$fill .= "'BIGGI',";
+			}else if($this->checkbox_ventas == true && $this->checkbox_arriendo_biggi == false){
+				$fill .= "'BIGGI',";
+				$sql .= " and I.COD_TIPO_FACTURA = 1";
+			}else if($this->checkbox_ventas == false && $this->checkbox_arriendo_biggi == true){
+				$fill .= "'BIGGI',";
+				$sql .= " and I.COD_TIPO_FACTURA <> 1";
+			}
+
+			if ($this->checkbox_arriendo_catering == true)
+				$fill .= "'CATERING',";
+			
+			if ($this->checkbox_arriendo_genova == true)
+				$fill .= "'GENOVA',";
+
+			if($fill <> ''){
+				$fill = trim($fill, ',');
+				$sql .= " and dbo.f_origen_arriendo1(I.COD_FACTURA,'FACTURA') in ($fill)";
+			}
+
+			//caso especiales
+			if($this->checkbox_ventas == true && $this->checkbox_arriendo_biggi == false && $this->checkbox_arriendo_catering == true){
+				$sql .= " UNION
                             select	I.COD_FACTURA
         						,I.NRO_FACTURA
         						,I.FECHA_FACTURA
@@ -98,10 +105,10 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
                                 
         				FROM INF_FACTURAS_POR_COBRAR I
         				where I.COD_USUARIO = $cod_usuario 
-                         and I.COD_TIPO_FACTURA = 1";
-   		        }
-   		    }if ($this->checkbox_ventas == true && $this->checkbox_arriendo_biggi == true && $this->checkbox_arriendo_catering == false){
-   		        $sql .= "UNION
+						 and dbo.f_origen_arriendo1(I.COD_FACTURA,'FACTURA') = 'CATERING'";
+			}
+			if($this->checkbox_ventas == true && $this->checkbox_arriendo_biggi == false && $this->checkbox_arriendo_genova == true){
+				$sql .= " UNION
                             select	I.COD_FACTURA
         						,I.NRO_FACTURA
         						,I.FECHA_FACTURA
@@ -115,15 +122,15 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
         						,I.TOTAL_CON_IVA
         						,I.SALDO
         						,I.PAGO
-        						,I.CANTIDAD_FA
+        						,I.CANTIDAD_FA 
         						,I.COD_USUARIO_VENDEDOR1
                                 ,dbo.f_origen_arriendo1(I.COD_FACTURA,'FACTURA')ORIGEN_ARRIENDO
         						,dbo.f_origen_arriendo1(I.COD_FACTURA,'ARRIENDOS_X_FACTURA')COD_DOCS
                                 
         				FROM INF_FACTURAS_POR_COBRAR I
-        				where I.COD_USUARIO = $cod_usuario
-                         and I.COD_TIPO_FACTURA = 1";
-   		    }
+        				where I.COD_USUARIO = $cod_usuario 
+						 and dbo.f_origen_arriendo1(I.COD_FACTURA,'FACTURA') = 'GENOVA'";
+			}
    		}
    		
 		$sql .= " ORDER BY I.FECHA_FACTURA";
@@ -162,10 +169,13 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
 		$this->add_header(new header_text('COD_DOCS', "dbo.f_origen_arriendo1(I.COD_FACTURA,'ARRIENDOS_X_FACTURA')", 'N° Arriendo'));
 		
 		$sql = "SELECT 'Biggi' COD,
-				'Biggi' NOM
+					   'Biggi' NOM
 				UNION
 				SELECT 'Catering' COD,
-				'Catering' NOM";
+					   'Catering' NOM
+				UNION
+				SELECT 'Genova' COD,
+					   'Genova' NOM";
 		$this->add_header(new header_drop_down_string('ORIGEN_ARRIENDO',"(dbo.f_origen_arriendo1(I.COD_FACTURA,'FACTURA'))", 'Origen', $sql));
 		
 		// controls
@@ -314,29 +324,20 @@ class wo_inf_facturas_por_cobrar extends wo_inf_facturas_por_cobrar_base {
 			$this->checkbox_arriendo_catering	= isset($_POST['CHECK_ARRIENDO_CATERING_0']);
 			$this->checkbox_arriendo_genova		= isset($_POST['CHECK_ARRIENDO_GENOVA_0']);
 			
-			if($this->checkbox_ventas && $this->checkbox_arriendo_biggi && $this->checkbox_arriendo_catering)
+			if($this->checkbox_ventas && $this->checkbox_arriendo_biggi && $this->checkbox_arriendo_catering && $this->checkbox_arriendo_genova)
 			    $this->todos_seleccionados = true;
 			else 
 			    $this->todos_seleccionados = false;
 			
-		    if(!$this->checkbox_ventas && !$this->checkbox_arriendo_biggi && !$this->checkbox_arriendo_catering)
+		    if(!$this->checkbox_ventas && !$this->checkbox_arriendo_biggi && !$this->checkbox_arriendo_catering && !$this->checkbox_arriendo_genova)
 		        $this->ninguno_seleccionado = true;
 		    else 
 		        $this->ninguno_seleccionado = false;
 			
-		    if($this->checkbox_arriendo_biggi && $this->checkbox_arriendo_catering ){
-		        $this->todos_arriendos_seleccionados = true;
-		    }else if (!$this->checkbox_arriendo_biggi && $this->checkbox_arriendo_catering ) {
-		        $this->todos_arriendos_seleccionados = false;
-		    }else if ($this->checkbox_arriendo_biggi && !$this->checkbox_arriendo_catering ) {
-		        $this->todos_arriendos_seleccionados = false;
-		    }
-			
 			if ($this->checkbox_ventas)
 				$this->dw_check_box->set_item(0, 'CHECK_VENTAS', 'S');
-			else{
+			else
 				$this->dw_check_box->set_item(0, 'CHECK_VENTAS', 'N');
-			}
 			
 			if($this->checkbox_arriendo_biggi)
 			    $this->dw_check_box->set_item(0, 'CHECK_ARRIENDO_BIGGI', 'S');

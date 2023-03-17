@@ -35,6 +35,8 @@ BEGIN
                     END    
 	                ELSE IF(@vl_origen = 'C') 
 		                SET @lv_retorno = 'CATERING'
+					ELSE IF(@vl_origen = 'G') 
+		                SET @lv_retorno = 'GENOVA'
                 END
         END
 
