@@ -85,11 +85,8 @@ $mail->SMTPSecure   = 'ssl';
 $mail->From         = "modulo_alertas@biggi.cl";		
 $mail->FromName     = "Módulo Alertas Grupo BIGGI";
 $mail->Timeout      = 30;
-$mail->Subject      = "Informe Facturas Rechazadas al $fecha_anterior";
+$mail->Subject      = "Informe Facturas Rechazadas al $fecha_anterior - Sistema Rental";
 $mail->ClearAddresses();
-
-/*$mail->AddAddress('mherrera@biggi.cl','Marcelo Herrera');
-$mail->AddCC('isra.campos.o@gmail.com', 'Israel Campos');*/
 
 $mail->AddAddress('sergio.pechoante@biggi.cl', 'Sergio Pechoante');
 $mail->AddAddress('caravena@biggi.cl', 'Cristian Aravena');
