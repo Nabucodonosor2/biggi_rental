@@ -560,6 +560,10 @@ class dw_arriendo extends dw_help_empresa {
 						,VIGENCIA_ARRIENDO
 						,'' APROBAR_SIN_CHEQUE_H
 						,EXIGE_CHEQUE
+						,0 F_VA_TOTAL
+						,0 F_VA_TOTAL_VALOR_VENTA_INICIAL
+						,0 F_VA_TOTAL_ARRIENDO_ACTUAL
+						,0 F_VA_TOTAL_VALOR_VENTA_ACTUAL
 				from 	ARRIENDO A left outer join BODEGA B ON B.COD_BODEGA = A.COD_BODEGA, USUARIO U, EMPRESA E
 				where	A.COD_ARRIENDO = {KEY1} 
 				  and	U.COD_USUARIO = A.COD_USUARIO
@@ -702,6 +706,65 @@ class dw_arriendo_stock extends datawindow {
 		$this->add_control(new static_num('ST_TOTAL'));
 	}
 }
+
+class dw_arriendo_valor_actual extends datawindow {
+	function dw_arriendo_valor_actual() {
+		$sql = "select distinct I.COD_PRODUCTO VA_COD_PRODUCTO
+						,dbo.f_bodega_stock(I.COD_PRODUCTO, A.COD_BODEGA, getdate()) VA_CANTIDAD
+						,I.PRECIO VA_PRECIO
+						,dbo.f_bodega_stock(I.COD_PRODUCTO, A.COD_BODEGA, getdate()) * I.PRECIO VA_TOTAL
+						,(I.PRECIO*100)/A.PORC_ARRIENDO VA_VALOR_VENTA_INICIAL
+						,((I.PRECIO*100)/A.PORC_ARRIENDO) * dbo.f_bodega_stock(I.COD_PRODUCTO, A.COD_BODEGA, getdate()) VA_TOTAL_VALOR_VENTA_INICIAL
+						,(P.PRECIO_VENTA_PUBLICO*A.PORC_ARRIENDO)/100	VA_VALOR_ARRIENDO_ACTUAL
+						,((P.PRECIO_VENTA_PUBLICO*A.PORC_ARRIENDO)/100)*dbo.f_bodega_stock(I.COD_PRODUCTO, A.COD_BODEGA, getdate()) VA_TOTAL_ARRIENDO_ACTUAL
+						,P.PRECIO_VENTA_PUBLICO VA_PRECIO_VENTA_PUBLICO
+						,P.PRECIO_VENTA_PUBLICO * dbo.f_bodega_stock(I.COD_PRODUCTO, A.COD_BODEGA, getdate()) VA_TOTAL_VALOR_VENTA_ACTUAL
+				from ITEM_MOD_ARRIENDO I
+					,MOD_ARRIENDO M
+					,ARRIENDO A
+					,PRODUCTO P
+				WHERE M.COD_ARRIENDO = {KEY1}
+				AND I.COD_MOD_ARRIENDO = M.COD_MOD_ARRIENDO
+				AND A.COD_ARRIENDO = M.COD_ARRIENDO
+				AND I.COD_PRODUCTO = P.COD_PRODUCTO
+				AND DBO.F_BODEGA_STOCK(I.COD_PRODUCTO, A.COD_BODEGA, GETDATE()) > 0
+				order by VA_COD_PRODUCTO";
+		parent::datawindow($sql, 'ARRIENDO_VALOR_ACTUAL');
+		
+		$this->add_control(new static_num('VA_CANTIDAD', 1));
+		$this->add_control(new static_num('VA_PRECIO'));
+		$this->add_control(new static_num('VA_TOTAL'));
+		$this->add_control(new static_num('VA_VALOR_VENTA_INICIAL'));
+		$this->add_control(new static_num('VA_TOTAL_VALOR_VENTA_INICIAL'));
+		$this->add_control(new static_num('VA_VALOR_ARRIENDO_ACTUAL'));
+		$this->add_control(new static_num('VA_TOTAL_ARRIENDO_ACTUAL'));
+		$this->add_control(new static_num('VA_PRECIO_VENTA_PUBLICO'));
+		$this->add_control(new static_num('VA_TOTAL_VALOR_VENTA_ACTUAL'));
+	}
+
+	function fill_record(&$temp, $record) {
+		parent::fill_record($temp, $record);
+
+		if($record % 2 == 0){
+			$temp->setVar($this->label_record.'.CSS_STYLE1_UNO', '#b0c6e5');
+			$temp->setVar($this->label_record.'.CSS_STYLE1_DOS', '#f7cbae');
+			$temp->setVar($this->label_record.'.CSS_STYLE1_TRES', '#c5e0b5');
+
+			$temp->setVar($this->label_record.'.CSS_STYLE2_UNO', '#b0c6e5');
+			$temp->setVar($this->label_record.'.CSS_STYLE2_DOS', '#f7cbae');
+			$temp->setVar($this->label_record.'.CSS_STYLE2_TRES', '#c5e0b5');
+		}else{
+			$temp->setVar($this->label_record.'.CSS_STYLE1_UNO', '#dae1f3');
+			$temp->setVar($this->label_record.'.CSS_STYLE1_DOS', '#fce4d7');
+			$temp->setVar($this->label_record.'.CSS_STYLE1_TRES', '#e2efdb');
+
+			$temp->setVar($this->label_record.'.CSS_STYLE2_UNO', '#dae1f3');
+			$temp->setVar($this->label_record.'.CSS_STYLE2_DOS', '#fce4d7');
+			$temp->setVar($this->label_record.'.CSS_STYLE2_TRES', '#e2efdb');
+		}
+	}
+}
+
 class wi_arriendo extends w_cot_nv {
 	const K_ARRIENDO_EMITIDO = 1;
 	const K_ARRIENDO_APROBADO = 2;
@@ -716,6 +779,7 @@ class wi_arriendo extends w_cot_nv {
 		$this->dws['dw_mod_arriendo'] = new dw_mod_arriendo2();
 		$this->dws['dw_arriendo_stock'] = new dw_arriendo_stock();
 		$this->dws['dw_arriendo_docs'] = new dw_arriendo_docs();
+		$this->dws['dw_arriendo_valor_actual'] = new dw_arriendo_valor_actual();
 		
 		////////*****LISTAS
 		$this->dws['dw_oca_orden_compra'] = new dw_oca_orden_compra();
@@ -765,7 +829,7 @@ class wi_arriendo extends w_cot_nv {
 		
 	}
 	function habilitar(&$temp, $habilita) { 
-		parent::habilitar(&$temp, $habilita);
+		parent::habilitar($temp, $habilita);
 		$cod_estado_arriendo = $this->dws['dw_arriendo']->get_item(0, 'COD_ESTADO_ARRIENDO');
 		if($this->is_new_record() || $cod_estado_arriendo==self::K_ARRIENDO_ANULADO)
 			$this->habilita_boton_print($temp, 'print', false);
@@ -783,6 +847,7 @@ class wi_arriendo extends w_cot_nv {
 		$this->dws['dw_mod_arriendo']->retrieve($cod_arriendo);
 		$this->dws['dw_arriendo_stock']->retrieve($cod_arriendo);
 		$this->dws['dw_arriendo_docs']->retrieve($cod_arriendo);
+		$this->dws['dw_arriendo_valor_actual']->retrieve($cod_arriendo);
 		
 		///////***********listas
 		$this->dws['dw_oca_orden_compra']->retrieve($cod_arriendo);
@@ -834,6 +899,25 @@ class wi_arriendo extends w_cot_nv {
 		}else{
 			$this->dws['dw_arriendo']->set_item(0, 'APROBAR_SIN_CHEQUE_H', 'N');
 		}
+
+		//rellenar totales dw_arriendo_valor_actual
+		$count = $this->dws['dw_arriendo_valor_actual']->row_count();
+		$F_VA_TOTAL = 0;
+		$F_VA_TOTAL_VALOR_VENTA_INICIAL = 0;
+		$F_VA_TOTAL_ARRIENDO_ACTUAL = 0;
+		$F_VA_TOTAL_VALOR_VENTA_ACTUAL = 0;
+
+		for($i=0; $i < $count; $i++){ 
+			$F_VA_TOTAL += $this->dws['dw_arriendo_valor_actual']->get_item($i, 'VA_TOTAL');
+			$F_VA_TOTAL_VALOR_VENTA_INICIAL += $this->dws['dw_arriendo_valor_actual']->get_item($i, 'VA_TOTAL_VALOR_VENTA_INICIAL');
+			$F_VA_TOTAL_ARRIENDO_ACTUAL += $this->dws['dw_arriendo_valor_actual']->get_item($i, 'VA_TOTAL_ARRIENDO_ACTUAL');
+			$F_VA_TOTAL_VALOR_VENTA_ACTUAL += $this->dws['dw_arriendo_valor_actual']->get_item($i, 'VA_TOTAL_VALOR_VENTA_ACTUAL');
+		}
+
+		$this->dws['dw_arriendo']->set_item(0, 'F_VA_TOTAL', number_format($F_VA_TOTAL, 0, ',', '.'));
+		$this->dws['dw_arriendo']->set_item(0, 'F_VA_TOTAL_VALOR_VENTA_INICIAL', number_format($F_VA_TOTAL_VALOR_VENTA_INICIAL, 0, ',', '.'));
+		$this->dws['dw_arriendo']->set_item(0, 'F_VA_TOTAL_ARRIENDO_ACTUAL', number_format($F_VA_TOTAL_ARRIENDO_ACTUAL, 0, ',', '.'));
+		$this->dws['dw_arriendo']->set_item(0, 'F_VA_TOTAL_VALOR_VENTA_ACTUAL', number_format($F_VA_TOTAL_VALOR_VENTA_ACTUAL, 0, ',', '.'));
 	}
 	function get_key() {
 		return $this->dws['dw_arriendo']->get_item(0, 'COD_ARRIENDO');

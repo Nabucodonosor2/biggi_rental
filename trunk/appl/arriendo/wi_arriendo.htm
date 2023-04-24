@@ -84,15 +84,16 @@
 											<td height="528">
 												<div id="TabbedPanels1" class="TabbedPanels">
 													<ul class="TabbedPanelsTabGroup">
-													<li class="TabbedPanelsTab" tabindex="1">Arriendo</li>
-													<li class="TabbedPanelsTab" tabindex="2"><b><font color="red">ITEMS</font></b></li>
-													<li class="TabbedPanelsTab" tabindex="3" style="display:none;">Compras</li>
-													<li class="TabbedPanelsTab" tabindex="4">Modificaciones</li>
-													<li class="TabbedPanelsTab" tabindex="5"><b><font color="red">BODEGA CLIENTE</font></b></li>
-													<li class="TabbedPanelsTab" tabindex="6">Compras</li>
-													<li class="TabbedPanelsTab" tabindex="7">Observaciones</li>
-													<li class="TabbedPanelsTab" tabindex="8"><b><font color="red">DOCS ASOCIADOS</font></b></li>
-													<li class="TabbedPanelsTab" tabindex="9">Documentos</li>
+														<li class="TabbedPanelsTab" tabindex="1">Arriendo</li>
+														<li class="TabbedPanelsTab" tabindex="2"><b><font color="red">ITEMS</font></b></li>
+														<li class="TabbedPanelsTab" tabindex="3" style="display:none;">Compras</li>
+														<li class="TabbedPanelsTab" tabindex="4">Modificaciones</li>
+														<li class="TabbedPanelsTab" tabindex="5"><b><font color="red">BODEGA CLIENTE</font></b></li>
+														<li class="TabbedPanelsTab" tabindex="6"><b><font color="red">ANÁLISIS</font></b></li>
+														<li class="TabbedPanelsTab" tabindex="7">Compras</li>
+														<li class="TabbedPanelsTab" tabindex="8">Observaciones</li>
+														<li class="TabbedPanelsTab" tabindex="9"><b><font color="red">DOCS ASOCIADOS</font></b></li>
+														<li class="TabbedPanelsTab" tabindex="10">Documentos</li>
 													</ul>
 													<div class="TabbedPanelsContentGroup">
 													<!--INI ARRIENDO-->
@@ -426,7 +427,91 @@
 															</div>
 														</div>
 														 <!--FIN CONTRATO ACTUAL-->
-														 <!--COMPRA-->
+
+														<!--INI TEST-->
+														<div class="TabbedPanelsContent">
+															<table width="1000" rules="none" border="1" align="center">
+																<tr class="titulo_tabla">
+																	<td colspan="6">DATOS GENERALES</td>
+																</tr>
+																<tr class="encabezado_right">
+																	<td width="166">Nº Arriendo:</td>
+																	<td width="166" class="claro" align="left">{COD_ARRIENDO}</td>
+																	<td width="166">Fecha:</td>
+																	<td width="166" class="claro" align="right">{FECHA_ARRIENDO}</td>
+																	<td width="166">Emisor:</td>
+																	<td width="166" class="claro" align="left">{NOM_USUARIO}</td>
+																</tr>
+																<tr class="encabezado_right">
+																	<td width="166">Código Bodega:</td>
+																	<td width="166" class="oscuro" align="left">{COD_BODEGA}</td>
+																	<td width="166">Nombre Bodega:</td>
+																	<td colspan="3" width="166" class="oscuro" align="left">{NOM_BODEGA}</td>
+																</tr>
+															</table>
+															<P />
+															<table width="1000" rules="none" border="1" align="center" class="claro">
+																<tr class="titulo_tabla">
+																	<td colspan="11">ITEMS EN BODEGA CLIENTE</td>
+																</tr>
+																<tr class="encabezado_center">
+																	<th width="10%">Módelo</th>
+																	<th width="10%">Cantidad</th>
+																	<th width="10%">Precio Arriendo</th>
+																	<th width="10%">Total</th>
+																	<th width="10%">Valor Venta Inicial</th>
+																	<th width="10%">Total Valor Venta Inicial</th>
+																	<th width="10%">Valor Arriendo Actual</th>
+																	<th width="10%">Total Arriendo Actual</th>
+																	<th width="10%">Valor Venta Actual</th>
+																	<th width="10%">Total Valor Venta Actual</th>
+																</tr>
+															</table>
+															<div style="overflow-x:hidden; overflow-y:auto; height:328; margin-top:-1em;">
+																<table width="1000" rules="none" border="1" align="center" class="claro" id="MOD_ARRIENDO">
+																	<!-- startBlock(ARRIENDO_VALOR_ACTUAL) -->
+																	<tr class="{DW_TR_CSS}" id="{DW_TR_ID}">
+																		<td width="10%" align="left">{VA_COD_PRODUCTO}</td>
+																		<td width="10%" align="right">{VA_CANTIDAD}</td>
+																		<td width="10%" align="right">{VA_PRECIO}</td>
+																		<td width="10%" align="right">{VA_TOTAL}</td>
+																		<td width="10%" align="right" style="background-color: {CSS_STYLE1_UNO};">{VA_VALOR_VENTA_INICIAL}</td>
+																		<td width="10%" align="right" style="background-color: {CSS_STYLE2_UNO};">{VA_TOTAL_VALOR_VENTA_INICIAL}</td>
+																		<td width="10%" align="right" style="background-color: {CSS_STYLE1_DOS};">{VA_VALOR_ARRIENDO_ACTUAL}</td>
+																		<td width="10%" align="right" style="background-color: {CSS_STYLE2_DOS};">{VA_TOTAL_ARRIENDO_ACTUAL}</td>
+																		<td width="10%" align="right" style="background-color: {CSS_STYLE1_TRES};">{VA_PRECIO_VENTA_PUBLICO}</td>
+																		<td width="10%" align="right" style="background-color: {CSS_STYLE2_TRES};"><div style="padding-right:20px;">{VA_TOTAL_VALOR_VENTA_ACTUAL}</div></td>
+																	</tr>
+																	<!-- endBlock(ARRIENDO_VALOR_ACTUAL) -->
+																</table>
+															</div>
+															<P />
+															<div style="overflow:hidden;margin-top:-1em;">
+																<table width="1000" rules="none" border="1" align="center" class="claro" id="MOD_ARRIENDO">
+																	<tr class="oscuro">
+																		<td colspan="4" align="right">{F_VA_TOTAL}</td>
+																		<td colspan="2" align="right" style="background-color: #dae1f3;">{F_VA_TOTAL_VALOR_VENTA_INICIAL}</td>
+																		<td colspan="2" align="right" style="background-color: #fce4d7">{F_VA_TOTAL_ARRIENDO_ACTUAL}</td>
+																		<td colspan="2" align="right" style="background-color: #e2efdb">{F_VA_TOTAL_VALOR_VENTA_ACTUAL}</td>
+																	</tr>
+																	<tr style="height: 0px;">
+																		<td width="10%"></td>
+																		<td width="10%"></td>
+																		<td width="10%"></td>
+																		<td width="10%"></td>
+																		<td width="10%"></td>
+																		<td width="10%"></td>
+																		<td width="10%"></td>
+																		<td width="10%"></td>
+																		<td width="10%"></td>
+																		<td width="10%"></td>
+																	</tr>
+																</table>
+															</div>
+														</div>
+
+														<!--FIN TEST--> 
+														<!--COMPRA-->
 														<div class="TabbedPanelsContent">										
 															<table width="1000" rules="none" border="1" align="center">
 																<tr  class="titulo_tabla">
