@@ -37,6 +37,7 @@ class wo_inf_cheque_fecha extends w_informe_pantalla{
 						,COD_DOC_INGRESO_PAGO
 						,I.COD_BANCO
 						,B.NOM_BANCO
+						,TIPO_REGISTRO
 				FROM INF_CHEQUE_FECHA I
 					,BANCO B
 				WHERE COD_USUARIO = $cod_usuario
@@ -60,12 +61,15 @@ class wo_inf_cheque_fecha extends w_informe_pantalla{
 		$this->add_header(new header_num('MONTO_DOC', 'I.MONTO_DOC', 'Monto', 0, true, 'SUM'));
 		$sql = "SELECT COD_BANCO, NOM_BANCO FROM BANCO order by	COD_BANCO";
 		$this->add_header(new header_drop_down('NOM_BANCO', 'I.COD_BANCO', 'Banco', $sql));
+		$sql = "SELECT 'ING PAGO' COD, 
+					   'ING PAGO' NOM
+				UNION
+				SELECT 'REG CHEQUE' COD, 
+					   'REG CHEQUE' NOM";
+	    $this->add_header(new header_drop_down_string('TIPO_REGISTRO', 'TIPO_REGISTRO', 'Tipo Registro', $sql));
 
 		$this->dw->add_control(new static_num('MONTO_DOC'));
 		$this->dw->add_control(new edit_text_hidden('COD_INGRESO_CHEQUE'));
-
-		$header->valor_filtro = $this->current_date();
-		$this->make_filtros();
    }
 	function print_informe(){
 		// reporte
@@ -103,6 +107,18 @@ class wo_inf_cheque_fecha extends w_informe_pantalla{
 			$this->habilita_boton($temp, 'b_export', false);	
 		}
 	}
+	function redraw_item(&$temp, $ind, $record){
+		parent::redraw_item($temp, $ind, $record);
+		$TIPO_REGISTRO = $this->dw->get_item($record, 'TIPO_REGISTRO');
+
+		if($TIPO_REGISTRO == 'ING PAGO')
+			$control = '<input name="SELECCION_'.$record.'" type="checkbox" id="SELECCION_'.$record.'" value="S" onblur="this.style.borderColor = this.style.borderWidth = this.style.borderStyle = \'\';" onfocus="this.style.border=\'1px solid #FF0000\'" style="border-image: none 100% / 1 / 0 stretch;">';
+		else
+			$control = '<input name="SELECCION_'.$record.'" type="checkbox" id="SELECCION_'.$record.'" value="S" onblur="this.style.borderColor = this.style.borderWidth = this.style.borderStyle = \'\';" onfocus="this.style.border=\'1px solid #FF0000\'" style="border-image: none 100% / 1 / 0 stretch;" disabled="">';
+
+		$temp->setVar("wo_registro.SELECCION", $control);
+	}
+
 	function paginacion(&$temp){
 		parent::paginacion($temp);
 		$temp->setVar("CANT_DOC", $this->row_count_output);

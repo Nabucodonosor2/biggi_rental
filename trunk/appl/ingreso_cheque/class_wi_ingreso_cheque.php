@@ -321,15 +321,21 @@ class dw_cheque extends datawindow {
 						,TDP.NOM_TIPO_DOC_PAGO
 						,C.COD_TIPO_DOC_PAGO COD_TIPO_DOC_PAGO_H
 						,C.DEPOSITADO
+						,C.FECHA_DEPOSITADO
+						,C.COD_USUARIO_DEPOSITADO
+						,C.LIBERADO
+						,C.FECHA_LIBERADO
+						,C.COD_USUARIO_LIBERADO
+						,C.ES_GARANTIA
 				FROM 	CHEQUE C LEFT OUTER JOIN BANCO B ON C.COD_BANCO = B.COD_BANCO
 						, TIPO_DOC_PAGO TDP		
 				WHERE 	C.COD_INGRESO_CHEQUE = {KEY1} 
 				AND		C.COD_TIPO_DOC_PAGO = TDP.COD_TIPO_DOC_PAGO";
 					
-					
 		parent::datawindow($sql, 'CHEQUE', true, true);	
 		
 		$this->add_control(new edit_text_hidden('DEPOSITADO'));
+		$this->add_control(new edit_check_box('ES_GARANTIA','S','N'));
 		$this->add_control(new edit_text_upper('COD_CHEQUE',10, 10, 'hidden'));
 		$sql_banco = " select	COD_BANCO
 								,NOM_BANCO
@@ -343,12 +349,12 @@ class dw_cheque extends datawindow {
 		$control->set_onChange("cambia_banco(this);");
 		$this->add_control($control = new drop_down_dw('COD_PLAZA',$sql_palza,145));
 		$control->set_onChange("cambia_plaza(this);");
-		$this->add_control($control = new edit_num('NRO_DOC',20, 10, 0, true, false, false));
+		$this->add_control($control = new edit_num('NRO_DOC',10, 10, 0, true, false, false));
 		$control->set_onChange("cambia_nro_documento(this);");
-		$this->add_control($control = new edit_date('FECHA_DOC',20,20));
+		$this->add_control($control = new edit_date('FECHA_DOC',10,20));
 		$control->set_onChange("actuliza(this);");
 		$this->add_control(new edit_text('FECHA_DOC_H',20,10,'hidden'));
-		$this->add_control($control = new edit_num('MONTO_DOC',20,20));
+		$this->add_control($control = new edit_num('MONTO_DOC',10,20));
 		$control->set_onChange("actualiza_monto(this);");
 		$this->add_control(new edit_text('MONTO_DOC_H',20,10,'hidden'));
 		$this->add_control(new static_text('NOM_TIPO_DOC_PAGO'));
@@ -400,10 +406,18 @@ class dw_cheque extends datawindow {
 					$COD_INGRESO_CHEQUE		= $this->get_item($i, 'COD_INGRESO_CHEQUE');
 					$COD_TIPO_DOC_PAGO	 	= $this->get_item($i, 'COD_TIPO_DOC_PAGO_H');
 					$FECHA_DOC 				= $this->get_item($i, 'FECHA_DOC_H');
-					
 					$COD_BANCO				= $this->get_item($i, 'COD_BANCO');
 					$COD_PLAZA				= $this->get_item($i, 'COD_PLAZA');
 					$NRO_DOC	 			= $this->get_item($i, 'NRO_DOC');
+
+					$DEPOSITADO	 			= $this->get_item($i, 'DEPOSITADO');
+					$FECHA_DEPOSITADO	 	= $this->get_item($i, 'FECHA_DEPOSITADO');		
+					$COD_USUARIO_DEPOSITADO	= $this->get_item($i, 'COD_USUARIO_DEPOSITADO');
+					$LIBERADO	 			= $this->get_item($i, 'LIBERADO');
+					$FECHA_LIBERADO	 		= $this->get_item($i, 'FECHA_LIBERADO');
+					$COD_USUARIO_LIBERADO	= $this->get_item($i, 'COD_USUARIO_LIBERADO');
+
+					$ES_GARANTIA 			= $this->get_item($i, 'ES_GARANTIA');
 					
 					$MONTO_DOC2 			= $this->get_item($i, 'MONTO_DOC_H');
 					$MONTO_DOC 				= str_replace( ".", "", $MONTO_DOC2);
@@ -414,6 +428,13 @@ class dw_cheque extends datawindow {
 					$NRO_DOC 			 	= ($NRO_DOC =='') ? "null" : $NRO_DOC;
 					$MONTO_DOC 			 	= ($MONTO_DOC =='') ? "null" : $MONTO_DOC;
 					$FECHA_DOC				= $this->str2date($FECHA_DOC);
+
+					$DEPOSITADO 			 	= ($DEPOSITADO =='') ? "null" : "'$DEPOSITADO'";
+					$FECHA_DEPOSITADO 			= ($FECHA_DEPOSITADO =='') ? "null" : $FECHA_DEPOSITADO;
+					$COD_USUARIO_DEPOSITADO 	= ($COD_USUARIO_DEPOSITADO =='') ? "null" : $COD_USUARIO_DEPOSITADO;
+					$LIBERADO 			 		= ($LIBERADO =='') ? "null" : "'$LIBERADO'";
+					$FECHA_LIBERADO 			= ($FECHA_LIBERADO =='') ? "null" : $FECHA_LIBERADO;
+					$COD_USUARIO_LIBERADO 		= ($COD_USUARIO_LIBERADO =='') ? "null" : $COD_USUARIO_LIBERADO;
 					
 					if ($statuts == K_ROW_NEW_MODIFIED)
 						$operacion = 'INSERT';
@@ -428,7 +449,14 @@ class dw_cheque extends datawindow {
 								,$NRO_DOC
 								,$FECHA_DOC
 								,$MONTO_DOC
-								,$COD_TIPO_DOC_PAGO";
+								,$COD_TIPO_DOC_PAGO
+								,$DEPOSITADO
+								,$FECHA_DEPOSITADO
+								,$COD_USUARIO_DEPOSITADO
+								,$LIBERADO
+								,$FECHA_LIBERADO
+								,$COD_USUARIO_LIBERADO
+								,'$ES_GARANTIA'";
 
 					if (!$db->EXECUTE_SP($sp, $param)) 
 						return false;

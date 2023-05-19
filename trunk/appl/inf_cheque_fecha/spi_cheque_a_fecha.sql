@@ -1,6 +1,6 @@
 --------------- spi_cheque_a_fecha --------------
 ALTER PROCEDURE spi_cheque_a_fecha(@ve_fecha	datetime
-									,@ve_cod_usuario numeric)
+								  ,@ve_cod_usuario numeric)
 AS
 BEGIN
 	
@@ -22,33 +22,65 @@ BEGIN
 		,COD_NOTA_VENTA			
 		,NOM_EMPRESA
 		,RUT
-		,COD_INGRESO_PAGO		
+		,COD_INGRESO_PAGO
+		,TIPO_REGISTRO
 		,FECHA_DOC			
 		,NRO_DOC				
 		,MONTO_DOC
 		,COD_DOC_INGRESO_PAGO
 		,COD_BANCO
+		,COD_INGRESO_CHEQUE
 		)
 	select @vl_fecha_actual
 			,@ve_cod_usuario 
-			,null														--COD_NOTA_VENTA
-			,e.NOM_EMPRESA												--NOM_EMPRESA
-			,CONVERT(VARCHAR,dbo.number_format(e.RUT, 0, ',', '.'))+'-'+CONVERT(VARCHAR, e.DIG_VERIF)	--RUT	
-			,ip.COD_INGRESO_PAGO										--COD_INGRESO_PAGO
-			,dip.NEW_FECHA_DOC											--NEW_FECHA_DOC
-			,dip.NRO_DOC												--NRO_DOC
-			,dip.MONTO_DOC												--MONTO_DOC
+			,null														
+			,e.NOM_EMPRESA											
+			,CONVERT(VARCHAR,dbo.number_format(e.RUT, 0, ',', '.'))+'-'+CONVERT(VARCHAR, e.DIG_VERIF)
+			,ip.COD_INGRESO_PAGO										
+			,'ING PAGO'
+			,dip.NEW_FECHA_DOC											
+			,dip.NRO_DOC												
+			,dip.MONTO_DOC												
 			,dip.COD_DOC_INGRESO_PAGO
-			,dip.COD_BANCO												--COD_BANCO
+			,dip.COD_BANCO												
+			,NULL
 	from doc_ingreso_pago dip, INGRESO_PAGO ip, EMPRESA e
 	where dip.COD_TIPO_DOC_PAGO in (2, 12)	--cheque, cheque a fecha
 	and dip.NEW_FECHA_DOC >= @ve_fecha
+	and dip.COD_CHEQUE IS NULL
 	and ip.COD_INGRESO_PAGO = dip.COD_INGRESO_PAGO
 	and ip.COD_ESTADO_INGRESO_PAGO = 2	--confirmado
 	and e.COD_EMPRESA = ip.COD_EMPRESA
-	order by dip.NEW_FECHA_DOC asc
+	UNION
+	SELECT FECHA_INGRESO_CHEQUE
+		  ,IC.COD_USUARIO
+		  ,NULL
+		  ,E.NOM_EMPRESA
+		  ,CONVERT(VARCHAR ,dbo.number_format(E.RUT, 0, ',', '.'))+'-'+CONVERT(VARCHAR, e.DIG_VERIF)
+		  ,IC.COD_INGRESO_CHEQUE
+		  ,'REG CHEQUE'
+		  ,FECHA_DOC NEW_FECHA_DOC
+		  ,NRO_DOC
+		  ,MONTO_DOC
+		  ,NULL
+		  ,COD_BANCO
+		  ,IC.COD_INGRESO_CHEQUE
+	FROM CHEQUE C
+		,INGRESO_CHEQUE IC
+		,EMPRESA E
+	WHERE FECHA_DOC >= @ve_fecha
+	/*
+	15/05/2023 MH: No se usa esta funcion ya que solo tiene que desplegar informacion de los cheques en el informe
+	AND RENTAL.dbo.f_ch_saldo(COD_CHEQUE) > 0
+	*/
+	AND IC.COD_ESTADO_INGRESO_CHEQUE = 2
+	AND COD_TIPO_DOC_PAGO in (2, 12)
+	AND ES_GARANTIA = 'N'
+	AND IC.COD_INGRESO_CHEQUE = C.COD_INGRESO_CHEQUE
+	AND IC.COD_EMPRESA = E.COD_EMPRESA
+	ORDER BY NEW_FECHA_DOC ASC
 
-	declare C_TEMP INSENSITIVE  cursor for
+	/*declare C_TEMP INSENSITIVE  cursor for
 	select COD_INGRESO_PAGO
 	from INF_CHEQUE_FECHA
 	
@@ -108,8 +140,7 @@ BEGIN
 		FETCH C_TEMP INTO @vc_cod_ingreso_pago
 	END
 	CLOSE C_TEMP
-	DEALLOCATE C_TEMP
+	DEALLOCATE C_TEMP*/
 	
 	select * from INF_CHEQUE_FECHA
 END
-

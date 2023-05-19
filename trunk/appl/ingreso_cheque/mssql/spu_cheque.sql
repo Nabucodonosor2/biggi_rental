@@ -1,4 +1,4 @@
-CREATE PROCEDURE spu_cheque(@ve_operacion				varchar(20)
+ALTER PROCEDURE spu_cheque(@ve_operacion				varchar(20)
 							,@ve_cod_cheque				numeric(10)	= null
 							,@ve_cod_ingreso_cheque		numeric(10)	= null
 							,@ve_cod_banco				numeric(10)	= null
@@ -13,6 +13,7 @@ CREATE PROCEDURE spu_cheque(@ve_operacion				varchar(20)
 							,@ve_liberado				varchar(1)	= null
 							,@ve_fecha_liberado			DATETIME	= null
 							,@ve_usu_liberado			numeric		= null
+							,@ve_es_garantia			T_SI_NO		= null
 							)
 AS
 BEGIN
@@ -27,7 +28,8 @@ BEGIN
 							,MONTO_DOC
 							,COD_TIPO_DOC_PAGO
 							,DEPOSITADO
-							,LIBERADO)
+							,LIBERADO
+							,ES_GARANTIA)
 					VALUES(@ve_cod_ingreso_cheque
 							,@ve_cod_banco
 							,@ve_cod_plaza
@@ -37,6 +39,7 @@ BEGIN
 							,@ve_cod_tipo_doc_pago
 							,'N'
 							,'N'
+							,@ve_es_garantia
 							)
 	END
 	ELSE IF(@ve_operacion='UPDATE')
@@ -49,6 +52,7 @@ BEGIN
 			,FECHA_DOC			= @ve_fecha_doc
 			,MONTO_DOC			= @ve_monto_doc
 			,COD_TIPO_DOC_PAGO	= @ve_cod_tipo_doc_pago
+			,@ve_es_garantia	= @ve_es_garantia
 		WHERE COD_CHEQUE		= @ve_cod_cheque
 	END
 	ELSE IF(@ve_operacion='DELETE')
