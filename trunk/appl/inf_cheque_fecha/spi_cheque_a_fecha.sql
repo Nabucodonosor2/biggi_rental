@@ -52,8 +52,8 @@ BEGIN
 	and ip.COD_ESTADO_INGRESO_PAGO = 2	--confirmado
 	and e.COD_EMPRESA = ip.COD_EMPRESA
 	UNION
-	SELECT FECHA_INGRESO_CHEQUE
-		  ,IC.COD_USUARIO
+	SELECT @vl_fecha_actual
+		  ,@ve_cod_usuario
 		  ,NULL
 		  ,E.NOM_EMPRESA
 		  ,CONVERT(VARCHAR ,dbo.number_format(E.RUT, 0, ',', '.'))+'-'+CONVERT(VARCHAR, e.DIG_VERIF)
