@@ -142,6 +142,8 @@ class wi_factura_arriendo extends wi_factura {
 	}
 	
 	function habilita_boton(&$temp, $boton, $habilita) {
+		parent::habilita_boton($temp, $boton, $habilita);
+
 		if ($boton=='factura_tdnx') {
 			if ($habilita)
 				$temp->setVar("WI_".strtoupper($boton), '<input name="b_'.$boton.'" id="b_'.$boton.'" src="../../images_appl/b_'.$boton.'.jpg" type="image" '.
@@ -154,9 +156,120 @@ class wi_factura_arriendo extends wi_factura {
 			else
 				$temp->setVar("WI_".strtoupper($boton), '<img src="../../images_appl/b_'.$boton.'_d.jpg"/>');
 		}
-		else
-			parent::habilita_boton($temp, $boton, $habilita);
+		if($boton == 'print'){
+            if($this->cod_usuario == 1){
+                $ruta_imag = '../../../../commonlib/trunk/images/';
+                if (defined('K_CLIENTE')) {
+                    if (file_exists('../../images_appl/'.K_CLIENTE.'/images/b_'.$boton.'.jpg')){
+                        $ruta_imag = '../../images_appl/'.K_CLIENTE.'/images/';
+                    }
+                }
+
+                if($habilita){
+                    $control = '<input name="b_'.$boton.'" id="b_'.$boton.'" src="'.$ruta_imag.'b_'.$boton.'.jpg" type="image" '.
+                                        'onMouseDown="MM_swapImage(\'b_'.$boton.'\',\'\',\''.$ruta_imag.'b_'.$boton.'_click.jpg\',1)" '.
+                                        'onMouseUp="MM_swapImgRestore()" onMouseOut="MM_swapImgRestore()" '.
+                                        'onMouseOver="MM_swapImage(\'b_'.$boton.'\',\'\',\''.$ruta_imag.'b_'.$boton.'_over.jpg\',1)" ';
+
+
+                    $control .= ' target="_blank" onClick="var vl_tab = document.getElementById(\'wi_current_tab_page\'); if (TabbedPanels1 && vl_tab) vl_tab.value =TabbedPanels1.getCurrentTabIndex();
+                                            if (document.getElementById(\'b_save\')) {
+                                                if (validate_save()) {
+                                                        document.getElementById(\'wi_hidden\').value = \'save_desde_print\';
+                                                        document.getElementById(\'b_save\').click();
+                                                        return true;
+                                                    }
+                                                    else
+                                                        return false;
+                                            }
+                                            else
+                                                    return dlg_print();" ';
+
+                    $control .= '>';
+
+                }else{
+                    $control = '<img src="../../../../commonlib/trunk/images/b_print_d.jpg">';
+                }
+            }
+
+            $temp->setVar("WI_PRINT", $control);			
+        }
 	}
+
+	function navegacion(&$temp){
+		$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+		parent::navegacion($temp);
+		
+		$cod_factura = $this->get_key();
+		if($cod_factura <> ""){
+			$Sql= "SELECT F.COD_ESTADO_DOC_SII
+							,F.TRACK_ID_DTE
+							,F.RESP_EMITIR_DTE
+					FROM FACTURA F
+					WHERE F.COD_FACTURA = $cod_factura";
+			$result = $db->build_results($Sql);
+			$COD_ESTADO_DOC_SII = $result[0]['COD_ESTADO_DOC_SII'];
+			$TRACK_ID_DTE		= $result[0]['TRACK_ID_DTE'];
+			$RESP_EMITIR_DTE	= $result[0]['RESP_EMITIR_DTE'];
+		}
+		 
+		if($COD_ESTADO_DOC_SII == self::K_ESTADO_SII_EMITIDA){
+			if($this->cod_usuario == 1){
+				$this->habilita_boton($temp, 'consultar_dte', false);
+				$this->habilita_boton($temp, 'xml_dte', false);
+				$this->habilita_boton($temp, 'reenviar_dte', false);
+			}
+
+			if($RESP_EMITIR_DTE == '' && $TRACK_ID_DTE == ''){ //ingresa por primera vez
+				if($this->tiene_privilegio_opcion(self::K_AUTORIZA_ENVIAR_DTE)== 'S')
+					$this->habilita_boton($temp, 'enviar_dte', true);
+				else
+					$this->habilita_boton($temp, 'enviar_dte', false);
+				
+			}else if($RESP_EMITIR_DTE <> '' && $TRACK_ID_DTE == ''){ //Reimprime
+				$this->habilita_boton($temp, 'enviar_dte', false);
+			}
+
+			$this->habilita_boton($temp, 'imprimir_dte', false);
+		}else if ($COD_ESTADO_DOC_SII == self::K_ESTADO_SII_ENVIADA){
+			if($TRACK_ID_DTE <> ''){
+				if($this->cod_usuario == 1){
+					if($this->tiene_privilegio_opcion(self::K_AUTORIZA_CONSULTAR_DTE)== 'S')
+						$this->habilita_boton($temp, 'consultar_dte', true);
+					else
+						$this->habilita_boton($temp, 'consultar_dte', false);
+					
+					if($this->tiene_privilegio_opcion(self::K_AUTORIZA_XML_DTE)== 'S')
+						$this->habilita_boton($temp, 'xml_dte', true);
+					else
+						$this->habilita_boton($temp, 'xml_dte', false);
+						
+					if($this->tiene_privilegio_opcion(self::K_AUTORIZA_REENVIAR_DTE)== 'S')
+						$this->habilita_boton($temp, 'reenviar_dte', true);
+					else
+						$this->habilita_boton($temp, 'reenviar_dte', false);
+				}
+
+				$this->habilita_boton($temp, 'enviar_dte', false);	
+			}
+			
+			if($this->tiene_privilegio_opcion(self::K_AUTORIZA_IMPRIMIR_DTE)== 'S')
+				$this->habilita_boton($temp, 'imprimir_dte', true);
+			else
+				$this->habilita_boton($temp, 'imprimir_dte', false);
+		}else{
+			if($this->cod_usuario == 1){
+				$this->habilita_boton($temp, 'consultar_dte', false);
+				$this->habilita_boton($temp, 'xml_dte', false);
+				$this->habilita_boton($temp, 'reenviar_dte', false);
+			}
+
+			$this->habilita_boton($temp, 'enviar_dte', false);
+			$this->habilita_boton($temp, 'imprimir_dte', false);
+			
+		}
+	}
+
 	
 	function load_record() {
 		parent::load_record();
@@ -337,7 +450,7 @@ class wi_factura_arriendo extends wi_factura {
 
 
 			$fname = tempnam("/tmp", "export.xls");
-			$workbook = &new writeexcel_workbook($fname);		
+			$workbook = new writeexcel_workbook($fname);		
 			$worksheet = $workbook->addworksheet('FACTURA_'.$nro_factura);
 			
 			//AYUDA FUNCIONES
