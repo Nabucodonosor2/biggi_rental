@@ -269,7 +269,8 @@ class wi_ingreso_cheque_base extends w_input {
 						,IC.CANT_CHEQUE
 						,IC.CANT_CHEQUE CANT_CHEQUE_H
 						,IC.CANT_CHEQUE CANT_CHEQUE_DOC
-						,convert(varchar(10),IC.FECHA_PRIMER_CHEQUE,103) FECHA_PRIMER_CHEQUE 
+						,convert(varchar(10),IC.FECHA_PRIMER_CHEQUE,103) FECHA_PRIMER_CHEQUE
+						,REFERENCIA
 					FROM 	INGRESO_CHEQUE IC
 						,EMPRESA E
 						, ESTADO_INGRESO_CHEQUE EIC
@@ -605,24 +606,27 @@ class print_ingreso_cheque extends reporte {
 
 		$pdf->SetFont('Arial','B',14);
 		$pdf->SetTextColor(4, 22, 114);
-		$pdf->SetXY(275,80 + 5);
+		$pdf->SetXY(275,85);
 		$pdf->Cell(385,17,'REGISTRO CHEQUE CLIENTE N° '.$cod_ingreso_cheque, '', '','C');
 		
 		$pdf->SetFont('Arial','B',9);
-		$pdf->SetXY(50,110 + 5);
+		$pdf->SetXY(50,115);
 		$pdf->Cell(30,17,'Razón Social: ', '', '','C');
 		
-		$pdf->SetXY(450,110 + 5);
+		$pdf->SetXY(450,115);
 		$pdf->Cell(30,17,'Rut: ', '', '','C');
 		
-		$pdf->SetXY(35,140 + 5);
+		$pdf->SetXY(35,145);
 		$pdf->Cell(30,17,'Fecha: ', '', '','C');
 		
-		$pdf->SetXY(250,140 + 5);
+		$pdf->SetXY(250,145);
 		$pdf->Cell(30,17,'Emisor: ', '', '','C');
 		
-		$pdf->SetXY(457,140 + 5);
+		$pdf->SetXY(457,145);
 		$pdf->Cell(30,17,'Estado: ', '', '','C');
+
+		$pdf->SetXY(45,175);
+		$pdf->Cell(30,17,'Referencia: ', '', '','C');
 		
 		$sql = "select	COD_INGRESO_ARRIENDO
 					,IA.COD_INGRESO_CHEQUE
@@ -646,42 +650,48 @@ class print_ingreso_cheque extends reporte {
 		$result_it = $db->build_results($sql);
 		
 		$pdf->SetTextColor(0, 0, 0);
-					$pdf->SetXY(100,110 + 5);
+		$pdf->SetXY(100,115);
 		$pdf->Cell(340,17,$result[0]['NOM_EMPRESA'], 'B', '','');
 		
-		$pdf->SetXY(490,110 + 5);
+		$pdf->SetXY(490,115);
 		$pdf->Cell(60,17,$result[0]['RUT'], 'B', '','');
 		
-		$pdf->SetXY(80,140 + 5);
+		$pdf->SetXY(80,145);
 		$pdf->Cell(60,17,$result[0]['FECHA_INGRESO_CHEQUE'], 'B', '','');
 					
-		$pdf->SetXY(290,140 + 5);
+		$pdf->SetXY(290,145);
 		$pdf->Cell(100,17,$result[0]['NOM_USUARIO'], 'B', '','');
 		
-		$pdf->SetXY(490,140 + 5);
+		$pdf->SetXY(490,145);
 		$pdf->Cell(70,17,$result[0]['NOM_ESTADO_INGRESO_CHEQUE'], 'B', '','');
+
+		$pdf->SetXY(90,175);
+		$pdf->Cell(450,17,$result[0]['REFERENCIA'], 'B', '','');
 		
 		$i = 0;
+		$y_ini = 35;
+
 		if($result_it[0]['COD_ARRIENDO']!=''){
 			$pdf->SetTextColor(4, 22, 114);
-			$pdf->SetXY(35,180 + 5);
+			$pdf->SetXY(35,185+$y_ini);
 			$pdf->Cell(530,17,'CONTRATO', '', '','');
 			
-			$pdf->SetXY(35,200 + 5);
+			$pdf->SetXY(35,205+$y_ini);
 			$pdf->Cell(80,30,'Cod. Arriendo', 'TLRB', '','C');
 			
-			$pdf->SetXY(115,200 + 5);
+			$pdf->SetXY(115,205+$y_ini);
 			$pdf->Cell(240,30,'Nom. Arriendo', 'TRB', '','C');
 			
-			$pdf->SetXY(355,200 + 5);
+			$pdf->SetXY(355,205+$y_ini);
 			$pdf->Cell(80,30,'Nro. Meses', 'TRB', '','C');
 			
-			$pdf->SetXY(435,200 + 5);
+			$pdf->SetXY(435,205+$y_ini);
 			$pdf->Cell(100,30,'Total', 'TRB', '','C');
 			$pdf->SetTextColor(0, 0, 0);
+
 			for($x = 0; $x< count($result_it);$x++){
 				if($pdf->PageNo() <= 1){
-					$y = 235 + (17*$x);
+					$y = 235 + (17*$x) + $y_ini;
 
 					$pdf->SetXY(35,$y);
 					$pdf->Cell(80,17,$result_it[$x]['COD_ARRIENDO'], 'LRB', '','C');
@@ -697,7 +707,7 @@ class print_ingreso_cheque extends reporte {
 					}
 				}else{
 					$i++;
-					$y = 130 + (17*$i);
+					$y = 130 + (17*$i) + $y_ini;
 					$pdf->SetFont('Arial','B',14);
 					$pdf->SetTextColor(4, 22, 114);
 					$pdf->SetXY(275,80 + 8);
@@ -723,32 +733,37 @@ class print_ingreso_cheque extends reporte {
 						, C.MONTO_DOC
 						, SUBSTRING(B.NOM_BANCO,0,27) NOM_BANCO
 						, P.NOM_PLAZA 
+						, ES_GARANTIA
 					FROM CHEQUE C, BANCO B, PLAZA P
 					WHERE COD_INGRESO_CHEQUE = $cod_ingreso_cheque
 					AND C.COD_BANCO = B.COD_BANCO
 					AND C.COD_PLAZA = P.COD_PLAZA";
 		$result_doc = $db->build_results($sql_doc);
 		if($result_it[0]['COD_ARRIENDO'] == ''){
-				$y = 160;
+			$y = 160;
 		}
+		
 		$pdf->SetTextColor(4, 22, 114);
 		$pdf->SetXY(35,$y+30);
 		$pdf->Cell(530,17,'DOCUMENTOS', '', '','');
 		
 		$pdf->SetXY(35,$y+50);
-		$pdf->Cell(80,30,'Fecha', 'TLRB', '','C');
+		$pdf->Cell(60,30,'Fecha', 'TLRB', '','C');
 		
-		$pdf->SetXY(115,$y+50);
-		$pdf->Cell(80,30,'Nro. Doc', 'TLRB', '','C');
+		$pdf->SetXY(95,$y+50);
+		$pdf->Cell(60,30,'Nro. Doc', 'TLRB', '','C');
 		
-		$pdf->SetXY(195,$y+50);
+		$pdf->SetXY(155,$y+50);
 		$pdf->Cell(160,30,'Banco', 'TLRB', '','C');
 		
-		$pdf->SetXY(355,$y+50);
+		$pdf->SetXY(315,$y+50);
 		$pdf->Cell(95,30,'Plaza', 'TLRB', '','C');
+
+		$pdf->SetXY(410,$y+50);
+		$pdf->Cell(75,30,'Garantía', 'TLRB', '','C');
 		
-		$pdf->SetXY(450.5,$y+50);
-		$pdf->Cell(95,30,'Monto', 'TLRB', '','C');
+		$pdf->SetXY(485,$y+50);
+		$pdf->Cell(60,30,'Monto', 'TLRB', '','C');
 		$i = 0;
 		$x = 0;
 		$pdf->SetTextColor(0, 0, 0);
@@ -762,17 +777,23 @@ class print_ingreso_cheque extends reporte {
 				$z = ($y+80) + (17*$x);
 			}
 			
-			$pdf->SetXY(35,$z);
-			$pdf->Cell(80,17,$result_doc[$x]['FECHA_DOC'], 'TLRB', '','C');
-			$pdf->SetXY(115,$z);
-			$pdf->Cell(80,17,$result_doc[$x]['NRO_DOC'], 'TLRB', '','C');
-			$pdf->SetXY(195,$z);
-			$pdf->Cell(160,17,$result_doc[$x]['NOM_BANCO'], 'TLRB', '','C');
-			$pdf->SetXY(355,$z);
-			$pdf->Cell(95,17,$result_doc[$x]['NOM_PLAZA'], 'TLRB', '','C');
-			$pdf->SetXY(450.5,$z);
-			$pdf->Cell(95,17,number_format($result_doc[$x]['MONTO_DOC'], 0, ',', '.'), 'TLRB', '','C');
+			if($result_doc[$x]['ES_GARANTIA'] == 'S')
+				$garantia = 'X';
+			else
+				$garantia = '';
 
+			$pdf->SetXY(35,$z);
+			$pdf->Cell(60,17,$result_doc[$x]['FECHA_DOC'], 'TLRB', '','C');
+			$pdf->SetXY(95,$z);
+			$pdf->Cell(60,17,$result_doc[$x]['NRO_DOC'], 'TLRB', '','C');
+			$pdf->SetXY(155,$z);
+			$pdf->Cell(160,17,$result_doc[$x]['NOM_BANCO'], 'TLRB', '','C');
+			$pdf->SetXY(315,$z);
+			$pdf->Cell(95,17,$result_doc[$x]['NOM_PLAZA'], 'TLRB', '','C');
+			$pdf->SetXY(410,$z);
+			$pdf->Cell(75,17,$garantia, 'TLRB', '','C');
+			$pdf->SetXY(485,$z);
+			$pdf->Cell(60,17,number_format($result_doc[$x]['MONTO_DOC'], 0, ',', '.'), 'TLRB', '','R');
 			/*}else{
 				$i++;
 				$z = 130 + (17*$i);
