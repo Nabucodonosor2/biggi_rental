@@ -596,187 +596,108 @@ class print_ingreso_cheque extends reporte {
 	}
 	
 	function modifica_pdf(&$pdf) {	
-			
-	      	$pdf->SetAutoPageBreak(true);
+		$pdf->SetAutoPageBreak(true);
+	
+		$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
+		$result = $db->build_results($this->sql);
 		
-			$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
-			$result = $db->build_results($this->sql);
-			
-			$cod_ingreso_cheque	=	$result[0]['COD_INGRESO_CHEQUE'];
-	
-			$pdf->SetFont('Arial','B',14);
-			$pdf->SetTextColor(4, 22, 114);
-			$pdf->SetXY(275,80 + 5);
-			$pdf->Cell(385,17,'REGISTRO CHEQUE CLIENTE N° '.$cod_ingreso_cheque, '', '','C');
-			
-			$pdf->SetFont('Arial','B',9);
-			$pdf->SetXY(50,110 + 5);
-			$pdf->Cell(30,17,'Razón Social: ', '', '','C');
-			
-			$pdf->SetXY(450,110 + 5);
-			$pdf->Cell(30,17,'Rut: ', '', '','C');
-			
-			$pdf->SetXY(35,140 + 5);
-			$pdf->Cell(30,17,'Fecha: ', '', '','C');
-			
-			$pdf->SetXY(250,140 + 5);
-			$pdf->Cell(30,17,'Emisor: ', '', '','C');
-			
-			$pdf->SetXY(457,140 + 5);
-			$pdf->Cell(30,17,'Estado: ', '', '','C');
-			
-			$sql = "select	COD_INGRESO_ARRIENDO
-						,IA.COD_INGRESO_CHEQUE
-						,A.COD_ARRIENDO
-						,A.COD_ARRIENDO COD_ARRIENDO_H
-						,A.NOM_ARRIENDO
-						,convert(varchar(20), FECHA_ARRIENDO, 103) FECHA_ARRIENDO
-						,REFERENCIA
-						,A.NRO_ORDEN_COMPRA
-						,A.CENTRO_COSTO_CLIENTE	
-						,A.NRO_MESES
-						,A.NRO_MESES NRO_MESES_H
-						,A.TOTAL_CON_IVA  
-						,'S' CHECK_ARRIENDO              
-			FROM 		ARRIENDO A
-						,INGRESO_ARRIENDO IA
-			WHERE		IA.COD_INGRESO_CHEQUE = $cod_ingreso_cheque
-			AND			A.COD_ARRIENDO = IA.COD_ARRIENDO
-			ORDER BY	IA.COD_ARRIENDO DESC";
-			
-			$result_it = $db->build_results($sql);
-			
-			$pdf->SetTextColor(0, 0, 0);
-						$pdf->SetXY(100,110 + 5);
-			$pdf->Cell(340,17,$result[0]['NOM_EMPRESA'], 'B', '','');
-			
-			$pdf->SetXY(490,110 + 5);
-			$pdf->Cell(60,17,$result[0]['RUT'], 'B', '','');
-			
-			$pdf->SetXY(80,140 + 5);
-			$pdf->Cell(60,17,$result[0]['FECHA_INGRESO_CHEQUE'], 'B', '','');
-						
-			$pdf->SetXY(290,140 + 5);
-			$pdf->Cell(100,17,$result[0]['NOM_USUARIO'], 'B', '','');
-			
-			$pdf->SetXY(490,140 + 5);
-			$pdf->Cell(70,17,$result[0]['NOM_ESTADO_INGRESO_CHEQUE'], 'B', '','');
-			
-			$i = 0;
-			if($result_it[0]['COD_ARRIENDO']!=''){
-				$pdf->SetTextColor(4, 22, 114);
-				$pdf->SetXY(35,180 + 5);
-				$pdf->Cell(530,17,'CONTRATO', '', '','');
-				
-				$pdf->SetXY(35,200 + 5);
-				$pdf->Cell(80,30,'Cod. Arriendo', 'TLRB', '','C');
-				
-				$pdf->SetXY(115,200 + 5);
-				$pdf->Cell(240,30,'Nom. Arriendo', 'TRB', '','C');
-				
-				$pdf->SetXY(355,200 + 5);
-				$pdf->Cell(80,30,'Nro. Meses', 'TRB', '','C');
-				
-				$pdf->SetXY(435,200 + 5);
-				$pdf->Cell(100,30,'Total', 'TRB', '','C');
-				$pdf->SetTextColor(0, 0, 0);
-				for($x = 0; $x< count($result_it);$x++){
-					if($pdf->PageNo() <= 1){
-						$y = 235 + (17*$x);
-	
-						$pdf->SetXY(35,$y);
-						$pdf->Cell(80,17,$result_it[$x]['COD_ARRIENDO'], 'LRB', '','C');
-						$pdf->SetXY(115,$y);
-						$pdf->Cell(240,17,$result_it[$x]['NOM_ARRIENDO'], 'LRB', '','C');
-						$pdf->SetXY(355,$y);
-						$pdf->Cell(80,17,$result_it[$x]['NRO_MESES'], 'TRB', '','C');
-						$pdf->SetXY(435,$y);
-						$pdf->Cell(100,17,$result_it[$x]['TOTAL_CON_IVA'], 'TRB', '','C');
-						
-						if($y > 723){
-							$pdf->AddPage();
-						}
-					}else{
-						$i++;
-						$y = 130 + (17*$i);
-						$pdf->SetFont('Arial','B',14);
-						$pdf->SetTextColor(4, 22, 114);
-						$pdf->SetXY(275,80 + 8);
-						$pdf->Cell(385,17,'REGISTRO CHEQUE CLIENTE N° '.$cod_ingreso_cheque, '', '','C');
-						
-						$pdf->SetFont('Arial','B',9);
-						$pdf->SetTextColor(0, 0, 0);
-						
-						$pdf->SetXY(35,$y);
-						$pdf->Cell(80,17,$result_it[$x]['COD_ARRIENDO'], 'TLRB', '','C');
-						$pdf->SetXY(115,$y);
-						$pdf->Cell(240,17,$result_it[$x]['NOM_ARRIENDO'], 'TLRB', '','C');
-						$pdf->SetXY(355,$y);
-						$pdf->Cell(80,17,$result_it[$x]['NRO_MESES'], 'TRB', '','C');
-						$pdf->SetXY(435,$y);
-						$pdf->Cell(100,17,$result_it[$x]['TOTAL_CON_IVA'], 'TRB', '','C');
-					}
-	
-				}
-			}
-			$sql_doc ="SELECT C.NRO_DOC
-							, CONVERT(VARCHAR,C.FECHA_DOC,103) FECHA_DOC
-							, C.MONTO_DOC
-							, SUBSTRING(B.NOM_BANCO,0,27) NOM_BANCO
-							, P.NOM_PLAZA 
-						FROM CHEQUE C, BANCO B, PLAZA P
-						WHERE COD_INGRESO_CHEQUE = $cod_ingreso_cheque
-						AND C.COD_BANCO = B.COD_BANCO
-						AND C.COD_PLAZA = P.COD_PLAZA";
-			$result_doc = $db->build_results($sql_doc);
-			if($result_it[0]['COD_ARRIENDO'] == ''){
-					$y = 160;
-			}
-			$pdf->SetTextColor(4, 22, 114);
-			$pdf->SetXY(35,$y+30);
-			$pdf->Cell(530,17,'DOCUMENTOS', '', '','');
-			
-			$pdf->SetXY(35,$y+50);
-			$pdf->Cell(80,30,'Fecha', 'TLRB', '','C');
-			
-			$pdf->SetXY(115,$y+50);
-			$pdf->Cell(80,30,'Nro. Doc', 'TLRB', '','C');
-			
-			$pdf->SetXY(195,$y+50);
-			$pdf->Cell(160,30,'Banco', 'TLRB', '','C');
-			
-			$pdf->SetXY(355,$y+50);
-			$pdf->Cell(95,30,'Plaza', 'TLRB', '','C');
-			
-			$pdf->SetXY(450.5,$y+50);
-			$pdf->Cell(95,30,'Monto', 'TLRB', '','C');
-			$i = 0;
-			$x = 0;
-			$pdf->SetTextColor(0, 0, 0);
-			for($x = 0; $x< count($result_doc);$x++){
-			//	if($pdf->PageNo() <= 1){
-					if($z > 723){
-						$pdf->AddPage();
-						$i++;
-						$z = 100 + (17*$i);
-					}else{
-						$z = ($y+80) + (17*$x);
-					}
-					
-					$pdf->SetXY(35,$z);
-					$pdf->Cell(80,17,$result_doc[$x]['FECHA_DOC'], 'TLRB', '','C');
-					$pdf->SetXY(115,$z);
-					$pdf->Cell(80,17,$result_doc[$x]['NRO_DOC'], 'TLRB', '','C');
-					$pdf->SetXY(195,$z);
-					$pdf->Cell(160,17,$result_doc[$x]['NOM_BANCO'], 'TLRB', '','C');
-					$pdf->SetXY(355,$z);
-					$pdf->Cell(95,17,$result_doc[$x]['NOM_PLAZA'], 'TLRB', '','C');
-					$pdf->SetXY(450.5,$z);
-					$pdf->Cell(95,17,$result_doc[$x]['MONTO_DOC'], 'TLRB', '','C');
+		$cod_ingreso_cheque	=	$result[0]['COD_INGRESO_CHEQUE'];
 
-				/*}else{
+		$pdf->SetFont('Arial','B',14);
+		$pdf->SetTextColor(4, 22, 114);
+		$pdf->SetXY(275,80 + 5);
+		$pdf->Cell(385,17,'REGISTRO CHEQUE CLIENTE N° '.$cod_ingreso_cheque, '', '','C');
+		
+		$pdf->SetFont('Arial','B',9);
+		$pdf->SetXY(50,110 + 5);
+		$pdf->Cell(30,17,'Razón Social: ', '', '','C');
+		
+		$pdf->SetXY(450,110 + 5);
+		$pdf->Cell(30,17,'Rut: ', '', '','C');
+		
+		$pdf->SetXY(35,140 + 5);
+		$pdf->Cell(30,17,'Fecha: ', '', '','C');
+		
+		$pdf->SetXY(250,140 + 5);
+		$pdf->Cell(30,17,'Emisor: ', '', '','C');
+		
+		$pdf->SetXY(457,140 + 5);
+		$pdf->Cell(30,17,'Estado: ', '', '','C');
+		
+		$sql = "select	COD_INGRESO_ARRIENDO
+					,IA.COD_INGRESO_CHEQUE
+					,A.COD_ARRIENDO
+					,A.COD_ARRIENDO COD_ARRIENDO_H
+					,A.NOM_ARRIENDO
+					,convert(varchar(20), FECHA_ARRIENDO, 103) FECHA_ARRIENDO
+					,REFERENCIA
+					,A.NRO_ORDEN_COMPRA
+					,A.CENTRO_COSTO_CLIENTE	
+					,A.NRO_MESES
+					,A.NRO_MESES NRO_MESES_H
+					,A.TOTAL_CON_IVA  
+					,'S' CHECK_ARRIENDO              
+		FROM 		ARRIENDO A
+					,INGRESO_ARRIENDO IA
+		WHERE		IA.COD_INGRESO_CHEQUE = $cod_ingreso_cheque
+		AND			A.COD_ARRIENDO = IA.COD_ARRIENDO
+		ORDER BY	IA.COD_ARRIENDO DESC";
+		
+		$result_it = $db->build_results($sql);
+		
+		$pdf->SetTextColor(0, 0, 0);
+					$pdf->SetXY(100,110 + 5);
+		$pdf->Cell(340,17,$result[0]['NOM_EMPRESA'], 'B', '','');
+		
+		$pdf->SetXY(490,110 + 5);
+		$pdf->Cell(60,17,$result[0]['RUT'], 'B', '','');
+		
+		$pdf->SetXY(80,140 + 5);
+		$pdf->Cell(60,17,$result[0]['FECHA_INGRESO_CHEQUE'], 'B', '','');
+					
+		$pdf->SetXY(290,140 + 5);
+		$pdf->Cell(100,17,$result[0]['NOM_USUARIO'], 'B', '','');
+		
+		$pdf->SetXY(490,140 + 5);
+		$pdf->Cell(70,17,$result[0]['NOM_ESTADO_INGRESO_CHEQUE'], 'B', '','');
+		
+		$i = 0;
+		if($result_it[0]['COD_ARRIENDO']!=''){
+			$pdf->SetTextColor(4, 22, 114);
+			$pdf->SetXY(35,180 + 5);
+			$pdf->Cell(530,17,'CONTRATO', '', '','');
+			
+			$pdf->SetXY(35,200 + 5);
+			$pdf->Cell(80,30,'Cod. Arriendo', 'TLRB', '','C');
+			
+			$pdf->SetXY(115,200 + 5);
+			$pdf->Cell(240,30,'Nom. Arriendo', 'TRB', '','C');
+			
+			$pdf->SetXY(355,200 + 5);
+			$pdf->Cell(80,30,'Nro. Meses', 'TRB', '','C');
+			
+			$pdf->SetXY(435,200 + 5);
+			$pdf->Cell(100,30,'Total', 'TRB', '','C');
+			$pdf->SetTextColor(0, 0, 0);
+			for($x = 0; $x< count($result_it);$x++){
+				if($pdf->PageNo() <= 1){
+					$y = 235 + (17*$x);
+
+					$pdf->SetXY(35,$y);
+					$pdf->Cell(80,17,$result_it[$x]['COD_ARRIENDO'], 'LRB', '','C');
+					$pdf->SetXY(115,$y);
+					$pdf->Cell(240,17,$result_it[$x]['NOM_ARRIENDO'], 'LRB', '','C');
+					$pdf->SetXY(355,$y);
+					$pdf->Cell(80,17,$result_it[$x]['NRO_MESES'], 'TRB', '','C');
+					$pdf->SetXY(435,$y);
+					$pdf->Cell(100,17,number_format($result_it[$x]['TOTAL_CON_IVA'], 0, ',', '.'), 'TRB', '','C');
+					
+					if($y > 723){
+						$pdf->AddPage();
+					}
+				}else{
 					$i++;
-					$z = 130 + (17*$i);
+					$y = 130 + (17*$i);
 					$pdf->SetFont('Arial','B',14);
 					$pdf->SetTextColor(4, 22, 114);
 					$pdf->SetXY(275,80 + 8);
@@ -784,19 +705,97 @@ class print_ingreso_cheque extends reporte {
 					
 					$pdf->SetFont('Arial','B',9);
 					$pdf->SetTextColor(0, 0, 0);
-					$pdf->SetXY(35,$z);
-					$pdf->Cell(80,17,$result_doc[$x]['FECHA_DOC'], 'TLRB', '','C');
-					$pdf->SetXY(115,$z);
-					$pdf->Cell(80,17,$result_doc[$x]['NRO_DOC'], 'TLRB', '','C');
-					$pdf->SetXY(195,$z);
-					$pdf->Cell(160,17,$result_doc[$x]['NOM_BANCO'], 'TLRB', '','C');
-					$pdf->SetXY(355,$z);
-					$pdf->Cell(95,17,$result_doc[$x]['NOM_PLAZA'], 'TLRB', '','C');
-					$pdf->SetXY(450.5,$z);
-					$pdf->Cell(95,17,$result_doc[$x]['MONTO_DOC'], 'TLRB', '','C');
-				}*/
+					
+					$pdf->SetXY(35,$y);
+					$pdf->Cell(80,17,$result_it[$x]['COD_ARRIENDO'], 'TLRB', '','C');
+					$pdf->SetXY(115,$y);
+					$pdf->Cell(240,17,$result_it[$x]['NOM_ARRIENDO'], 'TLRB', '','C');
+					$pdf->SetXY(355,$y);
+					$pdf->Cell(80,17,$result_it[$x]['NRO_MESES'], 'TRB', '','C');
+					$pdf->SetXY(435,$y);
+					$pdf->Cell(100,17,number_format($result_it[$x]['TOTAL_CON_IVA'], 'TRB', '','C'));
+				}
+
 			}
-			//$pdf->Cell(95,17,$pdf->PageNo().' '.$pdf->SectionPageNo(), 'TLRB', '','C');
+		}
+		$sql_doc ="SELECT C.NRO_DOC
+						, CONVERT(VARCHAR,C.FECHA_DOC,103) FECHA_DOC
+						, C.MONTO_DOC
+						, SUBSTRING(B.NOM_BANCO,0,27) NOM_BANCO
+						, P.NOM_PLAZA 
+					FROM CHEQUE C, BANCO B, PLAZA P
+					WHERE COD_INGRESO_CHEQUE = $cod_ingreso_cheque
+					AND C.COD_BANCO = B.COD_BANCO
+					AND C.COD_PLAZA = P.COD_PLAZA";
+		$result_doc = $db->build_results($sql_doc);
+		if($result_it[0]['COD_ARRIENDO'] == ''){
+				$y = 160;
+		}
+		$pdf->SetTextColor(4, 22, 114);
+		$pdf->SetXY(35,$y+30);
+		$pdf->Cell(530,17,'DOCUMENTOS', '', '','');
+		
+		$pdf->SetXY(35,$y+50);
+		$pdf->Cell(80,30,'Fecha', 'TLRB', '','C');
+		
+		$pdf->SetXY(115,$y+50);
+		$pdf->Cell(80,30,'Nro. Doc', 'TLRB', '','C');
+		
+		$pdf->SetXY(195,$y+50);
+		$pdf->Cell(160,30,'Banco', 'TLRB', '','C');
+		
+		$pdf->SetXY(355,$y+50);
+		$pdf->Cell(95,30,'Plaza', 'TLRB', '','C');
+		
+		$pdf->SetXY(450.5,$y+50);
+		$pdf->Cell(95,30,'Monto', 'TLRB', '','C');
+		$i = 0;
+		$x = 0;
+		$pdf->SetTextColor(0, 0, 0);
+		for($x = 0; $x< count($result_doc);$x++){
+		//	if($pdf->PageNo() <= 1){
+			if($z > 723){
+				$pdf->AddPage();
+				$i++;
+				$z = 100 + (17*$i);
+			}else{
+				$z = ($y+80) + (17*$x);
+			}
+			
+			$pdf->SetXY(35,$z);
+			$pdf->Cell(80,17,$result_doc[$x]['FECHA_DOC'], 'TLRB', '','C');
+			$pdf->SetXY(115,$z);
+			$pdf->Cell(80,17,$result_doc[$x]['NRO_DOC'], 'TLRB', '','C');
+			$pdf->SetXY(195,$z);
+			$pdf->Cell(160,17,$result_doc[$x]['NOM_BANCO'], 'TLRB', '','C');
+			$pdf->SetXY(355,$z);
+			$pdf->Cell(95,17,$result_doc[$x]['NOM_PLAZA'], 'TLRB', '','C');
+			$pdf->SetXY(450.5,$z);
+			$pdf->Cell(95,17,number_format($result_doc[$x]['MONTO_DOC'], 0, ',', '.'), 'TLRB', '','C');
+
+			/*}else{
+				$i++;
+				$z = 130 + (17*$i);
+				$pdf->SetFont('Arial','B',14);
+				$pdf->SetTextColor(4, 22, 114);
+				$pdf->SetXY(275,80 + 8);
+				$pdf->Cell(385,17,'REGISTRO CHEQUE CLIENTE N° '.$cod_ingreso_cheque, '', '','C');
+				
+				$pdf->SetFont('Arial','B',9);
+				$pdf->SetTextColor(0, 0, 0);
+				$pdf->SetXY(35,$z);
+				$pdf->Cell(80,17,$result_doc[$x]['FECHA_DOC'], 'TLRB', '','C');
+				$pdf->SetXY(115,$z);
+				$pdf->Cell(80,17,$result_doc[$x]['NRO_DOC'], 'TLRB', '','C');
+				$pdf->SetXY(195,$z);
+				$pdf->Cell(160,17,$result_doc[$x]['NOM_BANCO'], 'TLRB', '','C');
+				$pdf->SetXY(355,$z);
+				$pdf->Cell(95,17,$result_doc[$x]['NOM_PLAZA'], 'TLRB', '','C');
+				$pdf->SetXY(450.5,$z);
+				$pdf->Cell(95,17,$result_doc[$x]['MONTO_DOC'], 'TLRB', '','C');
+			}*/
+		}
+		//$pdf->Cell(95,17,$pdf->PageNo().' '.$pdf->SectionPageNo(), 'TLRB', '','C');
 	}
 }
 // Se separa por K_CLIENTE
