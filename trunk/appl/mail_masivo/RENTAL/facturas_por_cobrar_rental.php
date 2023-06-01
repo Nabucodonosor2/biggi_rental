@@ -147,15 +147,13 @@ $mail->ClearAddresses();
 
 $mail->AddAddress('ascianca@biggi.cl', 'Angel Scianca');
 $mail->AddAddress('sergio.pechoante@biggi.cl', 'Sergio Pechoante');
+$mail->AddAddress('jcatalan@biggi.cl', 'Jose Catalan');
+$mail->AddAddress('fpuebla@biggi.cl', 'Felipe Puebla');
+$mail->AddAddress('caravena@biggi.cl', 'Cristian Aravena');
 //$mail->AddAddress('rescudero@biggi.cl', 'Rafael Escudero');
-
-$mail->AddAddress('lleiva@biggi.cl', 'Loreto Leiva');
+//$mail->AddAddress('lleiva@biggi.cl', 'Loreto Leiva');
 
 $mail->AddBCC('mherrera@biggi.cl', 'Marcelo Herrera');	
-$mail->AddBCC('evergara@integrasystem.cl', 'Erik');
-$mail->AddBCC('vmelo@integrasystem.cl', 'Victor Melo');
-
-//$mail->AddAddress('icampos@integrasystem.cl', 'Israel Campos');
 
 $mail->Body = $html;
 $mail->AltBody = "";
