@@ -87,11 +87,8 @@ $mail->Timeout      = 30;
 $mail->Subject      = "Informe Facturas Rechazadas al $fecha_anterior - Sistema Rental";
 $mail->ClearAddresses();
 
-$mail->AddAddress('sergio.pechoante@biggi.cl', 'Sergio Pechoante');
-$mail->AddAddress('caravena@biggi.cl', 'Cristian Aravena');
-$mail->AddAddress('jcatalan@biggi.cl', 'Jose Catalán');
-$mail->AddAddress('fpuebla@biggi.cl', 'Felipe Puebla');
-$mail->AddBCC('mherrera@biggi.cl','Marcelo Herrera');
+$mail->AddAddress('mherrera@biggi.cl','Marcelo Herrera');
+$mail->AddCC('isra.campos.o@gmail.com', 'Israel Campos');
 
 //$mail->AddEmbeddedImage("../../images_appl/logobiggipo.jpg",'logo_biggi');
 $mail->Body         = $html;
