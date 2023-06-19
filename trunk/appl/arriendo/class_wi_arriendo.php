@@ -942,7 +942,7 @@ class wi_arriendo extends w_cot_nv {
 			$labels['strCOD_ARRIENDO'] = $cod_arriendo;
 			$labels['strFECHA_ACTUAL'] = $fecha;			
 			$file_name = $this->find_file('arriendo', 'anexo_arriendo.xml');					
-			$rpt = new print_anexo_arriendo($cod_arriendo, $file_name, $labels, "Anexo Arriendo ".$cod_arriendo.".pdf", 1);
+			$rpt = new print_anexo_arriendo($cod_arriendo, $file_name, $labels, "Anexo de Arrendamiento ".$cod_arriendo.".pdf", 1);
 			$this->_load_record();
 			return true;
 		}else if($print_ca[0] == 'anexo_d'){
@@ -951,7 +951,7 @@ class wi_arriendo extends w_cot_nv {
 			$labels['strCOD_ARRIENDO'] = $cod_arriendo;
 			$labels['strFECHA_ACTUAL'] = $fecha;			
 			$file_name = $this->find_file('arriendo', 'anexo_arriendo_d.xml');					
-			$rpt = new print_anexo_arriendo_d($cod_arriendo, $file_name, $labels, "Anexo Arriendo ".$cod_arriendo.".pdf", 1);
+			$rpt = new print_anexo_arriendo_d($cod_arriendo, $file_name, $labels, "Anexo de Arrendamiento Valorizado ".$cod_arriendo.".pdf", 1);
 			$this->_load_record();
 			return true;	
 		}else if($print_ca[0] == 'despachar'){
@@ -1200,7 +1200,7 @@ class wi_arriendo extends w_cot_nv {
 		$monto_adicional = 0;
 		
 		if($day_registro_cot > $validez_oferta_cot){
-			$this->alert("La Cotización de arriendo N° ".$cod_cot_arriendo.", se encuentra fuera del periodo de validez de oferta (".$validez_oferta_cot." días.) Se usarán precios actualizados.");
+			$this->alert("La Cotizaci? de arriendo N? ".$cod_cot_arriendo.", se encuentra fuera del periodo de validez de oferta (".$validez_oferta_cot." d?s.) Se usar? precios actualizados.");
 			$no_valido = true;
 			$porc_arr = $result[0]['PORC_ARRIENDO'];
 		}

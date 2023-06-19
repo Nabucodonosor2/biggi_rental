@@ -9,7 +9,7 @@
 	<PageHeader>	
 		<Cell text="" height="55%" newline="1"/>		
 		<Cell text="PAG. {SectionPageNumber}/{snb}" align="R" font="ArialSmall" newline="1" />
-		<Cell text="ANEXO ARRIENDO Nº {strCOD_ARRIENDO} AL {strFECHA_ACTUAL}" width="100%" align="C" newline="1" font="ArialBoldBigB"/>
+		<Cell text="ANEXO DE ARRENDAMIENTO Nº {strCOD_ARRIENDO} AL {strFECHA_ACTUAL}" width="100%" align="C" newline="1" font="ArialBoldBigB"/>
 		<Cell text="" height="4" newline="1"/>	
 	</PageHeader>
 	<Content font="Arial">
@@ -20,8 +20,9 @@
 	</Content>
 	<Group local="COD_ARRIENDO">
 		<GroupHeader>
-			<Cell text="Fecha Inicio Arriendo:" width="85%" align="R"  font="ArialBoldBlue" visible="{VISIBLE_FECHA} != 'N'"/>
-			<Cell text="{FECHA_GUIA_DESPACHO}" width="15%" align="L" border="B" font="Arial" visible="{VISIBLE_FECHA} != 'N'" newline="1"/>
+			<!-- SE COMENTA ESTA LINEA 05062023 SEGUN REUNION CON FP MMAARTINEZ Y SP -->
+			<!-- <Cell text="Fecha Inicio Arriendo:" width="85%" align="R"  font="ArialBoldBlue" visible="{VISIBLE_FECHA} != 'N'"/> -->
+			<!-- <Cell text="{FECHA_GUIA_DESPACHO}" width="15%" align="L" border="B" font="Arial" visible="{VISIBLE_FECHA} != 'N'" newline="1"/> -->
 			<Cell text="Nombre Empresa:" width="18%" align="L"  font="ArialBoldBlue"/>
 			<Cell text="{NOM_EMPRESA}" width="62%" align="L" border="B" font="ArialBold"/>
 			<Cell text="Rut:" width="5%" align="L" font="ArialBoldBlue"/>
@@ -50,8 +51,12 @@
 		</GroupHeader>
 		<GroupFooter>
 			<Cell text="" height="30" newline="1"/>
-			<Cell text="BIGGI RENTAL" width="30%" align="C" font="ArialBold" newline="1"/>
-			<Cell text="{USUARIO}" width="30%" align="C" font="Arial" newline="1"/>
+			<Cell text="" height="30" newline="1"/>
+			<Cell text="{NOM_EMPRESA}" width="50%" align="C" font="Arial"/>
+			<Cell text="COMERCIAL BIGGI (CHILE) S.A." width="50%" align="C" font="Arial" newline="1"/>
+			<Cell text="ARRENDATARIO" width="50%" align="C" font="ArialBold"/>
+			<Cell text="ARRENDADOR" width="50%" align="C" font="ArialBold" newline="1"/>
+			<!-- SE ACTUALIZAN PIE Y TITULO DE ANEXO 05062023 SEGUN REUNION CON FP MMAARTINEZ Y SP -->
 		</GroupFooter> 
 	</Group>
 </Report>

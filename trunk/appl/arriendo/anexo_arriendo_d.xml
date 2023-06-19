@@ -9,7 +9,7 @@
 	<PageHeader>	
 		<Cell text="" height="55%" newline="1"/>		
 		<Cell text="PAG. {SectionPageNumber}/{snb}" align="R" font="ArialSmall" newline="1" />
-		<Cell text="ANEXO ARRIENDO Nº {strCOD_ARRIENDO} AL {strFECHA_ACTUAL}" width="100%" align="C" newline="1" font="ArialBoldBigB"/>
+		<Cell text="ANEXO DE ARRENDAMIENTO Nº {strCOD_ARRIENDO} AL {strFECHA_ACTUAL}" width="100%" align="C" newline="1" font="ArialBoldBigB"/>
 		<Cell text="" height="4" newline="1"/>	
 	</PageHeader>
 	<Content font="Arial">
@@ -42,8 +42,9 @@
 			<Cell text="{NRO_ORDEN_COMPRA}" width="28%" align="L" border="B" font="Arial"/>
 			<Cell text="CECO:" width="7%" align="L"  font="ArialBoldBlue"/>
 			<Cell text="{CENTRO_COSTO_CLIENTE}" width="00%" align="L" border="B" font="Arial" newline="1"/>
-			<Cell text="Inicio Arriendo:" width="19%" align="L"  font="ArialBoldBlue"/>
-			<Cell text="{FECHA_PRIMERA_GUIA_DESPACHO}" width="25%" align="L" border="B" font="Arial" newline="1"/>
+			<!-- SE COMENTA ESTA LINEA 05062023 SEGUN REUNION CON FP MMAARTINEZ Y SP -->
+			<!--<Cell text="Inicio de arrendamiento:" width="19%" align="L"  font="ArialBoldBlue"/> .-->
+			<!--<Cell text="{FECHA_PRIMERA_GUIA_DESPACHO}" width="25%" align="L" border="B" font="Arial" newline="1"/> .-->
 			
 			<Cell text="___________________________________________________________" width="100%" align="L" font="ArialBoldBigB" newline="1"/>
 			<Cell text="Nombre Contrato:" width="18%" align="L"  font="ArialBoldBlue"/>
@@ -73,10 +74,11 @@
 			<Cell text="TOTAL CON IVA" width="16%"  border="LRTB" align="R" font="ArialBold"/>
 			<Cell text="{ST_TOTAL_CON_IVA}" width="17%"  border="LRTB" align="R" format="N0,." font="ArialBold" newline="1"/>
 			<Cell text="" height="30" newline="1"/>
-			<Cell text="{NOM_USUARIO_VENDEDOR1}" width="50%" align="C" font="Arial"/>
-			<Cell text="{NOM_PERSONA}" width="50%" align="C" font="Arial" newline="1"/>
+			<Cell text="{NOM_EMPRESA}" width="50%" align="C" font="Arial"/>
+			<Cell text="COMERCIAL BIGGI (CHILE) S.A." width="50%" align="C" font="Arial" newline="1"/>
 			<Cell text="ARRENDATARIO" width="50%" align="C" font="ArialBold"/>
 			<Cell text="ARRENDADOR" width="50%" align="C" font="ArialBold" newline="1"/>
+			<!-- SE ACTUALIZAN PIE Y TITULO DE ANEXO 05062023 SEGUN REUNION CON FP MMAARTINEZ Y SP -->
 		</GroupFooter> 
 	</Group>
 </Report>
