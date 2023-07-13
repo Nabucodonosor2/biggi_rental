@@ -1113,7 +1113,7 @@ class print_producto extends reporte {
 			// QR code
 			require_once("class_qrcode.php");
 			$qr = new qrcode();
-			$qr->link("http://www.biggi.cl/web/detalle_producto.php?cod_producto=".urlencode($result[0]['COD_PRODUCTO']));
+			$qr->link("http://accsisgb.biggi.cl/web/detalle_producto.php?cod_producto=".urlencode($result[0]['COD_PRODUCTO']));
 			$file = $qr->get_image();
 			$fname = dirname(__FILE__)."/img_temp/".$result[0]['COD_PRODUCTO'].".png";
 			$qr->save_image($file, $fname);
