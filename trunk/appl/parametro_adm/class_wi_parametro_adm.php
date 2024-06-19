@@ -323,19 +323,14 @@ class wi_parametro_adm extends w_input {
 		$this->dws['dw_parametro_porc_adm']->retrieve();
 		$this->dws['dw_lock_table']->retrieve();
 	}
-	/*function habilitar(&$temp, $habilita) { 
-		//*************  dejar solo el perfil 1, usar consulta aBD
-		$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
-        $sql = "SELECT COD_PERFIL from USUARIO where COD_USUARIO =".$this->cod_usuario;
-        $result = $db->build_results($sql);
-        $cod_perfil = $result[0]['COD_PERFIL'];
-         
-		if ($cod_perfil == 1) //perfil administrados siempre tendrá privilegios de escritura
+	
+	function habilitar(&$temp, $habilita) {          
+		if ($this->cod_usuario == 4 || $this->cod_usuario == 11) 
 			$this->habilita_boton($temp, 'modify', (true));
 		else
 			$this->habilita_boton($temp, 'modify', (false));
 	}
-	*/
+	
 	function get_key() 	{
 		return 0;
 	}

@@ -83,6 +83,20 @@ class w_login extends w_base {
 			session::set("COD_PERFIL", $cod_perfil);
 		}
 		//////////////////////////////////////////
+
+		//selecccion de opcion parametros
+		// para usuario <> admin usa parametro_adm
+		if ($cod_usuario <> 1) {
+			$menu = session::get('menu_appl');
+			for ($i=0; $i<count($menu->menu); $i++) {
+				for($j=0; $j<count($menu->menu[$i]->children); $j++) {
+					if ($menu->menu[$i]->children[$j]->cod_item_menu=='1025') {	// parametros
+						$menu->menu[$i]->children[$j]->link = "../appl/parametro_adm/wi_parametro_adm.php?cod_item_menu=1025";
+					}
+				}
+			}
+			session::set('menu_appl', $menu);
+		}
 		
 		$db->EXECUTE_SP("sp_log_cambio", "'LOGIN', '', $cod_usuario, 'L'");
 		
