@@ -176,6 +176,7 @@ class wi_producto extends wi_producto_base {
 		                ,FOTO_GRANDE
 		                ,FOTO_CHICA
 		                ,'' FOTO_CON_CAMBIO
+						,ISNULL(PL.ES_COMPUESTO, 'N') ES_COMPUESTO
 		                ,PL.ES_COMPUESTO
 		                ,PRECIO_LIBRE
 		                ,ES_DESPACHABLE
@@ -187,13 +188,11 @@ class wi_producto extends wi_producto_base {
 		                ,SUBSTRING(P.SISTEMA_VALIDO, 2, 1) PRODUCTO_BODEGA
 		                ,SUBSTRING(P.SISTEMA_VALIDO, 3, 1) PRODUCTO_RENTAL
 		                ,SUBSTRING(P.SISTEMA_VALIDO, 4, 1) PRODUCTO_TODOINOX            
-        from   			PRODUCTO P
+        from   			PRODUCTO P LEFT OUTER JOIN PRODUCTO_LOCAL PL ON PL.COD_PRODUCTO = P.COD_PRODUCTO
         				,MARCA M
         				,TIPO_PRODUCTO TP
-        				,PRODUCTO_LOCAL PL
         where			P.COD_PRODUCTO = '{KEY1}'
         				AND P.COD_MARCA = M.COD_MARCA
-        				AND PL.COD_PRODUCTO = P.COD_PRODUCTO
         				AND P.COD_TIPO_PRODUCTO = TP.COD_TIPO_PRODUCTO";
 		$this->dws['dw_producto'] = new datawindow($sql);	
 
