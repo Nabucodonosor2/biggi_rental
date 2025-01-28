@@ -198,8 +198,7 @@ class wo_nota_credito_base extends w_output_biggi {
 
 	  	$cantidad_max = $this->get_parametro(self::K_PARAM_MAX_IT_NC);
 		$cod_usuario = $this->cod_usuario;	
-		if ($opcion=='desde_fa' || $opcion=='desde_fa_adm')
-		{
+		if ($opcion=='desde_fa' || $opcion=='desde_fa_adm'){
 				//crear la NC para todos los itemsFA que tengan pendiente por devolver
 				$db = new database(K_TIPO_BD, K_SERVER, K_BD, K_USER, K_PASS);
 				///valida que la FA exista
@@ -252,19 +251,35 @@ class wo_nota_credito_base extends w_output_biggi {
 				if ($opcion=='desde_fa') {
 					// valida que hayan item pendientes
 					$sql = "select sum(dbo.f_fa_cant_por_nc(ITF.COD_ITEM_FACTURA, 'TODO_ESTADO')) POR_NC
-					from ITEM_FACTURA ITF, FACTURA F
-					where F.COD_FACTURA = $cod_factura and
-						  ITF.COD_FACTURA = F.COD_FACTURA";
+								  ,COD_TIPO_FACTURA
+							from ITEM_FACTURA ITF, FACTURA F
+							where F.COD_FACTURA = $cod_factura and
+						  	ITF.COD_FACTURA = F.COD_FACTURA
+							group by COD_TIPO_FACTURA";
 					
 					$result = $db->build_results($sql);
-					//echo $sql;
-					$por_nc = $result[0]['POR_NC'];
 					
-					if ($por_nc <= 0)
-					{
+					$por_nc				= $result[0]['POR_NC'];
+					$cod_tipo_factura	= $result[0]['COD_TIPO_FACTURA'];
+
+					if($cod_tipo_factura == 1){
+						if ($por_nc <= 0){
 							$this->_redraw();
 							$this->alert('Todos los ítems de la Factura Nº '.$nro_factura.', tienen Nota de Crédito.');								
 							return;
+						}
+					}else if($cod_tipo_factura == 2){
+						$sql = "SELECT COUNT(*) COUNT
+								FROM NOTA_CREDITO
+								WHERE COD_DOC = $cod_factura";
+					
+						$res = $db->build_results($sql);
+
+						if($res[0]['COUNT'] >= 1){
+							$this->_redraw();
+							$this->alert('Error, ya existe una Nota de Crédito emitida para la Factura Nro '.$nro_factura);								
+							return;
+						}
 					}
 				  	
 					//cuenta cuantos items hay
